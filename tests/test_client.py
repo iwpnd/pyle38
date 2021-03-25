@@ -20,6 +20,8 @@ async def test_client():
 
     assert response["ok"]
 
+    await client.quit()
+
 
 @pytest.mark.asyncio
 async def test_client_exceptions():
@@ -29,6 +31,8 @@ async def test_client_exceptions():
 
     with pytest.raises(Tile38KeyNotFoundError):
         await client.command("GET", ["vehicles", "Scooter"])
+
+    await client.quit()
 
 
 @pytest.mark.asyncio

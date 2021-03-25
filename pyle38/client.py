@@ -110,7 +110,7 @@ class Client:
         self._format = Format.JSON.value
 
     async def getRedis(self) -> aioredis.Redis:
-        if (not self._redis) or self._redis.closed:
+        if not self._redis:
             self._redis = await aioredis.create_redis_pool(self.url)
             self._format = Format.RESP.value
         return self._redis
@@ -130,10 +130,11 @@ class Client:
         return parse_response(response)
 
     async def quit(self) -> str:
-        if (not self._redis) or self._redis.closed:
+        if not self._redis:
             return "OK"
 
         c = await self.getRedis()
+
         c.close()
         await c.wait_closed()
 
