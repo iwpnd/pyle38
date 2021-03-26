@@ -3,7 +3,6 @@ import pytest
 from pyle38.commands.set import Set
 from pyle38.tile38 import Tile38
 
-
 tile38 = Tile38()
 
 
