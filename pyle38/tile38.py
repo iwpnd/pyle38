@@ -10,7 +10,11 @@ class Tile38(Leader):
     _follower: Optional[Follower] = None
 
     # TODO: get url from os.getenv
-    def __init__(self, url: str = "redis://localhost:9851", follower_url: str = ""):
+    def __init__(
+        self,
+        url: str = "redis://localhost:9851",
+        follower_url: str = "redis://localhost:9852",
+    ):
         super().__init__(url)
 
         if follower_url:
