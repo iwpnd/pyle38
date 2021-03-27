@@ -8,6 +8,10 @@ from typing import Union
 from ..client import Client
 from ..client import Command
 from ..client import SubCommand
+from ..responses import BoundsNeSwResponse
+from ..responses import HashResponse
+from ..responses import ObjectResponse
+from ..responses import PointResponse
 from .executable import Executable
 
 Output = Union[
@@ -24,7 +28,7 @@ class Get(Executable):
     _key: str
     _id: str
     _with_fields: Optional[Literal["WITHFIELDS"]] = None
-    _output: Optional[Output]
+    _output: Optional[Output] = None
 
     def __init__(self, client: Client, key: str, id: str) -> None:
         super().__init__(client)
@@ -60,25 +64,25 @@ class Get(Executable):
         return self
 
     # TODO: add Response
-    async def asObjects(self):
+    async def asObject(self) -> ObjectResponse:
         self.output(SubCommand.OBJECT.value)
 
-        return await self.exec()
+        return ObjectResponse(**(await self.exec()))
 
-    async def asBounds(self):
+    async def asBounds(self) -> BoundsNeSwResponse:
         self.output(SubCommand.BOUNDS.value)
 
-        return await self.exec()
+        return BoundsNeSwResponse(**(await self.exec()))
 
-    async def asPoint(self):
+    async def asPoint(self) -> PointResponse:
         self.output(SubCommand.POINT.value)
 
-        return await self.exec()
+        return PointResponse(**(await self.exec()))
 
-    async def asHash(self, precision: int):
+    async def asHash(self, precision: int) -> HashResponse:
         self.output(SubCommand.HASH.value, precision)
 
-        return await self.exec()
+        return HashResponse(**(await self.exec()))
 
     def compile(self) -> List[Union[str, List[Union[str, float, int]]]]:
         return [

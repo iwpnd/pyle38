@@ -1,5 +1,5 @@
 from .client import Client
-from .client import Command
+from .commands.get import Get
 
 
 class Follower(Client):
@@ -10,5 +10,5 @@ class Follower(Client):
 
         self.client = Client(url)
 
-    async def get(self, key: str, id: str):
-        return await self.client.command(Command.GET, [key, id])
+    def get(self, key: str, id: str) -> Get:
+        return Get(self.client, key, id)

@@ -7,7 +7,7 @@ from .errors import Tile38IdNotFoundError
 from .errors import Tile38KeyNotFoundError
 
 
-def parse_response(response: str) -> Dict[str, Union[float, int, str]]:
+def parse_response(response: str) -> Dict[str, Union[float, str, int, list, dict]]:
 
     try:
         obj = json.loads(response)

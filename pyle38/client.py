@@ -96,7 +96,7 @@ class Client:
     _redis: Optional[aioredis.Redis] = None
     _format: str = Format.RESP.value
 
-    def __init__(self, url: str):
+    def __init__(self, url: str) -> None:
         self.url = url
 
     async def __force_json(self) -> None:
@@ -115,14 +115,12 @@ class Client:
             self._format = Format.RESP.value
         return self._redis
 
-    async def command_async(self, command: str, command_args: CommandArgs = []):
+    async def command_async(self, command: str, command_args: CommandArgs = []) -> str:
         # TODO: use context manager?
         c = await self.getRedis()
         return await c.execute(command, *command_args)
 
-    async def command(
-        self, command: str, command_args: CommandArgs = []
-    ) -> Dict[str, Union[int, float, str]]:
+    async def command(self, command: str, command_args: CommandArgs = []) -> Dict:
         await self.__force_json()
 
         response = await self.command_async(command, command_args)

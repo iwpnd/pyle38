@@ -56,6 +56,6 @@ async def test_get_query():
 
     expected = {"ok": True, "object": obj, "elapsed": "1ms"}
 
-    received = await tile38.get(key, id)
+    received = await tile38.get(key, id).asObject()
 
-    assert expected["object"] == received["object"]
+    assert expected["object"] == received.object

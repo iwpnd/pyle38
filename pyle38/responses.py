@@ -1,11 +1,16 @@
 from typing import Any
 from typing import Dict
+from typing import Generic
 from typing import List
 from typing import Literal
 from typing import Optional
+from typing import TypeVar
 from typing import Union
 
 from pydantic import BaseModel
+from pydantic.generics import GenericModel
+
+T = TypeVar("T")
 
 
 class LatLon(BaseModel):
@@ -28,26 +33,26 @@ class JSONResponse(BaseModel):
     err: Optional[str] = None
 
 
-class ObjectResponse(JSONResponse):
-    object: Any
+class ObjectResponse(JSONResponse, GenericModel, Generic[T]):
+    object: T
     fields: Optional[Fields] = None
 
 
-class Object(BaseModel):
-    object: Any
+class Object(GenericModel, Generic[T]):
+    object: T
     id: Union[str, int]
     distance: Optional[float] = None
 
 
-class ObjectsResponse(JSONResponse):
-    objects: List[Object]
+class ObjectsResponse(JSONResponse, GenericModel, Generic[T]):
+    objects: Optional[List[Object[T]]] = []
     count: int
     cursor: int
     fields: Optional[List[str]] = None
 
 
-class StringObjectsResponse(JSONResponse):
-    objects: List[Object]
+class StringObjectsResponse(JSONResponse, GenericModel, Generic[T]):
+    objects: Optional[List[Object[T]]]
     count: int
     cursor: int
 
@@ -72,6 +77,11 @@ class Hash(BaseModel):
     hash: str
     id: Union[str, int]
     distance: Optional[float] = None
+
+
+class HashResponse(JSONResponse):
+    hash: str
+    fields: Optional[Fields] = None
 
 
 class HashesResponse(JSONResponse):
@@ -264,7 +274,7 @@ class Chans(BaseModel):
     command: List[str]
 
 
-class SetChanResponse(JSONResponse):
+class ChansResponse(JSONResponse):
     chans: List[Chans]
 
 
@@ -273,7 +283,7 @@ Detect = Literal["enter", "exit", "inside", "outside", "crosses"]
 Command = Literal["set", "del"]
 
 
-class GeoFence(BaseModel):
+class GeoFence(GenericModel, Generic[T]):
     command: Command
     group: str
     detect: Detect
@@ -281,4 +291,4 @@ class GeoFence(BaseModel):
     key: str
     time: str
     id: str
-    object: Dict
+    object: T
