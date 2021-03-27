@@ -1,12 +1,8 @@
 import pytest
 
-from pyle38.tile38 import Tile38
-
-tile38 = Tile38()
-
 
 @pytest.mark.asyncio
-async def test_bounds():
+async def test_bounds(tile38):
     key = "fleet"
     id = "truck"
 

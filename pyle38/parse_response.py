@@ -1,5 +1,6 @@
 import json
 from typing import Dict
+from typing import Optional
 from typing import Union
 
 from .errors import Tile38Error
@@ -7,7 +8,12 @@ from .errors import Tile38IdNotFoundError
 from .errors import Tile38KeyNotFoundError
 
 
-def parse_response(response: str) -> Dict[str, Union[float, str, int, list, dict]]:
+def parse_response(
+    response: Optional[Union[bytes, memoryview, str, int, float]] = None
+) -> Dict[str, Union[float, str, int, list, dict]]:
+
+    if not isinstance(response, str) or isinstance(response, bytes):
+        raise Tile38Error("invalid response")
 
     try:
         obj = json.loads(response)

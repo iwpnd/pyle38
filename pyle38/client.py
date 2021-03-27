@@ -103,22 +103,24 @@ class Client:
         if self._format == Format.JSON.value:
             return
 
-        response = await self.command_async(Command.OUTPUT.value, [Format.JSON.value])
-
-        parse_response(response)
+        await self.command_async(Command.OUTPUT.value, [Format.JSON.value])
 
         self._format = Format.JSON.value
 
     async def getRedis(self) -> aioredis.Redis:
         if not self._redis:
-            self._redis = await aioredis.create_redis_pool(self.url)
+            self._redis = await aioredis.from_url(
+                self.url, encoding="utf-8", decode_responses=True
+            )
             self._format = Format.RESP.value
         return self._redis
 
-    async def command_async(self, command: str, command_args: CommandArgs = []) -> str:
-        # TODO: use context manager?
-        c = await self.getRedis()
-        return await c.execute(command, *command_args)
+    async def command_async(self, command: str, command_args: CommandArgs = []):
+        pool = await self.getRedis()
+        async with pool.client() as c:
+            await c.connection.send_command(command, *command_args)
+            response = await c.connection.read_response()
+            return response
 
     async def command(self, command: str, command_args: CommandArgs = []) -> Dict:
         await self.__force_json()
@@ -133,8 +135,8 @@ class Client:
 
         c = await self.getRedis()
 
-        c.close()
-        await c.wait_closed()
+        await c.close()
+        await c.connection_pool.disconnect()
 
         self._redis = None
 
