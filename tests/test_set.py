@@ -1,13 +1,10 @@
 import pytest
 
 from pyle38.commands.set import Set
-from pyle38.tile38 import Tile38
-
-tile38 = Tile38()
 
 
 @pytest.mark.asyncio
-async def test_set_compile():
+async def test_set_compile(tile38):
 
     key = "fleet"
     id = "truck1"
@@ -20,9 +17,7 @@ async def test_set_compile():
 
 
 @pytest.mark.asyncio
-async def test_set_query():
-
-    await tile38.flush_db()
+async def test_set_query(tile38):
 
     key = "fleet"
     id = "truck1"
@@ -36,8 +31,6 @@ async def test_set_query():
 
     expected = {"ok": True, "object": obj, "elapsed": "1ms"}
 
-    received = await tile38.get(key, id)
+    received = await tile38.get(key, id).asObject()
 
-    assert expected["object"] == received["object"]
-
-    await tile38.quit()
+    assert expected["object"] == received.object

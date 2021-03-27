@@ -3,7 +3,7 @@ from .follower import Follower
 
 
 class Leader(Follower):
-    async def flush_db(self) -> dict:
+    async def flushdb(self) -> dict:
         return await self.client.command("FLUSHDB")
 
     def set(self, key: str, id: str) -> Set:
