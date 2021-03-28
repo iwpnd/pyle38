@@ -8,6 +8,7 @@ from .responses import BoundsResponse
 from .responses import ChansResponse
 from .responses import ConfigGetResponse
 from .responses import ConfigKeys
+from .responses import HooksResponse
 from .responses import JSONResponse
 
 
@@ -47,3 +48,6 @@ class Follower(Client):
 
     def get(self, key: str, id: str) -> Get:
         return Get(self.client, key, id)
+
+    async def hooks(self, pattern: str = "*") -> HooksResponse:
+        return HooksResponse(**(await self.client.command(Command.HOOKS, [pattern])))
