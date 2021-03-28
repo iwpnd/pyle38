@@ -242,13 +242,13 @@ class ServerStatsExtendedResponse(JSONResponse):
     stats: ServerStatsExtended
 
 
-ConfigKey = Literal[
+ConfigKeys = Literal[
     "requirepass", "leaderauth", "protected-mode", "maxmemory", "autogc", "keepalive"
 ]
 
 
 class ConfigGetResponse(JSONResponse):
-    properties: Dict[ConfigKey, Union[int, float, str]]
+    properties: Dict[ConfigKeys, Union[int, float, str]]
 
 
 class JsonGetResponse(JSONResponse):
