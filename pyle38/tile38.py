@@ -1,3 +1,4 @@
+import os
 from typing import Optional
 
 from .errors import Tile38Error
@@ -12,9 +13,12 @@ class Tile38(Leader):
     # TODO: get url from os.getenv
     def __init__(
         self,
-        url: str = "redis://localhost:9851",
-        follower_url: str = "redis://localhost:9852",
+        url=os.getenv("TILE38_LEADER_URI"),
+        follower_url=os.getenv("TILE38_FOLLOWER_URI"),
     ):
+        if not url:
+            raise Tile38Error("No Tile38 url set")
+
         super().__init__(url)
 
         if follower_url:

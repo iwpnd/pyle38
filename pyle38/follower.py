@@ -4,6 +4,7 @@ from .client import Client
 from .client import Command
 from .client import SubCommand
 from .commands.get import Get
+from .errors import Tile38Error
 from .responses import BoundsResponse
 from .responses import ChansResponse
 from .responses import ConfigGetResponse
@@ -16,6 +17,8 @@ class Follower(Client):
     client: Client
 
     def __init__(self, url: str) -> None:
+        if not url:
+            raise Tile38Error("No Tile38 follower uri set")
         super().__init__(url)
 
         self.client = Client(url)
