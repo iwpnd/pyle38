@@ -42,5 +42,8 @@ class Follower(Client):
             **(await self.client.command(Command.CONFIG, [SubCommand.REWRITE]))
         )
 
+    async def gc(self) -> JSONResponse:
+        return JSONResponse(**(await self.client.command(Command.GC)))
+
     def get(self, key: str, id: str) -> Get:
         return Get(self.client, key, id)
