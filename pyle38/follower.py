@@ -1,3 +1,5 @@
+from typing import Literal
+from typing import Optional
 from typing import Union
 
 from .client import Client
@@ -10,6 +12,7 @@ from .responses import ChansResponse
 from .responses import ConfigGetResponse
 from .responses import ConfigKeys
 from .responses import HooksResponse
+from .responses import JSONGetResponse
 from .responses import JSONResponse
 
 
@@ -54,3 +57,19 @@ class Follower(Client):
 
     async def hooks(self, pattern: str = "*") -> HooksResponse:
         return HooksResponse(**(await self.client.command(Command.HOOKS, [pattern])))
+
+    async def jget(
+        self,
+        key: str,
+        id: str,
+        path: Optional[str] = None,
+        mode: Optional[Literal["RAW"]] = None,
+    ) -> JSONGetResponse:
+        return JSONGetResponse(
+            **(
+                await self.client.command(
+                    Command.JGET,
+                    [key, id, *([path] if path else []), *([mode] if mode else [])],
+                )
+            )
+        )

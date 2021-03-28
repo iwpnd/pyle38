@@ -47,16 +47,8 @@ async def test_command_set_compile(expected, received):
 
 @pytest.mark.asyncio
 async def test_command_set_query(tile38):
-
-    key = "fleet"
-    id = "truck1"
-    obj = {
-        "type": "Feature",
-        "geometry": {"type": "Point", "coordinates": [1, 1]},
-        "properties": {},
-    }
-
-    await tile38.set(key, id).object(obj).exec()
+    response = await tile38.set(key, id).object(obj).exec()
+    assert response.ok
 
     expected = {"ok": True, "object": obj, "elapsed": "1ms"}
 

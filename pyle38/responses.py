@@ -251,8 +251,8 @@ class ConfigGetResponse(JSONResponse):
     properties: Dict[ConfigKeys, Union[int, float, str]]
 
 
-class JsonGetResponse(JSONResponse):
-    value: Union[int, float, str]
+class JSONGetResponse(JSONResponse):
+    value: Optional[Union[int, float, str]] = "{}"
 
 
 class Hooks(BaseModel):

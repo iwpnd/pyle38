@@ -12,10 +12,10 @@ from pyle38.errors import Tile38KeyNotFoundError
 async def test_client():
 
     client = Client(os.getenv("TILE38_LEADER_URI") or "redis://localhost:9851")
-    await client.command("SET", ["fleet", "truck", "POINT", 1, 1])
+    response = await client.command("SET", ["fleet", "truck", "POINT", 1, 1])
+    assert response["ok"]
 
     response = await client.command("GET", ["fleet", "truck"])
-
     assert response["ok"]
 
     await client.quit()
