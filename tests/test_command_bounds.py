@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.asyncio
-async def test_bounds(tile38):
+async def test_command_bounds(tile38):
     key = "fleet"
     id = "truck"
 

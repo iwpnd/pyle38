@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.asyncio
-async def test_config_get_set(tile38):
+async def test_command_config(tile38):
 
     response = await tile38.config_set("keepalive", 500)
     assert response.ok

@@ -1,35 +1,30 @@
 import pytest
 
-from pyle38.client import SubCommand
 from pyle38.commands.get import Get
+
+
+key = "fleet"
+id = "truck1"
+obj = {
+    "type": "Feature",
+    "geometry": {"type": "Point", "coordinates": [1, 1]},
+    "properties": {},
+}
 
 
 @pytest.mark.parametrize(
     "format, precision, expected",
     [
-        (
-            SubCommand.POINT.value,
-            None,
-            ["GET", ["fleet", "truck1", "WITHFIELDS", "POINT"]],
-        ),
-        (
-            SubCommand.BOUNDS.value,
-            None,
-            ["GET", ["fleet", "truck1", "WITHFIELDS", "BOUNDS"]],
-        ),
-        (SubCommand.OBJECT.value, None, ["GET", ["fleet", "truck1", "WITHFIELDS"]]),
-        (
-            SubCommand.HASH.value,
-            5,
-            ["GET", ["fleet", "truck1", "WITHFIELDS", "HASH", 5]],
-        ),
+        ("POINT", None, ["GET", [key, id, "WITHFIELDS", "POINT"]]),
+        ("BOUNDS", None, ["GET", [key, id, "WITHFIELDS", "BOUNDS"]]),
+        ("OBJECT", None, ["GET", [key, id, "WITHFIELDS"]]),
+        ("HASH", 5, ["GET", [key, id, "WITHFIELDS", "HASH", 5]]),
     ],
+    ids=["point", "bounds", "object", "hash"],
 )
 @pytest.mark.asyncio
-async def test_get_compile(format, precision, expected, tile38):
+async def test_command_get_compile(format, precision, expected, tile38):
 
-    key = "fleet"
-    id = "truck1"
     query = Get(tile38.client, key, id).with_fields()
 
     received = query.output(format, precision).compile()
@@ -38,15 +33,7 @@ async def test_get_compile(format, precision, expected, tile38):
 
 
 @pytest.mark.asyncio
-async def test_get_query(tile38):
-
-    key = "fleet"
-    id = "truck1"
-    obj = {
-        "type": "Feature",
-        "geometry": {"type": "Point", "coordinates": [1, 1]},
-        "properties": {},
-    }
+async def test_command_get_query(tile38):
 
     await tile38.set(key, id).object(obj).exec()
 
