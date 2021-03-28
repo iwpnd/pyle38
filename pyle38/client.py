@@ -93,30 +93,30 @@ CommandArgs = Union[List[Union[str, float, int]], List[List[Union[str, float, in
 
 
 class Client:
-    _redis: Optional[aioredis.Redis] = None
-    _format: str = Format.RESP.value
+    __redis: Optional[aioredis.Redis] = None
+    __format: str = Format.RESP.value
 
     def __init__(self, url: str) -> None:
         self.url = url
 
     async def __force_json(self) -> None:
-        if self._format == Format.JSON.value:
+        if self.__format == Format.JSON.value:
             return
 
-        await self.command_async(Command.OUTPUT.value, [Format.JSON.value])
+        await self.__command_async(Command.OUTPUT.value, [Format.JSON.value])
 
-        self._format = Format.JSON.value
+        self.__format = Format.JSON.value
 
-    async def getRedis(self) -> aioredis.Redis:
-        if not self._redis:
-            self._redis = await aioredis.from_url(
+    async def __getRedis(self) -> aioredis.Redis:
+        if not self.__redis:
+            self.__redis = await aioredis.from_url(
                 self.url, encoding="utf-8", decode_responses=True
             )
-            self._format = Format.RESP.value
-        return self._redis
+            self.__format = Format.RESP.value
+        return self.__redis
 
-    async def command_async(self, command: str, command_args: CommandArgs = []):
-        pool = await self.getRedis()
+    async def __command_async(self, command: str, command_args: CommandArgs = []):
+        pool = await self.__getRedis()
         async with pool.client() as c:
             await c.connection.send_command(command, *command_args)
             response = await c.connection.read_response()
@@ -125,19 +125,19 @@ class Client:
     async def command(self, command: str, command_args: CommandArgs = []) -> Dict:
         await self.__force_json()
 
-        response = await self.command_async(command, command_args)
+        response = await self.__command_async(command, command_args)
 
         return parse_response(response)
 
     async def quit(self) -> str:
-        if not self._redis:
+        if not self.__redis:
             return "OK"
 
-        c = await self.getRedis()
+        c = await self.__getRedis()
 
         await c.close()
         await c.connection_pool.disconnect()
 
-        self._redis = None
+        self.__redis = None
 
         return "OK"

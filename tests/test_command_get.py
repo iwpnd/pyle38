@@ -33,18 +33,24 @@ async def test_command_get_compile(format, precision, expected, tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_get_query(tile38):
+async def test_command_get_query(tile38_with_follower):
+
+    tile38 = tile38_with_follower
 
     await tile38.set(key, id).object(obj).exec()
 
     expected_object = {"ok": True, "object": obj, "elapsed": "1 ms"}
     received = await tile38.get(key, id).asObject()
+    assert expected_object["object"] == received.object
 
+    received = await tile38.follower().get(key, id).asObject()
     assert expected_object["object"] == received.object
 
     expected_point = {"ok": True, "point": {"lat": 1, "lon": 1}, "elapsed": "1 ms"}
     received = await tile38.get(key, id).asPoint()
+    assert expected_point["point"] == received.point
 
+    received = await tile38.follower().get(key, id).asPoint()
     assert expected_point["point"] == received.point
 
     expected_bounds = {
@@ -53,10 +59,14 @@ async def test_command_get_query(tile38):
         "elapsed": "1 ms",
     }
     received = await tile38.get(key, id).asBounds()
+    assert expected_bounds["bounds"] == received.bounds
 
+    received = await tile38.get(key, id).asBounds()
     assert expected_bounds["bounds"] == received.bounds
 
     expected_hash = {"ok": True, "hash": "s00twy0", "elapsed": "1 ms"}
     received = await tile38.get(key, id).asHash(7)
+    assert expected_hash["hash"] == received.hash
 
+    received = await tile38.follower().get(key, id).asHash(7)
     assert expected_hash["hash"] == received.hash
