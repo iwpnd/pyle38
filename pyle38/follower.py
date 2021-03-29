@@ -1,3 +1,4 @@
+from typing import List
 from typing import Literal
 from typing import Optional
 from typing import Union
@@ -18,6 +19,7 @@ from .responses import KeysResponse
 from .responses import PingResponse
 from .responses import ServerStatsExtendedResponse
 from .responses import ServerStatsResponseFollower
+from .responses import StatsResponse
 
 
 class Follower(Client):
@@ -93,3 +95,6 @@ class Follower(Client):
         return ServerStatsExtendedResponse(
             **(await self.client.command(Command.SERVER, [SubCommand.EXT]))
         )
+
+    async def stats(self, *keys: List[str]) -> StatsResponse:
+        return StatsResponse(**(await self.client.command(Command.STATS, *keys)))
