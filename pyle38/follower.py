@@ -16,6 +16,7 @@ from .responses import JSONGetResponse
 from .responses import JSONResponse
 from .responses import KeysResponse
 from .responses import PingResponse
+from .responses import ServerStatsExtendedResponse
 from .responses import ServerStatsResponseFollower
 
 
@@ -86,4 +87,9 @@ class Follower(Client):
     async def server(self) -> ServerStatsResponseFollower:
         return ServerStatsResponseFollower(
             **(await self.client.command(Command.SERVER))
+        )
+
+    async def server_extended(self) -> ServerStatsExtendedResponse:
+        return ServerStatsExtendedResponse(
+            **(await self.client.command(Command.SERVER, [SubCommand.EXT]))
         )

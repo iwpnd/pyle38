@@ -229,9 +229,9 @@ class ServerStatsExtended(BaseModel):
     tile38_total_commands_processed: int
     tile38_total_connections_received: int
     tile38_total_messages_sent: int
-    tile38_type: int
+    tile38_type: str
     tile38_uptime_in_seconds: int
-    tile38_version: int
+    tile38_version: str
 
 
 class ServerStatsExtendedResponse(JSONResponse):

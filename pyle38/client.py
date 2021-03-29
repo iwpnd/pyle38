@@ -82,6 +82,7 @@ class SubCommand(str, Enum):
     REWRITE = "REWRITE"
     ASC = "ASC"
     DESC = "DESC"
+    EXT = "EXT"
 
 
 class Format(str, Enum):
