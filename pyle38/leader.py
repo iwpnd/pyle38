@@ -6,6 +6,7 @@ from .client import Command
 from .commands.set import Set
 from .follower import Follower
 from .responses import JSONResponse
+from .responses import ServerStatsResponseLeader
 
 
 class Leader(Follower):
@@ -35,3 +36,6 @@ class Leader(Follower):
 
     def set(self, key: str, id: str) -> Set:
         return Set(self.client, key, id)
+
+    async def server(self) -> ServerStatsResponseLeader:
+        return ServerStatsResponseLeader(**(await self.client.command(Command.SERVER)))

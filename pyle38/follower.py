@@ -14,6 +14,9 @@ from .responses import ConfigKeys
 from .responses import HooksResponse
 from .responses import JSONGetResponse
 from .responses import JSONResponse
+from .responses import KeysResponse
+from .responses import PingResponse
+from .responses import ServerStatsResponseFollower
 
 
 class Follower(Client):
@@ -72,4 +75,15 @@ class Follower(Client):
                     [key, id, *([path] if path else []), *([mode] if mode else [])],
                 )
             )
+        )
+
+    async def keys(self, pattern: str = "*") -> KeysResponse:
+        return KeysResponse(**(await self.client.command(Command.KEYS, [pattern])))
+
+    async def ping(self) -> PingResponse:
+        return PingResponse(**(await self.client.command(Command.PING)))
+
+    async def server(self) -> ServerStatsResponseFollower:
+        return ServerStatsResponseFollower(
+            **(await self.client.command(Command.SERVER))
         )

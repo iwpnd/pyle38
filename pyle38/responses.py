@@ -123,10 +123,6 @@ class KeysResponse(JSONResponse):
     keys: List[str]
 
 
-class PingResponse(JSONResponse):
-    ping = "pong"
-
-
 class TTLResponse(JSONResponse):
     ttl: Union[str, int]
 
@@ -276,6 +272,10 @@ class Chans(BaseModel):
 
 class ChansResponse(JSONResponse):
     chans: List[Chans]
+
+
+class PingResponse(JSONResponse):
+    ping: Literal["pong"] = "pong"
 
 
 Detect = Literal["enter", "exit", "inside", "outside", "crosses"]
