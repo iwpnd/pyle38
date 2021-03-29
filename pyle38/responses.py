@@ -33,15 +33,15 @@ class JSONResponse(BaseModel):
     err: Optional[str] = None
 
 
-class ObjectResponse(JSONResponse, GenericModel, Generic[T]):
-    object: T
-    fields: Optional[Fields] = None
-
-
 class Object(GenericModel, Generic[T]):
     object: T
     id: Union[str, int]
     distance: Optional[float] = None
+
+
+class ObjectResponse(JSONResponse, GenericModel, Generic[T]):
+    object: T
+    fields: Optional[Fields] = None
 
 
 class ObjectsResponse(JSONResponse, GenericModel, Generic[T]):

@@ -28,7 +28,7 @@ class Leader(Follower):
             )
         )
 
-    async def jdel(self, key: str, id: Union[str, int], path: str) -> JSONResponse:
+    async def jdel(self, key: str, id: str, path: str) -> JSONResponse:
         return JSONResponse(
             **(await self.client.command(Command.JDEL, [key, id, path]))
         )
