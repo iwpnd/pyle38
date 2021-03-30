@@ -34,6 +34,9 @@ class Leader(Follower):
             **(await self.client.command(Command.JDEL, [key, id, path]))
         )
 
+    async def pdel(self, key: str, pattern: str) -> JSONResponse:
+        return JSONResponse(**(await self.client.command(Command.PDEL, [key, pattern])))
+
     def set(self, key: str, id: str) -> Set:
         return Set(self.client, key, id)
 

@@ -40,7 +40,7 @@ class Object(GenericModel, Generic[T]):
 
 
 class ObjectResponse(JSONResponse, GenericModel, Generic[T]):
-    object: T
+    object: Optional[T] = None
     fields: Optional[Fields] = None
 
 

@@ -9,6 +9,7 @@ from typing import Union
 from ..client import Client
 from ..client import Command
 from ..client import SubCommand
+from ..responses import JSONResponse
 from .executable import Executable
 
 
@@ -97,3 +98,6 @@ class Set(Executable):
                 *(self._input if self._input else []),
             ],
         ]
+
+    async def exec(self) -> JSONResponse:
+        return JSONResponse(**(await self.client.command(*self.compile())))
