@@ -124,7 +124,8 @@ class KeysResponse(JSONResponse):
 
 
 class TTLResponse(JSONResponse):
-    ttl: Union[str, int]
+    # if no ttl -1
+    ttl: float
 
 
 class Stats(BaseModel):
