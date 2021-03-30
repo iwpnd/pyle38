@@ -24,7 +24,7 @@ class Tile38(Leader):
         if follower_url:
             self._follower = Follower(follower_url)
 
-    def follower(self) -> Optional[Follower]:
+    def follower(self) -> Follower:
         if not self._follower:
             raise Tile38Error("No follower")
 

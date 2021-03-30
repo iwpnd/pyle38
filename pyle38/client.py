@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Dict
-from typing import List
 from typing import Optional
+from typing import Sequence
 from typing import Union
 
 import aioredis
@@ -90,7 +90,9 @@ class Format(str, Enum):
     RESP = "RESP"
 
 
-CommandArgs = Union[List[Union[str, float, int]], List[List[Union[str, float, int]]]]
+CommandArgs = Union[
+    Sequence[Union[str, float, int]], Sequence[Sequence[Union[str, float, int]]]
+]
 
 
 class Client:
@@ -116,14 +118,18 @@ class Client:
             self.__format = Format.RESP.value
         return self.__redis
 
-    async def __command_async(self, command: str, command_args: CommandArgs = []):
+    async def __command_async(
+        self, command: str, command_args: Optional[CommandArgs] = []
+    ):
         pool = await self.__getRedis()
         async with pool.client() as c:
             await c.connection.send_command(command, *command_args)
             response = await c.connection.read_response()
             return response
 
-    async def command(self, command: str, command_args: CommandArgs = []) -> Dict:
+    async def command(
+        self, command: str, command_args: Optional[CommandArgs] = []
+    ) -> Dict:
         await self.__force_json()
 
         response = await self.__command_async(command, command_args)

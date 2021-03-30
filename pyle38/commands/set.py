@@ -1,15 +1,16 @@
 from __future__ import annotations
 
 import json
-from typing import List
 from typing import Literal
 from typing import Optional
+from typing import Sequence
 from typing import Union
 
 from ..client import Client
 from ..client import Command
 from ..client import SubCommand
 from ..responses import JSONResponse
+from .executable import Compiled
 from .executable import Executable
 
 
@@ -17,16 +18,14 @@ class Set(Executable):
     _key: str
     _id: str
     _ex: Optional[int] = None
-    _nx_or_xx: Optional[Literal["NX", "XX"]] = None
+    _nx_or_xx: Optional[Union[Literal["NX", "XX"]]] = None
     _input: Optional[
-        Union[
-            List[Union[Literal["POINT"], float]],
-            List[Union[Literal["OBJECT"], str]],
-            List[Union[Literal["BOUNDS"], float]],
-            List[Union[Literal["HASH"], str]],
-            List[Union[Literal["STRING"], str]],
+        Sequence[
+            Union[
+                Literal["POINT", "OBJECT", "BOUNDS", "HASH", "STRING"], str, float, int
+            ]
         ]
-    ] = None
+    ]
 
     def __init__(self, client: Client, key: str, id: str) -> None:
         super().__init__(client)
@@ -43,7 +42,7 @@ class Set(Executable):
 
         return self
 
-    def ex(self, seconds: Optional[int]) -> Set:
+    def ex(self, seconds: int) -> Set:
         if seconds:
             self._ex = seconds
 
@@ -51,42 +50,42 @@ class Set(Executable):
 
     def nx(self, flag: bool = True) -> Set:
         if flag:
-            self._nx_or_xx = SubCommand.NX.value
+            self._nx_or_xx = "NX"
 
         return self
 
     def xx(self, flag: bool = True) -> Set:
         if flag:
-            self._nx_or_xx = SubCommand.XX.value
+            self._nx_or_xx = "XX"
 
         return self
 
     def object(self, value: dict) -> Set:
-        self._input = [SubCommand.OBJECT.value, json.dumps(value)]
+        self._input = ["OBJECT", json.dumps(value)]
 
         return self
 
     def point(self, lat: float, lon: float) -> Set:
-        self._input = [SubCommand.POINT.value, lat, lon]
+        self._input = ["POINT", lat, lon]
 
         return self
 
     def bounds(self, min_lat: float, min_lon: float, max_lat: float, max_lon) -> Set:
-        self._input = [SubCommand.BOUNDS.value, min_lat, min_lon, max_lat, max_lon]
+        self._input = ["BOUNDS", min_lat, min_lon, max_lat, max_lon]
 
         return self
 
     def hash(self, value: str) -> Set:
-        self._input = [SubCommand.HASH.value, value]
+        self._input = ["HASH", value]
 
         return self
 
     def string(self, value: str) -> Set:
-        self._input = [SubCommand.STRING.value, value]
+        self._input = ["STRING", value]
 
         return self
 
-    def compile(self) -> List[Union[str, List[Union[str, float, int]]]]:
+    def compile(self) -> Compiled:
 
         return [
             Command.SET.value,

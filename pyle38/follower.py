@@ -98,3 +98,9 @@ class Follower(Client):
 
     async def stats(self, *keys: List[str]) -> StatsResponse:
         return StatsResponse(**(await self.client.command(Command.STATS, *keys)))
+
+    async def quit(self) -> str:
+
+        await self.client.quit()
+
+        return "OK"

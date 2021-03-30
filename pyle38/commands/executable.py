@@ -2,10 +2,11 @@ from typing import Any
 from typing import Dict
 from typing import Literal
 
+from ..client import Command
 from ..client import CommandArgs
 from .withclient import WithClient
 
-Compiled = Literal[str, CommandArgs]
+Compiled = Literal[Command, CommandArgs]
 
 
 class Executable(WithClient):

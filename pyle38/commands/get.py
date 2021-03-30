@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import List
 from typing import Literal
 from typing import Optional
+from typing import Sequence
 from typing import Union
 
 from ..client import Client
@@ -12,16 +12,12 @@ from ..responses import BoundsNeSwResponse
 from ..responses import HashResponse
 from ..responses import ObjectResponse
 from ..responses import PointResponse
+from .executable import Compiled
 from .executable import Executable
 
-Output = Union[
-    List[Union[Literal["HASH"], int]],
-    List[Literal["OBJECT"]],
-    List[Literal["POINT"]],
-    List[Literal["BOUNDS"]],
-]
+Output = Union[Sequence[Union[Literal["HASH", "OBJECT", "POINT", "BOUNDS"], int]]]
 
-Formats = Union[Literal["BOUNDS"], Literal["HASH"], Literal["OBJECT"], Literal["POINT"]]
+Formats = Literal["BOUNDS", "HASH", "OBJECT", "POINT"]
 
 
 class Get(Executable):
@@ -47,7 +43,7 @@ class Get(Executable):
 
     def with_fields(self, flag: bool = True) -> Get:
         if flag:
-            self._with_fields = SubCommand.WITHFIELDS.value
+            self._with_fields = "WITHFIELDS"
 
         return self
 
@@ -65,26 +61,26 @@ class Get(Executable):
 
     # TODO: add Response
     async def asObject(self) -> ObjectResponse:
-        self.output(SubCommand.OBJECT.value)
+        self.output("OBJECT")
 
         return ObjectResponse(**(await self.exec()))
 
     async def asBounds(self) -> BoundsNeSwResponse:
-        self.output(SubCommand.BOUNDS.value)
+        self.output("BOUNDS")
 
         return BoundsNeSwResponse(**(await self.exec()))
 
     async def asPoint(self) -> PointResponse:
-        self.output(SubCommand.POINT.value)
+        self.output("POINT")
 
         return PointResponse(**(await self.exec()))
 
     async def asHash(self, precision: int) -> HashResponse:
-        self.output(SubCommand.HASH.value, precision)
+        self.output("HASH", precision)
 
         return HashResponse(**(await self.exec()))
 
-    def compile(self) -> List[Union[str, List[Union[str, float, int]]]]:
+    def compile(self) -> Compiled:
         return [
             Command.GET.value,
             [
