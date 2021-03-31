@@ -14,6 +14,9 @@ class Leader(Follower):
     async def delete(self, key: str, id: str) -> JSONResponse:
         return JSONResponse(**(await self.client.command(Command.DEL, [key, id])))
 
+    async def drop(self, key: str) -> JSONResponse:
+        return JSONResponse(**(await self.client.command(Command.DROP, [key])))
+
     async def flushdb(self) -> dict:
         return await self.client.command("FLUSHDB")
 
