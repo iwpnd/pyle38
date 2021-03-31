@@ -11,6 +11,9 @@ from .responses import TTLResponse
 
 
 class Leader(Follower):
+    async def delete(self, key: str, id: str) -> JSONResponse:
+        return JSONResponse(**(await self.client.command(Command.DEL, [key, id])))
+
     async def flushdb(self) -> dict:
         return await self.client.command("FLUSHDB")
 
@@ -18,6 +21,12 @@ class Leader(Follower):
         return JSONResponse(
             **(await self.client.command(Command.EXPIRE, [key, id, seconds]))
         )
+
+    async def delchan(self, name: str) -> JSONResponse:
+        return JSONResponse(**(await self.client.command(Command.DELCHAN, [name])))
+
+    async def delhook(self, name: str) -> JSONResponse:
+        return JSONResponse(**(await self.client.command(Command.DELHOOK, [name])))
 
     async def jset(
         self,
@@ -42,6 +51,12 @@ class Leader(Follower):
 
     async def pdel(self, key: str, pattern: str) -> JSONResponse:
         return JSONResponse(**(await self.client.command(Command.PDEL, [key, pattern])))
+
+    async def pdelchan(self, pattern: str) -> JSONResponse:
+        return JSONResponse(**(await self.client.command(Command.PDELCHAN, [pattern])))
+
+    async def pdelhook(self, pattern: str) -> JSONResponse:
+        return JSONResponse(**(await self.client.command(Command.PDELHOOK, [pattern])))
 
     async def persist(self, key: str, id: str) -> JSONResponse:
         return JSONResponse(**(await self.client.command(Command.PERSIST, [key, id])))
