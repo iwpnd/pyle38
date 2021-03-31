@@ -46,6 +46,11 @@ class Leader(Follower):
     async def persist(self, key: str, id: str) -> JSONResponse:
         return JSONResponse(**(await self.client.command(Command.PERSIST, [key, id])))
 
+    async def readonly(self, value=True) -> JSONResponse:
+        return JSONResponse(
+            **(await self.client.command(Command.READONLY, ["yes" if value else "no"]))
+        )
+
     def set(self, key: str, id: str) -> Set:
         return Set(self.client, key, id)
 
