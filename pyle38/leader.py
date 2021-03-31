@@ -51,6 +51,16 @@ class Leader(Follower):
             **(await self.client.command(Command.READONLY, ["yes" if value else "no"]))
         )
 
+    async def rename(self, key: str, newkey: str, nx=False) -> JSONResponse:
+        if nx:
+            return JSONResponse(
+                **(await self.client.command(Command.RENAMENX, [key, newkey]))
+            )
+
+        return JSONResponse(
+            **(await self.client.command(Command.RENAME, [key, newkey]))
+        )
+
     def set(self, key: str, id: str) -> Set:
         return Set(self.client, key, id)
 
