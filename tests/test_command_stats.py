@@ -5,6 +5,10 @@ import pytest
 async def test_command_stats(tile38_with_follower):
     tile38 = tile38_with_follower
 
+    response = await tile38.stats(["fleet"])
+    assert response.ok
+    assert response.stats == []
+
     await tile38.set("fleet", "truck1").point(1, 1).exec()
     await tile38.set("zones", "parking1").bounds(1, 1, 1, 1).exec()
 

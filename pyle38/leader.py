@@ -17,8 +17,8 @@ class Leader(Follower):
     async def drop(self, key: str) -> JSONResponse:
         return JSONResponse(**(await self.client.command(Command.DROP, [key])))
 
-    async def flushdb(self) -> dict:
-        return await self.client.command("FLUSHDB")
+    async def flushdb(self) -> JSONResponse:
+        return JSONResponse(**(await self.client.command("FLUSHDB")))
 
     async def expire(self, key: str, id: str, seconds: int) -> JSONResponse:
         return JSONResponse(

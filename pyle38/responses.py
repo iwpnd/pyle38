@@ -1,4 +1,3 @@
-from typing import Any
 from typing import Dict
 from typing import Generic
 from typing import List
@@ -31,6 +30,9 @@ class JSONResponse(BaseModel):
     ok: bool
     elapsed: str
     err: Optional[str] = None
+
+    class Config:
+        exclude_unset = True
 
 
 class Object(GenericModel, Generic[T]):
@@ -136,7 +138,7 @@ class Stats(BaseModel):
 
 
 class StatsResponse(JSONResponse):
-    stats: List[Union[Stats, Any]]
+    stats: Optional[List[Stats]] = []
 
 
 class ServerStatsLeader(BaseModel):
