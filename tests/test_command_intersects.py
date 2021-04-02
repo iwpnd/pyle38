@@ -38,6 +38,7 @@ expected = {"id": id, "object": feature}
                     "MATCH",
                     "*",
                     "NOFIELDS",
+                    "CLIP",
                     "CURSOR",
                     0,
                     "LIMIT",
@@ -63,6 +64,7 @@ async def test_command_intersects_compile(tile38, format, precision, expected):
         Intersects(tile38.client, key)
         .match("*")
         .nofields()
+        .clip()
         .cursor(0)
         .limit(10)
         .fence()

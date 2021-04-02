@@ -64,6 +64,7 @@ class Intersects(Executable):
         super().__init__(client)
 
         self.key(key)
+        self._options = {}
         self._hook = hook
 
     def key(self, key: str) -> Intersects:
@@ -202,7 +203,7 @@ class Intersects(Executable):
 
         return PointsResponse(**(await self.exec()))
 
-    def _compile_options(self) -> CommandArgs:
+    def __compile_options(self) -> CommandArgs:
         commands = []
 
         # raises mypy: TypedDict key must be string literal
@@ -212,12 +213,12 @@ class Intersects(Executable):
                 commands.append(k.upper())
             elif self._options[k]:  # type: ignore
                 commands.extend([k.upper(), self._options[k]])  # type: ignore
-            elif self._options[k] == 0:
-                commands.extend([k.upper(), self._options[k]])
+            elif self._options[k] == 0:  # type: ignore
+                commands.extend([k.upper(), self._options[k]])  # type: ignore
 
         return commands
 
-    def _compile_fence(self) -> CommandArgs:
+    def __compile_fence(self) -> CommandArgs:
         return (
             [
                 SubCommand.FENCE.value,
@@ -241,8 +242,8 @@ class Intersects(Executable):
             Command.INTERSECTS.value,
             [
                 self._key,
-                *(self._compile_options()),
-                *(self._compile_fence()),
+                *(self.__compile_options()),
+                *(self.__compile_fence()),
                 *(self._query.get()),
                 *(self._output if self._output else []),
             ],
