@@ -9,6 +9,7 @@ from .client import SubCommand
 from .commands.get import Get
 from .commands.intersects import Intersects
 from .commands.nearby import Nearby
+from .commands.scan import Scan
 from .commands.within import Within
 from .errors import Tile38Error
 from .responses import BoundsResponse
@@ -94,6 +95,9 @@ class Follower(Client):
 
     async def ping(self) -> PingResponse:
         return PingResponse(**(await self.client.command(Command.PING)))
+
+    def scan(self, key: str) -> Scan:
+        return Scan(self.client, key)
 
     async def server(self) -> ServerStatsResponseFollower:  # type: ignore
         return ServerStatsResponseFollower(

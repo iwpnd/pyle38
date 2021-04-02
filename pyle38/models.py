@@ -19,6 +19,8 @@ class Options(TypedDict, total=False):
     sparse: Optional[int]
     clip: Optional[bool]
     distance: Optional[bool]
+    asc: Optional[bool]
+    desc: Optional[bool]
 
 
 class CircleQuery(BaseModel):
