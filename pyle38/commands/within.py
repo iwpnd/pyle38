@@ -1,38 +1,33 @@
 from __future__ import annotations
 
-from typing import List
-from typing import Literal
-from typing import Optional
-from typing import Sequence
-from typing import Union
+from typing import List, Literal, Optional, Sequence, Union
 
-from ..client import Client
-from ..client import Command
-from ..client import CommandArgs
-from ..client import SubCommand
-from ..models import BoundsQuery
-from ..models import CircleQuery
-from ..models import Feature
-from ..models import GetQuery
-from ..models import HashQuery
-from ..models import ObjectQuery
-from ..models import Options
-from ..models import Polygon
-from ..models import QuadkeyQuery
-from ..models import TileQuery
-from ..responses import BoundsNeSwResponses
-from ..responses import CountResponse
-from ..responses import FenceCommand
-from ..responses import FenceDetect
-from ..responses import HashesResponse
-from ..responses import IdsResponse
-from ..responses import ObjectsResponse
-from ..responses import PointsResponse
-from .executable import Compiled
-from .executable import Executable
+from ..client import Client, Command, CommandArgs, SubCommand
+from ..models import (
+    BoundsQuery,
+    CircleQuery,
+    Feature,
+    GetQuery,
+    HashQuery,
+    ObjectQuery,
+    Options,
+    Polygon,
+    QuadkeyQuery,
+    TileQuery,
+)
+from ..responses import (
+    BoundsNeSwResponses,
+    CountResponse,
+    FenceCommand,
+    FenceDetect,
+    HashesResponse,
+    IdsResponse,
+    ObjectsResponse,
+    PointsResponse,
+)
+from .executable import Compiled, Executable
 from .setchan import SetChan
 from .sethook import SetHook
-
 
 Format = Literal["BOUNDS", "COUNT", "HASHES", "IDS", "OBJECTS", "POINTS"]
 Output = Union[Sequence[Union[Format, int]]]

@@ -2,7 +2,6 @@ import pytest
 
 from pyle38.commands.get import Get
 
-
 key = "fleet"
 id = "truck1"
 obj = {
