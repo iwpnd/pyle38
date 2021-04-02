@@ -1,0 +1,2 @@
+class SetHook:
+    pass

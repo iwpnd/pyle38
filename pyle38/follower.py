@@ -7,6 +7,7 @@ from .client import Client
 from .client import Command
 from .client import SubCommand
 from .commands.get import Get
+from .commands.intersects import Intersects
 from .errors import Tile38Error
 from .responses import BoundsResponse
 from .responses import ChansResponse
@@ -80,13 +81,16 @@ class Follower(Client):
             )
         )
 
+    def intersects(self, key: str) -> Intersects:
+        return Intersects(self.client, key)
+
     async def keys(self, pattern: str = "*") -> KeysResponse:
         return KeysResponse(**(await self.client.command(Command.KEYS, [pattern])))
 
     async def ping(self) -> PingResponse:
         return PingResponse(**(await self.client.command(Command.PING)))
 
-    async def server(self) -> ServerStatsResponseFollower:
+    async def server(self) -> ServerStatsResponseFollower:  # type: ignore
         return ServerStatsResponseFollower(
             **(await self.client.command(Command.SERVER))
         )
@@ -96,8 +100,8 @@ class Follower(Client):
             **(await self.client.command(Command.SERVER, [SubCommand.EXT]))
         )
 
-    async def stats(self, *keys: List[str]) -> StatsResponse:
-        response = await self.client.command(Command.STATS, *keys)
+    async def stats(self, keys: List[str]) -> StatsResponse:
+        response = await self.client.command(Command.STATS, keys)
 
         if response["stats"] == [None]:
             response["stats"] = []

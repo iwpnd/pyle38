@@ -6,10 +6,20 @@ from typing import Optional
 from typing import TypeVar
 from typing import Union
 
-from pydantic import BaseModel
-from pydantic.generics import GenericModel
+from pydantic import BaseModel as PydanticBaseModel
+from pydantic.generics import GenericModel as PydanticGenericModel
 
 T = TypeVar("T")
+
+
+class GenericModel(PydanticGenericModel):
+    def dict(self, exclude_unset=True, **kwargs):
+        return super().dict(exclude_unset=exclude_unset, **kwargs)
+
+
+class BaseModel(PydanticBaseModel):
+    def dict(self, exclude_unset=True, **kwargs):
+        return super().dict(exclude_unset=exclude_unset, **kwargs)
 
 
 class LatLon(BaseModel):
@@ -30,9 +40,6 @@ class JSONResponse(BaseModel):
     ok: bool
     elapsed: str
     err: Optional[str] = None
-
-    class Config:
-        exclude_unset = True
 
 
 class Object(GenericModel, Generic[T]):
@@ -73,6 +80,18 @@ class CountResponse(JSONResponse):
 class PointResponse(JSONResponse):
     point: LatLon
     fields: Optional[Fields] = None
+
+
+class Point(BaseModel):
+    point: LatLon
+    id: Union[str, int]
+    distance: Optional[int] = None
+
+
+class PointsResponse(JSONResponse):
+    points: Optional[List[Point]] = []
+    count: int
+    cursor: int
 
 
 class Hash(BaseModel):
@@ -281,15 +300,14 @@ class PingResponse(JSONResponse):
     ping: Literal["pong"] = "pong"
 
 
-Detect = Literal["enter", "exit", "inside", "outside", "crosses"]
-
-Command = Literal["set", "del"]
+FenceDetect = Literal["enter", "exit", "inside", "outside", "crosses"]
+FenceCommand = Literal["set", "del"]
 
 
 class GeoFence(GenericModel, Generic[T]):
-    command: Command
+    command: FenceCommand
     group: str
-    detect: Detect
+    detect: FenceDetect
     hook: str
     key: str
     time: str

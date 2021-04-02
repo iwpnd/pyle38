@@ -98,5 +98,5 @@ class Set(Executable):
             ],
         ]
 
-    async def exec(self) -> JSONResponse:
+    async def exec(self) -> JSONResponse:  # type: ignore
         return JSONResponse(**(await self.client.command(*self.compile())))

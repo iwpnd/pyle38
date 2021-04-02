@@ -18,12 +18,17 @@ class Leader(Follower):
         return JSONResponse(**(await self.client.command(Command.DROP, [key])))
 
     async def flushdb(self) -> JSONResponse:
-        return JSONResponse(**(await self.client.command("FLUSHDB")))
+        return JSONResponse(**(await self.client.command(Command.FLUSHDB)))
 
     async def expire(self, key: str, id: str, seconds: int) -> JSONResponse:
-        return JSONResponse(
-            **(await self.client.command(Command.EXPIRE, [key, id, seconds]))
-        )
+        # TODO: fix mypy
+        # for reasons unknown [key, id, seconds] has type List[object]
+        # and fails mypy validation
+        response = await self.client.command(
+            Command.EXPIRE, [key, id, seconds]
+        )  # type: ignore
+
+        return JSONResponse(**response)
 
     async def delchan(self, name: str) -> JSONResponse:
         return JSONResponse(**(await self.client.command(Command.DELCHAN, [name])))
@@ -82,7 +87,7 @@ class Leader(Follower):
     def set(self, key: str, id: str) -> Set:
         return Set(self.client, key, id)
 
-    async def server(self) -> ServerStatsResponseLeader:
+    async def server(self) -> ServerStatsResponseLeader:  # type: ignore
         return ServerStatsResponseLeader(**(await self.client.command(Command.SERVER)))
 
     async def ttl(self, key: str, id: str) -> TTLResponse:

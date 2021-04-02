@@ -6,7 +6,8 @@ from ..client import Command
 from ..client import CommandArgs
 from .withclient import WithClient
 
-Compiled = Literal[Command, CommandArgs]
+# TODO: fix invalid parameter of Literal
+Compiled = Literal[Command, CommandArgs]  # type: ignore
 
 
 class Executable(WithClient):
