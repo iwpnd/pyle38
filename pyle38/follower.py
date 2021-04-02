@@ -8,6 +8,7 @@ from .client import Command
 from .client import SubCommand
 from .commands.get import Get
 from .commands.intersects import Intersects
+from .commands.within import Within
 from .errors import Tile38Error
 from .responses import BoundsResponse
 from .responses import ChansResponse
@@ -113,3 +114,6 @@ class Follower(Client):
         await self.client.quit()
 
         return "OK"
+
+    def within(self, key: str) -> Within:
+        return Within(self.client, key)
