@@ -159,13 +159,24 @@ async def test_command_intersects_bounds(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_intersects_get(tile38):
-    response = await tile38.set(key, id).object(feature).exec()
-    assert response.ok
-
+async def test_command_intersects_object_with_intersection(tile38):
     response = await tile38.set("zones", "zone").object(polygon).exec()
     assert response.ok
 
-    response = await tile38.intersects(key).get("zones", "zone").asObjects()
+    intersecting_feature = {
+        "type": "Polygon",
+        "coordinates": [
+            [
+                [13.374652862548828, 52.24398904962714],
+                [13.38357925415039, 52.24398904962714],
+                [13.38357925415039, 52.24987472405909],
+                [13.374652862548828, 52.24987472405909],
+                [13.374652862548828, 52.24398904962714],
+            ]
+        ],
+    }
+
+    response = await tile38.intersects("zones").object(intersecting_feature).asObjects()
+
     assert response.ok
-    assert response.objects[0].dict() == expected
+    assert response.objects[0].dict() == {"id": "zone", "object": polygon}
