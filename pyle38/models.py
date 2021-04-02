@@ -31,6 +31,19 @@ class CircleQuery(BaseModel):
         return [self.command, self.lat, self.lng, self.radius]
 
 
+class PointQuery(BaseModel):
+    command: Literal["POINT"] = "POINT"
+    lat: float
+    lng: float
+    radius: Optional[Union[float, int]] = None
+
+    def get(self) -> Sequence[Union[str, int, float]]:
+        if self.radius:
+            return [self.command, self.lat, self.lng, self.radius]
+
+        return [self.command, self.lat, self.lng]
+
+
 class BoundsQuery(BaseModel):
     command: Literal["BOUNDS"] = "BOUNDS"
     minlat: float

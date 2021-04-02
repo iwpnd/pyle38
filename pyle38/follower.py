@@ -8,6 +8,7 @@ from .client import Command
 from .client import SubCommand
 from .commands.get import Get
 from .commands.intersects import Intersects
+from .commands.nearby import Nearby
 from .commands.within import Within
 from .errors import Tile38Error
 from .responses import BoundsResponse
@@ -87,6 +88,9 @@ class Follower(Client):
 
     async def keys(self, pattern: str = "*") -> KeysResponse:
         return KeysResponse(**(await self.client.command(Command.KEYS, [pattern])))
+
+    def nearby(self, key: str) -> Nearby:
+        return Nearby(self.client, key)
 
     async def ping(self) -> PingResponse:
         return PingResponse(**(await self.client.command(Command.PING)))
