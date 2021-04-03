@@ -4,7 +4,7 @@ import json
 from typing import Literal, Optional, Sequence, Union
 
 from ..client import Client, Command, SubCommand
-from ..responses import JSONResponse
+from ..responses import Fields, JSONResponse
 from .executable import Compiled, Executable
 
 
@@ -13,6 +13,7 @@ class Set(Executable):
     _id: str
     _ex: Optional[int] = None
     _nx_or_xx: Optional[Union[Literal["NX", "XX"]]] = None
+    _fields: Optional[Fields] = {}
     _input: Optional[
         Sequence[
             Union[
@@ -25,6 +26,7 @@ class Set(Executable):
         super().__init__(client)
 
         self.key(key).id(id)
+        self._fields = {}
 
     def key(self, value: str) -> Set:
         self._key = value
@@ -33,6 +35,11 @@ class Set(Executable):
 
     def id(self, value: str) -> Set:
         self._id = value
+
+        return self
+
+    def fields(self, fields: Fields):
+        self._fields = fields
 
         return self
 
@@ -79,6 +86,13 @@ class Set(Executable):
 
         return self
 
+    def unpack_fields(self, fields: Fields):
+        command = []
+        for k, v in fields.items():
+            command.extend([SubCommand.FIELD.value, k, v])
+
+        return command
+
     def compile(self) -> Compiled:
 
         return [
@@ -86,6 +100,7 @@ class Set(Executable):
             [
                 self._key,
                 self._id,
+                *(self.unpack_fields(self._fields) if self._fields else []),
                 *([SubCommand.EX.value, self._ex] if self._ex else []),
                 *([self._nx_or_xx] if self._nx_or_xx else []),
                 *(self._input if self._input else []),

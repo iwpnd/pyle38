@@ -15,6 +15,8 @@ obj = {
     "properties": {},
 }
 
+fields = {"speed": 100, "state": 1}
+
 
 @pytest.mark.parametrize(
     "expected, received",
@@ -36,8 +38,15 @@ obj = {
             Set(client, key, id).hash("u33d").compile(),
         ),
         (["SET", [key, id, "STRING", id]], Set(client, key, id).string(id).compile()),
+        (
+            [
+                "SET",
+                [key, id, "FIELD", "speed", 100, "FIELD", "state", 1, "POINT", 1, 1],
+            ],
+            Set(client, key, id).fields(fields).point(1, 1).compile(),
+        ),
     ],
-    ids=["point", "bounds", "object", "hash", "string"],
+    ids=["point", "bounds", "object", "hash", "string", "with fields"],
 )
 @pytest.mark.asyncio
 async def test_command_set_compile(expected, received):
@@ -55,3 +64,13 @@ async def test_command_set_query(tile38):
     received = await tile38.get(key, id).asObject()
 
     assert expected["object"] == received.object
+
+
+@pytest.mark.asyncio
+async def test_command_set_with_fields(tile38):
+    response = await tile38.set(key, id).fields(fields).point(1, 1).exec()
+    assert response.ok
+
+    response = await tile38.get(key, id).with_fields().asObject()
+    assert response.ok
+    assert response.fields == fields
