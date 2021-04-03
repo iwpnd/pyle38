@@ -38,6 +38,8 @@ expected = {"id": id, "object": feature}
                     "MATCH",
                     "*",
                     "NOFIELDS",
+                    "SPARSE",
+                    1,
                     "CURSOR",
                     0,
                     "LIMIT",
@@ -63,6 +65,7 @@ async def test_command_within_compile(tile38, format, precision, expected):
         Within(tile38.client, key)
         .match("*")
         .nofields()
+        .sparse(1)
         .cursor(0)
         .limit(10)
         .fence()
@@ -165,3 +168,62 @@ async def test_command_within_get(tile38):
     response = await tile38.within(key).get("zones", "zone").asObjects()
     assert response.ok
     assert response.objects[0].dict() == expected
+
+
+@pytest.mark.asyncio
+async def test_command_within_return_points(tile38):
+    response = await tile38.set(key, id).object(feature).exec()
+    assert response.ok
+
+    response = await tile38.within(key).circle(52.25, 13.37, 100).asPoints()
+    assert response.ok
+    assert response.points[0].dict() == {
+        "id": id,
+        "point": {"lat": 52.25, "lon": 13.37},
+    }
+
+
+@pytest.mark.asyncio
+async def test_command_within_return_ids(tile38):
+    response = await tile38.set(key, id).object(feature).exec()
+    assert response.ok
+
+    response = await tile38.within(key).circle(52.25, 13.37, 100).asIds()
+    assert response.ok
+    assert response.ids == [id]
+
+
+@pytest.mark.asyncio
+async def test_command_within_return_count(tile38):
+    response = await tile38.set(key, id).object(feature).exec()
+    assert response.ok
+
+    response = await tile38.within(key).circle(52.25, 13.37, 100).asCount()
+    assert response.ok
+    assert response.count == 1
+
+
+@pytest.mark.asyncio
+async def test_command_within_return_hashes(tile38):
+    response = await tile38.set(key, id).object(feature).exec()
+    assert response.ok
+
+    response = await tile38.within(key).circle(52.25, 13.37, 100).asHashes(5)
+    assert response.ok
+    assert response.hashes[0].dict() == {"id": id, "hash": "u3390"}
+
+
+@pytest.mark.asyncio
+async def test_command_within_return_bounds(tile38):
+    response = await tile38.set(key, id).object(feature).exec()
+    assert response.ok
+
+    response = await tile38.within(key).circle(52.25, 13.37, 100).asBounds()
+    assert response.ok
+    assert response.bounds[0].dict() == {
+        "id": id,
+        "bounds": {
+            "ne": {"lat": 52.25, "lon": 13.37},
+            "sw": {"lat": 52.25, "lon": 13.37},
+        },
+    }

@@ -38,6 +38,8 @@ expected = {"id": id, "object": feature}
                     "MATCH",
                     "*",
                     "NOFIELDS",
+                    "SPARSE",
+                    1,
                     "CLIP",
                     "CURSOR",
                     0,
@@ -64,6 +66,7 @@ async def test_command_intersects_compile(tile38, format, precision, expected):
         Intersects(tile38.client, key)
         .match("*")
         .nofields()
+        .sparse(1)
         .clip()
         .cursor(0)
         .limit(10)
@@ -180,3 +183,93 @@ async def test_command_intersects_object_with_intersection(tile38):
 
     assert response.ok
     assert response.objects[0].dict() == {"id": "zone", "object": polygon}
+
+
+@pytest.mark.asyncio
+async def test_command_intersects_get(tile38):
+    response = await tile38.set("zones", "zone").object(polygon).exec()
+    assert response.ok
+
+    intersecting_feature = {
+        "type": "Polygon",
+        "coordinates": [
+            [
+                [13.374652862548828, 52.24398904962714],
+                [13.38357925415039, 52.24398904962714],
+                [13.38357925415039, 52.24987472405909],
+                [13.374652862548828, 52.24987472405909],
+                [13.374652862548828, 52.24398904962714],
+            ]
+        ],
+    }
+
+    response = (
+        await tile38.set("zones", "zone_intersect").object(intersecting_feature).exec()
+    )
+    assert response.ok
+
+    response = (
+        await tile38.intersects("zones").get("zones", "zone_intersect").asObjects()
+    )
+
+    assert response.ok
+    assert response.objects[0].dict() == {"id": "zone", "object": polygon}
+
+
+@pytest.mark.asyncio
+async def test_command_intersects_return_points(tile38):
+    response = await tile38.set(key, id).object(feature).exec()
+    assert response.ok
+
+    response = await tile38.intersects(key).circle(52.25, 13.37, 100).asPoints()
+    assert response.ok
+    assert response.points[0].dict() == {
+        "id": id,
+        "point": {"lat": 52.25, "lon": 13.37},
+    }
+
+
+@pytest.mark.asyncio
+async def test_command_intersects_return_ids(tile38):
+    response = await tile38.set(key, id).object(feature).exec()
+    assert response.ok
+
+    response = await tile38.intersects(key).circle(52.25, 13.37, 100).asIds()
+    assert response.ok
+    assert response.ids == [id]
+
+
+@pytest.mark.asyncio
+async def test_command_intersects_return_count(tile38):
+    response = await tile38.set(key, id).object(feature).exec()
+    assert response.ok
+
+    response = await tile38.intersects(key).circle(52.25, 13.37, 100).asCount()
+    assert response.ok
+    assert response.count == 1
+
+
+@pytest.mark.asyncio
+async def test_command_intersects_return_hashes(tile38):
+    response = await tile38.set(key, id).object(feature).exec()
+    assert response.ok
+
+    response = await tile38.intersects(key).circle(52.25, 13.37, 100).asHashes(5)
+    assert response.ok
+    assert response.hashes[0].dict() == {"id": id, "hash": "u3390"}
+
+
+@pytest.mark.asyncio
+async def test_command_intersects_return_bounds(tile38):
+    response = await tile38.set(key, id).object(feature).exec()
+    assert response.ok
+
+    response = await tile38.intersects(key).circle(52.25, 13.37, 100).asBounds()
+    assert response.ok
+    assert response.bounds[0].dict() == {
+        "id": id,
+        "bounds": {
+            "ne": {"lat": 52.25, "lon": 13.37},
+            "sw": {"lat": 52.25, "lon": 13.37},
+        },
+    }

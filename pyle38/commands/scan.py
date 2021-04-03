@@ -89,7 +89,7 @@ class Scan(Executable):
         elif format == "IDS":
             self._output = [format]
         elif format == "POINTS":
-            self._format = [format]
+            self._output = [format]
 
         return self
 
