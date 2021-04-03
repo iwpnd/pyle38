@@ -111,7 +111,7 @@ class Nearby(Executable):
         elif format == "IDS":
             self._output = [format]
         elif format == "POINTS":
-            self._format = [format]
+            self._output = [format]
 
         return self
 
@@ -186,7 +186,7 @@ class Nearby(Executable):
                 self._key,
                 *(self.__compile_options()),
                 *(self.__compile_fence()),
-                *(self._query.get()),
                 *(self._output if self._output else []),
+                *(self._query.get()),
             ],
         ]

@@ -17,8 +17,8 @@ class BaseModel(PydanticBaseModel):
 
 
 class LatLon(BaseModel):
-    lat: int
-    lon: int
+    lat: float
+    lon: float
 
 
 class NeSw(BaseModel):
@@ -40,6 +40,7 @@ class Object(GenericModel, Generic[T]):
     object: T
     id: Union[str, int]
     distance: Optional[float] = None
+    fields: Optional[List[int]] = None
 
 
 class ObjectResponse(JSONResponse, GenericModel, Generic[T]):
@@ -80,18 +81,21 @@ class Point(BaseModel):
     point: LatLon
     id: Union[str, int]
     distance: Optional[int] = None
+    fields: Optional[List[int]] = None
 
 
 class PointsResponse(JSONResponse):
     points: Optional[List[Point]] = []
     count: int
     cursor: int
+    fields: Optional[List[str]] = None
 
 
 class Hash(BaseModel):
     hash: str
     id: Union[str, int]
     distance: Optional[float] = None
+    fields: Optional[List[int]]
 
 
 class HashResponse(JSONResponse):
@@ -103,12 +107,14 @@ class HashesResponse(JSONResponse):
     hashes: List[Hash]
     count: int
     cursor: int
+    fields: Optional[List[str]] = None
 
 
 class Bounds(BaseModel):
     bounds: NeSw
     id: Union[str, int]
     distance: Optional[float] = None
+    fields: Optional[List[int]] = None
 
 
 class BoundsNeSwResponse(JSONResponse):
@@ -120,6 +126,7 @@ class BoundsNeSwResponses(JSONResponse):
     bounds: List[Bounds]
     count: int
     cursor: int
+    fields: Optional[List[str]] = None
 
 
 Position = List[float]
