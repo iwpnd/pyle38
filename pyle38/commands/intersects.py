@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import List, Literal, Optional, Sequence, Union
 
 from ..client import Client, Command, CommandArgs, SubCommand
+from ..errors import Tile38Error
 from ..models import (
     BoundsQuery,
     CircleQuery,
@@ -22,12 +23,12 @@ from ..responses import (
     FenceDetect,
     HashesResponse,
     IdsResponse,
+    JSONResponse,
     ObjectsResponse,
     PointsResponse,
 )
+from ..utils import flatten
 from .executable import Compiled, Executable
-from .setchan import SetChan
-from .sethook import SetHook
 
 Format = Literal["BOUNDS", "COUNT", "HASHES", "IDS", "OBJECTS", "POINTS"]
 Output = Union[Sequence[Union[Format, int]]]
@@ -36,7 +37,7 @@ Output = Union[Sequence[Union[Format, int]]]
 class Intersects(Executable):
     _key: str
     _command: Literal["INTERSECTS"]
-    _hook: Optional[Union[SetHook, SetChan]] = None
+    _hook = None
     _options: Options = {}
     _query: Union[
         CircleQuery,
@@ -53,9 +54,7 @@ class Intersects(Executable):
     _detect: Optional[List[FenceDetect]] = []
     _commands: Optional[List[FenceCommand]] = []
 
-    def __init__(
-        self, client: Client, key: str, hook: Optional[Union[SetChan, SetHook]] = None
-    ) -> None:
+    def __init__(self, client: Client, key: str, hook=None) -> None:
         super().__init__(client)
 
         self.key(key)
@@ -233,7 +232,7 @@ class Intersects(Executable):
         )
 
     def compile(self) -> Compiled:
-        return [
+        compiled = [
             Command.INTERSECTS.value,
             [
                 self._key,
@@ -243,3 +242,15 @@ class Intersects(Executable):
                 *(self._query.get()),
             ],
         ]
+
+        if self._hook:
+            command, args = self._hook.compile()
+            return [command, [*(args), *(flatten(compiled))]]
+
+        return compiled
+
+    async def activate(self) -> JSONResponse:  # type: ignore
+        if self._hook:
+            return JSONResponse(**(await self.client.command(*self.compile())))
+        else:
+            raise Tile38Error("No hook to activate")

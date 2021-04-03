@@ -2,6 +2,7 @@ from typing import Literal, Optional, Union
 
 from .client import Command
 from .commands.set import Set
+from .commands.sethook import SetHook
 from .follower import Follower
 from .responses import JSONResponse, ServerStatsResponseLeader, TTLResponse
 
@@ -10,11 +11,14 @@ class Leader(Follower):
     async def delete(self, key: str, id: str) -> JSONResponse:
         return JSONResponse(**(await self.client.command(Command.DEL, [key, id])))
 
+    async def delchan(self, name: str) -> JSONResponse:
+        return JSONResponse(**(await self.client.command(Command.DELCHAN, [name])))
+
+    async def delhook(self, name: str) -> JSONResponse:
+        return JSONResponse(**(await self.client.command(Command.DELHOOK, [name])))
+
     async def drop(self, key: str) -> JSONResponse:
         return JSONResponse(**(await self.client.command(Command.DROP, [key])))
-
-    async def flushdb(self) -> JSONResponse:
-        return JSONResponse(**(await self.client.command(Command.FLUSHDB)))
 
     async def expire(self, key: str, id: str, seconds: int) -> JSONResponse:
         # TODO: fix mypy
@@ -25,11 +29,8 @@ class Leader(Follower):
 
         return JSONResponse(**response)
 
-    async def delchan(self, name: str) -> JSONResponse:
-        return JSONResponse(**(await self.client.command(Command.DELCHAN, [name])))
-
-    async def delhook(self, name: str) -> JSONResponse:
-        return JSONResponse(**(await self.client.command(Command.DELHOOK, [name])))
+    async def flushdb(self) -> JSONResponse:
+        return JSONResponse(**(await self.client.command(Command.FLUSHDB)))
 
     async def jset(
         self,
@@ -84,6 +85,9 @@ class Leader(Follower):
 
     async def server(self) -> ServerStatsResponseLeader:  # type: ignore
         return ServerStatsResponseLeader(**(await self.client.command(Command.SERVER)))
+
+    def sethook(self, name: str, endpoint: str) -> SetHook:
+        return SetHook(self.client, name, endpoint)
 
     async def ttl(self, key: str, id: str) -> TTLResponse:
         return TTLResponse(**(await self.client.command(Command.TTL, [key, id])))

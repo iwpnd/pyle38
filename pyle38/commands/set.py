@@ -86,7 +86,8 @@ class Set(Executable):
 
         return self
 
-    def unpack_fields(self, fields: Fields):
+    @staticmethod
+    def __unpack_fields(fields: Fields):
         command = []
         for k, v in fields.items():
             command.extend([SubCommand.FIELD.value, k, v])
@@ -100,7 +101,7 @@ class Set(Executable):
             [
                 self._key,
                 self._id,
-                *(self.unpack_fields(self._fields) if self._fields else []),
+                *(Set.__unpack_fields(self._fields) if self._fields else []),
                 *([SubCommand.EX.value, self._ex] if self._ex else []),
                 *([self._nx_or_xx] if self._nx_or_xx else []),
                 *(self._input if self._input else []),

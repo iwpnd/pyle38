@@ -66,6 +66,9 @@ class Follower(Client):
     async def hooks(self, pattern: str = "*") -> HooksResponse:
         return HooksResponse(**(await self.client.command(Command.HOOKS, [pattern])))
 
+    def intersects(self, key: str) -> Intersects:
+        return Intersects(self.client, key)
+
     async def jget(
         self,
         key: str,
@@ -81,9 +84,6 @@ class Follower(Client):
                 )
             )
         )
-
-    def intersects(self, key: str) -> Intersects:
-        return Intersects(self.client, key)
 
     async def keys(self, pattern: str = "*") -> KeysResponse:
         return KeysResponse(**(await self.client.command(Command.KEYS, [pattern])))
