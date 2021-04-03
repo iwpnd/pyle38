@@ -20,9 +20,8 @@ class Leader(Follower):
         # TODO: fix mypy
         # for reasons unknown [key, id, seconds] has type List[object]
         # and fails mypy validation
-        response = await self.client.command(
-            Command.EXPIRE, [key, id, seconds]
-        )  # type: ignore
+        p = [key, id, seconds]
+        response = await self.client.command(Command.EXPIRE, p)  # type: ignore
 
         return JSONResponse(**response)
 
