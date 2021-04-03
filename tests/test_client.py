@@ -3,9 +3,7 @@ import os
 import pytest
 
 from pyle38.client import Client
-from pyle38.errors import Tile38Error
-from pyle38.errors import Tile38IdNotFoundError
-from pyle38.errors import Tile38KeyNotFoundError
+from pyle38.errors import Tile38Error, Tile38IdNotFoundError, Tile38KeyNotFoundError
 
 
 @pytest.mark.asyncio

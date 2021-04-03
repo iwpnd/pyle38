@@ -4,23 +4,16 @@ from typing import Literal, Optional, Sequence, Union
 
 from ..client import Client, Command, CommandArgs
 from ..models import Options
-from ..responses import (
-    BoundsNeSwResponses,
-    CountResponse,
-    HashesResponse,
-    IdsResponse,
-    ObjectsResponse,
-    PointsResponse,
-)
+from ..responses import CountResponse, IdsResponse, StringObjectsResponse
 from .executable import Compiled, Executable
 
-Format = Literal["BOUNDS", "COUNT", "HASHES", "IDS", "OBJECTS", "POINTS"]
+Format = Literal["OBJECTS", "COUNT", "IDS"]
 Output = Union[Sequence[Union[Format, int]]]
 
 
-class Scan(Executable):
+class Search(Executable):
     _key: str
-    _command: Literal["SCAN"]
+    _command: Literal["SEARCH"]
     _options: Options = {}
     _output: Optional[Output] = None
     _all: bool = False
@@ -31,37 +24,27 @@ class Scan(Executable):
         self.key(key)
         self._options = {}
 
-    def key(self, key: str) -> Scan:
+    def key(self, key: str) -> Search:
         self._key = key
 
         return self
 
-    def cursor(self, value: int) -> Scan:
+    def cursor(self, value: int) -> Search:
         self._options["cursor"] = value
 
         return self
 
-    def limit(self, value: int) -> Scan:
+    def limit(self, value: int) -> Search:
         self._options["limit"] = value
 
         return self
 
-    def nofields(self, flag: bool = True) -> Scan:
-        self._options["nofields"] = flag
-
-        return self
-
-    def match(self, value: str) -> Scan:
+    def match(self, value: str) -> Search:
         self._options["match"] = value
 
         return self
 
-    def sparse(self, value: int) -> Scan:
-        self._options["sparse"] = value
-
-        return self
-
-    def asc(self, flag: bool = True) -> Scan:
+    def asc(self, flag: bool = True) -> Search:
         self._options["asc"] = flag
 
         if flag:
@@ -69,7 +52,7 @@ class Scan(Executable):
 
         return self
 
-    def desc(self, flag: bool = True) -> Scan:
+    def desc(self, flag: bool = True) -> Search:
         self._options["desc"] = flag
 
         if flag:
@@ -77,36 +60,14 @@ class Scan(Executable):
 
         return self
 
-    def output(self, format: Format, precision: Optional[int] = None) -> Scan:
+    def output(self, format: Format) -> Search:
         if format == "OBJECTS":
             self._output = None
-        elif format == "HASHES" and precision:
-            self._output = [format, precision]
-        elif format == "BOUNDS":
-            self._output = [format]
         elif format == "COUNT":
             self._output = [format]
         elif format == "IDS":
             self._output = [format]
-        elif format == "POINTS":
-            self._format = [format]
-
         return self
-
-    async def asObjects(self) -> ObjectsResponse:
-        self.output("OBJECTS")
-
-        return ObjectsResponse(**(await self.exec()))
-
-    async def asBounds(self) -> BoundsNeSwResponses:
-        self.output("BOUNDS")
-
-        return BoundsNeSwResponses(**(await self.exec()))
-
-    async def asHashes(self, precision: int) -> HashesResponse:
-        self.output("HASHES", precision)
-
-        return HashesResponse(**(await self.exec()))
 
     async def asCount(self) -> CountResponse:
         self.output("COUNT")
@@ -118,10 +79,10 @@ class Scan(Executable):
 
         return IdsResponse(**(await self.exec()))
 
-    async def asPoints(self) -> PointsResponse:
-        self.output("POINTS")
+    async def asStringObjects(self) -> StringObjectsResponse:
+        self.output("OBJECTS")
 
-        return PointsResponse(**(await self.exec()))
+        return StringObjectsResponse(**(await self.exec()))
 
     def __compile_options(self) -> CommandArgs:
         commands = []
@@ -141,7 +102,7 @@ class Scan(Executable):
 
     def compile(self) -> Compiled:
         return [
-            Command.SCAN.value,
+            Command.SEARCH.value,
             [
                 self._key,
                 *(self.__compile_options()),

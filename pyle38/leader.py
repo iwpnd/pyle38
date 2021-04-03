@@ -1,13 +1,9 @@
-from typing import Literal
-from typing import Optional
-from typing import Union
+from typing import Literal, Optional, Union
 
 from .client import Command
 from .commands.set import Set
 from .follower import Follower
-from .responses import JSONResponse
-from .responses import ServerStatsResponseLeader
-from .responses import TTLResponse
+from .responses import JSONResponse, ServerStatsResponseLeader, TTLResponse
 
 
 class Leader(Follower):

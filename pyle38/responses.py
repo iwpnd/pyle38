@@ -1,10 +1,4 @@
-from typing import Dict
-from typing import Generic
-from typing import List
-from typing import Literal
-from typing import Optional
-from typing import TypeVar
-from typing import Union
+from typing import Dict, Generic, List, Literal, Optional, TypeVar, Union
 
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic.generics import GenericModel as PydanticGenericModel
@@ -60,8 +54,8 @@ class ObjectsResponse(JSONResponse, GenericModel, Generic[T]):
     fields: Optional[List[str]] = None
 
 
-class StringObjectsResponse(JSONResponse, GenericModel, Generic[T]):
-    objects: Optional[List[Object[T]]]
+class StringObjectsResponse(JSONResponse, GenericModel):
+    objects: Optional[List[Object[str]]]
     count: int
     cursor: int
 

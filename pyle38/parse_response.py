@@ -1,11 +1,7 @@
 import json
-from typing import Dict
-from typing import Optional
-from typing import Union
+from typing import Dict, Optional, Union
 
-from .errors import Tile38Error
-from .errors import Tile38IdNotFoundError
-from .errors import Tile38KeyNotFoundError
+from .errors import Tile38Error, Tile38IdNotFoundError, Tile38KeyNotFoundError
 
 
 def parse_response(

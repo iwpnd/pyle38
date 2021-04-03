@@ -1,14 +1,7 @@
 import json
-from typing import List
-from typing import Literal
-from typing import Optional
-from typing import Sequence
-from typing import Tuple
-from typing import TypedDict
-from typing import Union
+from typing import List, Literal, Optional, Sequence, Tuple, TypedDict, Union
 
-from pydantic import BaseModel
-from pydantic import Field
+from pydantic import BaseModel, Field
 
 
 class Options(TypedDict, total=False):

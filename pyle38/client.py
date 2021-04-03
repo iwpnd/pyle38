@@ -1,8 +1,5 @@
 from enum import Enum
-from typing import Dict
-from typing import Optional
-from typing import Sequence
-from typing import Union
+from typing import Dict, Optional, Sequence, Union
 
 import aioredis
 

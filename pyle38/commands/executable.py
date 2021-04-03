@@ -1,10 +1,6 @@
-from typing import Any
-from typing import Dict
-from typing import Literal
+from typing import Any, Dict, Literal
 
-from ..client import Client
-from ..client import Command
-from ..client import CommandArgs
+from ..client import Client, Command, CommandArgs
 
 # TODO: fix invalid parameter of Literal
 Compiled = Literal[Command, CommandArgs]  # type: ignore

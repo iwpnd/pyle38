@@ -1,29 +1,27 @@
-from typing import List
-from typing import Literal
-from typing import Optional
-from typing import Union
+from typing import List, Literal, Optional, Union
 
-from .client import Client
-from .client import Command
-from .client import SubCommand
+from .client import Client, Command, SubCommand
 from .commands.get import Get
 from .commands.intersects import Intersects
 from .commands.nearby import Nearby
 from .commands.scan import Scan
+from .commands.search import Search
 from .commands.within import Within
 from .errors import Tile38Error
-from .responses import BoundsResponse
-from .responses import ChansResponse
-from .responses import ConfigGetResponse
-from .responses import ConfigKeys
-from .responses import HooksResponse
-from .responses import JSONGetResponse
-from .responses import JSONResponse
-from .responses import KeysResponse
-from .responses import PingResponse
-from .responses import ServerStatsExtendedResponse
-from .responses import ServerStatsResponseFollower
-from .responses import StatsResponse
+from .responses import (
+    BoundsResponse,
+    ChansResponse,
+    ConfigGetResponse,
+    ConfigKeys,
+    HooksResponse,
+    JSONGetResponse,
+    JSONResponse,
+    KeysResponse,
+    PingResponse,
+    ServerStatsExtendedResponse,
+    ServerStatsResponseFollower,
+    StatsResponse,
+)
 
 
 class Follower(Client):
@@ -98,6 +96,9 @@ class Follower(Client):
 
     def scan(self, key: str) -> Scan:
         return Scan(self.client, key)
+
+    def search(self, key: str) -> Search:
+        return Search(self.client, key)
 
     async def server(self) -> ServerStatsResponseFollower:  # type: ignore
         return ServerStatsResponseFollower(

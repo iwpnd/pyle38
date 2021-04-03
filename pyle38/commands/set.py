@@ -1,17 +1,11 @@
 from __future__ import annotations
 
 import json
-from typing import Literal
-from typing import Optional
-from typing import Sequence
-from typing import Union
+from typing import Literal, Optional, Sequence, Union
 
-from ..client import Client
-from ..client import Command
-from ..client import SubCommand
+from ..client import Client, Command, SubCommand
 from ..responses import JSONResponse
-from .executable import Compiled
-from .executable import Executable
+from .executable import Compiled, Executable
 
 
 class Set(Executable):

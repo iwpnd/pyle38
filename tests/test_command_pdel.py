@@ -1,7 +1,6 @@
 import pytest
 
-from pyle38.errors import Tile38IdNotFoundError
-from pyle38.errors import Tile38KeyNotFoundError
+from pyle38.errors import Tile38IdNotFoundError, Tile38KeyNotFoundError
 
 key = "fleet"
 id = "truck1"
