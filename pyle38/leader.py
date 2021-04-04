@@ -2,6 +2,7 @@ from typing import Literal, Optional, Union
 
 from .client import Command
 from .commands.set import Set
+from .commands.setchan import SetChan
 from .commands.sethook import SetHook
 from .follower import Follower
 from .responses import JSONResponse, ServerStatsResponseLeader, TTLResponse
@@ -88,6 +89,9 @@ class Leader(Follower):
 
     def sethook(self, name: str, endpoint: str) -> SetHook:
         return SetHook(self.client, name, endpoint)
+
+    def setchan(self, name: str) -> SetChan:
+        return SetChan(self.client, name)
 
     async def ttl(self, key: str, id: str) -> TTLResponse:
         return TTLResponse(**(await self.client.command(Command.TTL, [key, id])))

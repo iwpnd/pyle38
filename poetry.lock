@@ -5,7 +5,6 @@ description = "asyncio (PEP 3156) Redis support"
 category = "main"
 optional = false
 python-versions = ">=3.6"
-develop = false
 
 [package.dependencies]
 async-timeout = "*"
@@ -13,12 +12,6 @@ typing-extensions = "*"
 
 [package.extras]
 hiredis = ["hiredis (>=1.0)"]
-
-[package.source]
-type = "git"
-url = "https://github.com/aio-libs/aioredis"
-reference = "master"
-resolved_reference = "cf908b60c57cb9d55a92befbbf9617fc79310194"
 
 [[package]]
 name = "anyio"
@@ -1185,10 +1178,13 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "5b47e71ac7f6c21c1d0f947b0a040da3a632d24a817dd06d4b5cf2a1626d79ac"
+content-hash = "69363c954e1a2e9d87871ff6ce5f9f0364ff7060fdbbd7739e4f815ed6a7e415"
 
 [metadata.files]
-aioredis = []
+aioredis = [
+    {file = "aioredis-2.0.0a1-py3-none-any.whl", hash = "sha256:32d7910724282a475c91b8b34403867069a4f07bf0c5ad5fe66cd797322f9a0d"},
+    {file = "aioredis-2.0.0a1.tar.gz", hash = "sha256:5884f384b8ecb143bb73320a96e7c464fd38e117950a7d48340a35db8e35e7d2"},
+]
 anyio = [
     {file = "anyio-2.2.0-py3-none-any.whl", hash = "sha256:aa3da546ed17f097ca876c78024dea380a3b7fa80759abfdda59f12176a3dac8"},
     {file = "anyio-2.2.0.tar.gz", hash = "sha256:4a41c5b3a65ed92e469d51b6fba3779301850ea2e352afcf9e36c46f21ee14a9"},

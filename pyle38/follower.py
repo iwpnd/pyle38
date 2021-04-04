@@ -37,7 +37,7 @@ class Follower(Client):
     async def bounds(self, key: str) -> BoundsResponse:
         return BoundsResponse(**(await self.client.command(Command.BOUNDS, [key])))
 
-    async def chan(self, pattern: str = "*") -> ChansResponse:
+    async def chans(self, pattern: str = "*") -> ChansResponse:
         return ChansResponse(**(await self.client.command(Command.CHANS, [pattern])))
 
     async def config_get(self, name: ConfigKeys) -> ConfigGetResponse:
