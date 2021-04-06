@@ -24,7 +24,7 @@ obj = {
 @pytest.mark.asyncio
 async def test_command_get_compile(format, precision, expected, tile38):
 
-    query = Get(tile38.client, key, id).with_fields()
+    query = Get(tile38.client, key, id).withfields()
 
     received = query.output(format, precision).compile()
 

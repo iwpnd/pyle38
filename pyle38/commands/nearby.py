@@ -93,8 +93,8 @@ class Nearby(Executable):
 
         return self
 
-    def point(self, lat: float, lng: float, radius: Optional[float] = None) -> Nearby:
-        self._query = PointQuery(lat=lat, lng=lng, radius=radius)
+    def point(self, lat: float, lon: float, radius: Optional[float] = None) -> Nearby:
+        self._query = PointQuery(lat=lat, lon=lon, radius=radius)
 
         return self
 

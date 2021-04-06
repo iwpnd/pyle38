@@ -71,6 +71,6 @@ async def test_command_set_with_fields(tile38):
     response = await tile38.set(key, id).fields(fields).point(1, 1).exec()
     assert response.ok
 
-    response = await tile38.get(key, id).with_fields().asObject()
+    response = await tile38.get(key, id).withfields().asObject()
     assert response.ok
     assert response.fields == fields

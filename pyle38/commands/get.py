@@ -14,7 +14,7 @@ Formats = Literal["BOUNDS", "HASH", "OBJECT", "POINT"]
 class Get(Executable):
     _key: str
     _id: str
-    _with_fields: Optional[Literal["WITHFIELDS"]] = None
+    _withfields: Optional[Literal["WITHFIELDS"]] = None
     _output: Optional[Output] = None
 
     def __init__(self, client: Client, key: str, id: str) -> None:
@@ -32,9 +32,9 @@ class Get(Executable):
 
         return self
 
-    def with_fields(self, flag: bool = True) -> Get:
+    def withfields(self, flag: bool = True) -> Get:
         if flag:
-            self._with_fields = "WITHFIELDS"
+            self._withfields = "WITHFIELDS"
 
         return self
 
@@ -77,7 +77,7 @@ class Get(Executable):
             [
                 self._key,
                 self._id,
-                *([SubCommand.WITHFIELDS.value] if self._with_fields else []),
+                *([SubCommand.WITHFIELDS.value] if self._withfields else []),
                 *(self._output if self._output else []),
             ],
         ]

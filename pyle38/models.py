@@ -19,35 +19,35 @@ class Options(TypedDict, total=False):
 class CircleQuery(BaseModel):
     command: Literal["CIRCLE"] = "CIRCLE"
     lat: float
-    lng: float
+    lon: float
     radius: float
 
     def get(self) -> Sequence[Union[str, int, float]]:
-        return [self.command, self.lat, self.lng, self.radius]
+        return [self.command, self.lat, self.lon, self.radius]
 
 
 class PointQuery(BaseModel):
     command: Literal["POINT"] = "POINT"
     lat: float
-    lng: float
+    lon: float
     radius: Optional[Union[float, int]] = None
 
     def get(self) -> Sequence[Union[str, int, float]]:
         if self.radius:
-            return [self.command, self.lat, self.lng, self.radius]
+            return [self.command, self.lat, self.lon, self.radius]
 
-        return [self.command, self.lat, self.lng]
+        return [self.command, self.lat, self.lon]
 
 
 class BoundsQuery(BaseModel):
     command: Literal["BOUNDS"] = "BOUNDS"
     minlat: float
-    minlng: float
+    minlon: float
     maxlat: float
-    maxlng: float
+    maxlon: float
 
     def get(self) -> Sequence[Union[str, int, float]]:
-        return [self.command, self.minlat, self.minlng, self.maxlat, self.maxlng]
+        return [self.command, self.minlat, self.minlon, self.maxlat, self.maxlon]
 
 
 class HashQuery(BaseModel):

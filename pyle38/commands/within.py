@@ -66,8 +66,8 @@ class Within(Executable):
 
         return self
 
-    def circle(self, lat: float, lng: float, radius: float) -> Within:
-        self._query = CircleQuery(lat=lat, lng=lng, radius=radius)
+    def circle(self, lat: float, lon: float, radius: float) -> Within:
+        self._query = CircleQuery(lat=lat, lon=lon, radius=radius)
 
         return self
 
@@ -113,10 +113,10 @@ class Within(Executable):
         return self
 
     def bounds(
-        self, minlat: float, minlng: float, maxlat: float, maxlng: float
+        self, minlat: float, minlon: float, maxlat: float, maxlon: float
     ) -> Within:
         self._query = BoundsQuery(
-            minlat=minlat, minlng=minlng, maxlat=maxlat, maxlng=maxlng
+            minlat=minlat, minlon=minlon, maxlat=maxlat, maxlon=maxlon
         )
 
         return self
