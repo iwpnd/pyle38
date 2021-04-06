@@ -44,6 +44,49 @@
 ## About The Project
 This is a Python client for Tile38 that allows for fast and easy interaction with the worlds fastest in-memory geodatabase [Tile38](https://www.tile38.com).
 
+### Example
+
+```python
+import asyncio
+from pyle38.tile38 import Tile38
+
+
+async def main():
+    tile38 = Tile38(url="redis://localhost:9851", follower_url="redis://localhost:9851")
+
+    await tile38.set("fleet", "truck").point(52.25,13.37).exec()
+
+    response = await tile38.follower()
+        .within("fleet")
+        .circle(52.25, 13.37, 1000)
+        .asObjects()
+
+    assert response.ok
+
+    print(response.dict())
+
+asyncio.run(main())
+
+> {
+    "ok": True,
+    "elapsed": "48.8µs",
+    "objects": [
+        {
+            "object": {
+                "type": "Point",
+                "coordinates": [
+                    13.37,
+                    52.25
+                ]
+            },
+            "id": "truck"
+        }
+    ],
+    "count": 1,
+    "cursor": 0
+}
+```
+
 
 ### Features
 - fully typed using mypy and pydantic
@@ -68,7 +111,7 @@ Python==^3.8.2
 pip install pyle38
 ```
 
-Or using [Poetry]
+Or using [Poetry](https://python-poetry.org/docs/)
 
 ```sh
 poeyry add pyle38
@@ -85,7 +128,7 @@ When it comes to replication, Tile38 follows a leader-follower model. The leader
 
 This client is not meant to setup a replication, because this should happen in your infrastructure. But it helps you to specifically execute commands on leader or follower. This way you can make sure that the leader always has enough resources to execute `SET`s and fire `geofence` events on `webhooks`.
 
-For now we allow for one follower `URI` to bet set alongside the leader `URI`.
+For now you can set one follower `url` to bet set alongside the leader `url`.
 
 ```python
 from pyle38.tile38 import Tile38
