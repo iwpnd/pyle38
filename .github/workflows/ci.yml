@@ -31,7 +31,7 @@ jobs:
         uses: actions/cache@v2
         with:
             path: .venv
-            key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+            key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}-${{ matrix.python-version }}
       - name: Install dependencies
         run: poetry install
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
@@ -60,7 +60,7 @@ jobs:
         uses: actions/cache@v2
         with:
             path: .venv
-            key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+            key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}-${{ matrix.python-version }}
       - name: Install dependencies
         run: poetry install
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
@@ -91,7 +91,7 @@ jobs:
         uses: actions/cache@v2
         with:
             path: .venv
-            key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+            key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}-${{ matrix.python-version }}
       - name: Install dependencies
         run: poetry install
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
