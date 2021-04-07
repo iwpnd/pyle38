@@ -36,7 +36,9 @@ jobs:
         run: poetry install
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       - name: lint
-        run: poetry run poe lint
+        run: |
+          source .venv/bin/activate
+          poetry run poe lint
   mypy:
     strategy:
       fail-fast: false
@@ -65,7 +67,9 @@ jobs:
         run: poetry install
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       - name: Mypy
-        run: poetry run poe mypy .
+        run: |
+          source .venv/bin/activate
+          poetry run poe mypy .
   test:
     strategy:
       fail-fast: false
@@ -96,4 +100,6 @@ jobs:
         run: poetry install
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       - name: Test
-        run: poetry run poe test .
+        run: |
+          source .venv/bin/activate
+          poetry run poe test .
