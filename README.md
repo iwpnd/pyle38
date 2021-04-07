@@ -731,7 +731,7 @@ Creates a webhook that points to a geosearch (NEARBY/WITHIN/INTERSECTS). Wheneve
 await tile38.sethook('warehouse', 'http://10.0.20.78/endpoint')
 	    .nearby('fleet')
         .point(33.5123, -112.2693, 500)
-        .exec()
+        .activate()
 ```
 ```python
 await tile38.set('fleet', 'bus').point(33.5123001, -112.2693001).exec()
@@ -790,7 +790,7 @@ Similar to `sethook()`, but opens a PUB/SUB channel.
 await tile38.setchan('warehouse', 'http://10.0.20.78/endpoint')
 	    .nearby('fleet')
         .point(33.5123, -112.2693, 500)
-        .exec()
+        .activate()
 ```
 
 Given a proper setup of a pubsub channel, every set `.set()` results in:
