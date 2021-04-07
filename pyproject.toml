@@ -19,6 +19,7 @@ gitlint = "^0.15.0"
 poethepoet = "^0.10.0"
 isort = "^5.8.0"
 pytest-cov = "^2.11.1"
+flake8 = "^3.9.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -29,6 +30,7 @@ python_version = 3.8
 ignore_missing_imports = true
 
 [tool.poe.tasks]
-test       = "pytest -vv -s"
-test-cov   = "pytest -vv -s --cov=pyle38 tests/"
+test       = "poetry run pytest -vv -s tests/"
+test-cov   = "poetry run pytest -vv -s --cov=pyle38 tests/"
 mypy       = "poetry run mypy --config-file pyproject.toml"
+lint       = "flake8 ."
