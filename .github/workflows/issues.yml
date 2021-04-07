@@ -1,3 +1,4 @@
+name: auto-close-issue
 on:
   issues:
     types: [opened, edited]
