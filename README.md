@@ -34,7 +34,7 @@
 <li><a  href="#roadmap">Roadmap</a></li>
 <li><a  href="#contributing">Contributing</a></li>
 <li><a  href="#license">License</a></li>
-<li><a  href="#contact">Maintainer</a></li>
+<li><a  href="#maintainer">Maintainer</a></li>
 <li><a  href="#acknowledgements">Acknowledgements</a></li>
 </ol>
 </details>
@@ -42,7 +42,7 @@
 
 
 ## About The Project
-This is a Python client for Tile38 that allows for fast and easy interaction with the worlds fastest in-memory geodatabase [Tile38](https://www.tile38.com).
+This is an asynchonous Python client for Tile38 that allows for fast and easy interaction with the worlds fastest in-memory geodatabase [Tile38](https://www.tile38.com).
 
 ### Example
 
@@ -70,6 +70,43 @@ asyncio.run(main())
 > {
     "ok": True,
     "elapsed": "48.8µs",
+    "objects": [
+        {
+            "object": {
+                "type": "Point",
+                "coordinates": [
+                    13.37,
+                    52.25
+                ]
+            },
+            "id": "truck"
+        }
+    ],
+    "count": 1,
+    "cursor": 0
+}
+```
+
+### Example IPython
+
+```python
+In [1]: %autoawait asyncio
+In [2]: from pyle38 import Tile38
+
+In [3]: tile38 = Tile38(url='redis://localhost:9851', follower_url='redis://localhost:9852')
+
+In [4]: await tile38.set("fleet", "truck").point(52.25,13.37).exec()
+Out[4]: JSONResponse(ok=True, elapsed='51.9µs', err=None)
+
+In [5]: response = await tile38.within("fleet")
+   ...:         .circle(52.25, 13.37, 1000)
+   ...:         .asObjects()
+
+In [6]: print(response.dict())
+
+  {
+    "ok": True,
+    "elapsed": "46.3µs",
     "objects": [
         {
             "object": {
