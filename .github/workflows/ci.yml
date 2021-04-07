@@ -24,7 +24,5 @@ jobs:
       - uses: abatilo/actions-poetry@v2.0.0
       - name: Install dependencies
         run: poetry install
-      - name: Install dependencies
-        run: poetry install
       - name: lint
-        run: poe lint
+        run: poetry run poe lint
