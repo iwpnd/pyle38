@@ -12,3 +12,4 @@ exclude =
     .github
     tests/
     tmp/
+    .venv/
