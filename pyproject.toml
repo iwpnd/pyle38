@@ -2,7 +2,25 @@
 name = "pyle38"
 version = "0.1.0"
 description = "Async python client for Tile38"
-authors = ["Benjamin Ramser <legionaerr@googlemail.com>"]
+authors = ["Benjamin Ramser <ahoi@iwpnd.pw>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/iwpnd/pyle38"
+repository = "https://github.com/iwpnd/pyle38"
+keywords = ["tile38", "async", "client"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+    "Topic :: Database :: Front-Ends",
+    "Topic :: Scientific/Engineering :: GIS",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Typing :: Typed"
+]
+include = [
+    "LICENSE",
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"

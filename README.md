@@ -151,7 +151,7 @@ pip install pyle38
 Or using [Poetry](https://python-poetry.org/docs/)
 
 ```sh
-poeyry add pyle38
+poetry add pyle38
 ```
 
 ### Import
