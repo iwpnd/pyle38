@@ -16,11 +16,8 @@ classifiers = [
     "Topic :: Scientific/Engineering :: GIS",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "License :: OSI Approved :: MIT License",
-    "Typing :: Typed"
-]
-include = [
-    "LICENSE",
-]
+    "Typing :: Typed"]
+include = ["LICENSE"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
