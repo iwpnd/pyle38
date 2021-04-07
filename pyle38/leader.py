@@ -1,11 +1,12 @@
 from typing import Literal, Optional, Union
 
 from .client import Command
+from .commands.fset import Fset
 from .commands.set import Set
 from .commands.setchan import SetChan
 from .commands.sethook import SetHook
 from .follower import Follower
-from .responses import JSONResponse, ServerStatsResponseLeader, TTLResponse
+from .responses import Fields, JSONResponse, ServerStatsResponseLeader, TTLResponse
 
 
 class Leader(Follower):
@@ -32,6 +33,9 @@ class Leader(Follower):
 
     async def flushdb(self) -> JSONResponse:
         return JSONResponse(**(await self.client.command(Command.FLUSHDB)))
+
+    def fset(self, key: str, id: str, fields: Fields) -> Fset:
+        return Fset(self.client, key, id, fields)
 
     async def jset(
         self,
