@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from pyle38.tile38 import Tile38
+from pyle38 import Tile38
 
 default_tile38_leader_url = os.getenv("TILE38_LEADER_URI") or "redis://localhost:9851"
 default_tile38_follower_url = (

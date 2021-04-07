@@ -1,7 +1,7 @@
 import pytest
 
 from pyle38.errors import Tile38Error
-from pyle38.tile38 import Follower
+from pyle38.follower import Follower
 
 
 @pytest.mark.asyncio

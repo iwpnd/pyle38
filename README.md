@@ -48,7 +48,7 @@ This is a Python client for Tile38 that allows for fast and easy interaction wit
 
 ```python
 import asyncio
-from pyle38.tile38 import Tile38
+from pyle38 import Tile38
 
 
 async def main():
@@ -119,7 +119,7 @@ poeyry add pyle38
 
 ### Import
 ```python
-from pyle38.tile38 import Tile38
+from pyle38 import Tile38
 tile38 = Tile38('leader:9851')
 ```
 
