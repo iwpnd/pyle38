@@ -102,4 +102,10 @@ jobs:
       - name: Test
         run: |
           source .venv/bin/activate
-          poetry run poe test .
+          poetry run poe test . --cov=pyle38/ --cov-report=xml
+      - name: Upload coverage to codecov
+        uses: codecov/codecov-action@v1
+        with:
+            token: ${{ secrets.CODECOV_TOKEN }}
+            file: coverage.xml
+            fail_ci_if_error: true
