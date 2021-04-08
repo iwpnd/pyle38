@@ -128,7 +128,7 @@ In [6]: print(response.dict())
 -   lazy client
 -   optional build-in leader/follower logic
 -   easy to use and integrate
--   no external dependencies other than aioredis v2.0.0
+-   next to no external dependencies
 
 ### Built With
 
@@ -152,6 +152,16 @@ Or using [Poetry](https://python-poetry.org/docs/)
 ```sh
 poetry add pyle38
 ```
+
+Now start your Tile38 instance(s) either locally using Docker and docker-compose.
+
+```bash
+docker-compose up
+```
+
+Or follow the installation instruction on [tile38.com](https://tile38.com/topics/installation) to start your install Tile38 and start a server locally.
+
+If you already have a Tile38 instance running somewhere read on.
 
 ### Import
 
