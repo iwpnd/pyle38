@@ -23,11 +23,11 @@ python-versions = "*"
 
 [[package]]
 name = "arrow"
-version = "0.17.0"
+version = "1.0.3"
 description = "Better dates & times for Python"
 category = "dev"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+python-versions = ">=3.6"
 
 [package.dependencies]
 python-dateutil = ">=2.7.0"
@@ -150,14 +150,14 @@ pyflakes = ">=2.3.0,<2.4.0"
 
 [[package]]
 name = "gitlint"
-version = "0.15.0"
+version = "0.15.1"
 description = "Git commit message linter written in python, checks your commit messages for style."
 category = "dev"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-arrow = "0.17.0"
+arrow = "1.0.3"
 Click = "7.1.2"
 sh = {version = "1.14.1", markers = "sys_platform != \"win32\""}
 
@@ -492,7 +492,7 @@ testing = ["coverage (>=4)", "coverage-enable-subprocess (>=1)", "flaky (>=3)", 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "03ce74d2c958b772d4e877d17ae311e5edd7a711107016a6c927689d32ff1df0"
+content-hash = "c80f5dbfc6b9c5d9113e6ca0334ca96632a483d7ed736b9818026bd40ab38b94"
 
 [metadata.files]
 aioredis = [
@@ -504,8 +504,8 @@ appdirs = [
     {file = "appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41"},
 ]
 arrow = [
-    {file = "arrow-0.17.0-py2.py3-none-any.whl", hash = "sha256:e098abbd9af3665aea81bdd6c869e93af4feb078e98468dd351c383af187aac5"},
-    {file = "arrow-0.17.0.tar.gz", hash = "sha256:ff08d10cda1d36c68657d6ad20d74fbea493d980f8b2d45344e00d6ed2bf6ed4"},
+    {file = "arrow-1.0.3-py3-none-any.whl", hash = "sha256:3515630f11a15c61dcb4cdd245883270dd334c83f3e639824e65a4b79cc48543"},
+    {file = "arrow-1.0.3.tar.gz", hash = "sha256:399c9c8ae732270e1aa58ead835a79a40d7be8aa109c579898eb41029b5a231d"},
 ]
 async-timeout = [
     {file = "async-timeout-3.0.1.tar.gz", hash = "sha256:0c3c816a028d47f659d6ff5c745cb2acf1f966da1fe5c19c77a70282b25f4c5f"},
@@ -601,8 +601,8 @@ flake8 = [
     {file = "flake8-3.9.1.tar.gz", hash = "sha256:1aa8990be1e689d96c745c5682b687ea49f2e05a443aff1f8251092b0014e378"},
 ]
 gitlint = [
-    {file = "gitlint-0.15.0-py2.py3-none-any.whl", hash = "sha256:cf4881764c503845e24b6d8ce0c3bb28f37209dffebb4a25b84374356d72736a"},
-    {file = "gitlint-0.15.0.tar.gz", hash = "sha256:aae7e966d765a818d941398f2d3aff6ec7f30a7251dd5c915846b7e82f4f7776"},
+    {file = "gitlint-0.15.1-py2.py3-none-any.whl", hash = "sha256:7ebdb8e7d333e577e956225cbc3ad8e0e96d05e638e6d461c9b66b784f9d2ac4"},
+    {file = "gitlint-0.15.1.tar.gz", hash = "sha256:4b22916dcbdca381244aee6cb8d8743756cfd98f27e7d1f02e78733f07c3c21c"},
 ]
 identify = [
     {file = "identify-2.2.1-py2.py3-none-any.whl", hash = "sha256:9cc5f58996cd359b7b72f0a5917d8639de5323917e6952a3bfbf36301b576f40"},
