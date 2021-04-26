@@ -186,7 +186,7 @@ tile38 = Tile38('leader:9851', 'follower:9851')
 Once the client is instantiated with a follower, commands can be explicitly send to the follower, but adding `.follower()` to your command chaining.
 
 ```python
-await tile38.follower().get('fleet', 'truck1').asObjects()
+await tile38.follower().get('fleet', 'truck1').asObject()
 ```
 
 ### Pagination
