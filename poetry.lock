@@ -494,7 +494,7 @@ testing = ["coverage (>=4)", "coverage-enable-subprocess (>=1)", "flaky (>=3)", 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "ce5f6d4af4590cbdc89cc91d7521a1a3ebfd7cf8c9c06f23105db519b88187c7"
+content-hash = "4e0af8193e5f2d14537f7172c9ac776a0ce4318ff777f9a09076c4e5441db9b3"
 
 [metadata.files]
 aioredis = [
