@@ -2,14 +2,14 @@ version: "3"
 
 services:
   tile38-leader:
-    image: tile38/tile38:1.23.0
+    image: tile38/tile38:1.24.0
     container_name: tile38-leader
     command: tile38-server -vv -p 9851
     ports:
       - 9851:9851
 
   tile38-follower:
-    image: tile38/tile38:1.23.0
+    image: tile38/tile38:1.24.0
     container_name: tile38-follower
     command: >
       /bin/sh -c 'mkdir -p tmp/data && \
