@@ -163,12 +163,13 @@ class Within(Executable):
         """Option to filter what commands should be triggering a geo fence event.
 
         Args:
-            which (Optional[List[FenceCommand]]): which commands do trigger a geo fence event
-                defaults to 'set,del,jset,jdel' if not set
+            which (Optional[List[FenceCommand]]): which commands trigger a geo fence event
+                defaults to 'SET,DEL,JSET,JDEL' if not set
 
         Returns:
             Within
         """
+
         if which and len(which) > 0:
             self._commands = which
 
