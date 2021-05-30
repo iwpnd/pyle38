@@ -118,7 +118,7 @@ class Intersects(Executable):
         return self
 
     def fence(self, flag: bool = True) -> Intersects:
-        """Flag to indicate that the Within Query is used for a geo fence.
+        """Flag to indicate that the Intersects Query is used for a geo fence.
 
         Args:
             flag (bool): defaults to True if not set
@@ -169,7 +169,7 @@ class Intersects(Executable):
             value (int): limit value, defaults to 100 if not set
 
         Returns:
-            Within
+            Intersects
         """
         self._options["limit"] = value
 
