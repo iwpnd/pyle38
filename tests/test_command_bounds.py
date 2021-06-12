@@ -1,3 +1,5 @@
+from time import sleep
+
 import pytest
 
 
@@ -19,6 +21,8 @@ async def test_command_bounds(tile38_with_follower):
             ],
         },
     }
+
+    sleep(0.5)
 
     received = await tile38.bounds(key)
     assert expected["bounds"] == received.bounds

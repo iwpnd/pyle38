@@ -1,4 +1,4 @@
-import asyncio
+from time import sleep
 
 import pytest
 
@@ -17,7 +17,7 @@ async def test_command_keys(tile38_with_follower):
     assert response.ok
     assert response.keys == [key]
 
-    await asyncio.sleep(0.5)
+    sleep(0.5)
 
     response = await tile38.follower().keys("fl*")
     assert response.ok

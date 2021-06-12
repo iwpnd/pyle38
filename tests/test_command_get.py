@@ -1,4 +1,4 @@
-import asyncio
+from time import sleep
 
 import pytest
 
@@ -40,7 +40,7 @@ async def test_command_get_query(tile38_with_follower):
 
     await tile38.set(key, id).object(obj).exec()
 
-    await asyncio.sleep(0.5)
+    sleep(0.5)
 
     expected_object = {"ok": True, "object": obj, "elapsed": "1 ms"}
     received = await tile38.get(key, id).asObject()
