@@ -28,7 +28,7 @@
 <li><a  href="#keys">Keys</a></li>
 <li><a  href="#search">Search</a></li>
 <li><a  href="#geofencing">Geofencing</a></li>
-<li><a  href="#server">Server / Connection</a></li>
+<li><a  href="#server-and-connection">Server and Connection</a></li>
 </ul>
 <li><a  href="#roadmap">Roadmap</a></li>
 <li><a  href="#contributing">Contributing</a></li>
@@ -701,7 +701,7 @@ await tile38.search('fleet').match('J*').asStringObjects()
 | `.asCount()` | returns a count of the objects in the search |
 | `.asIds()` | returns an array of ids |
 
-### Server / Connection
+### Server and Connection
 
 #### CONFIG GET / REWRITE / SET
 
