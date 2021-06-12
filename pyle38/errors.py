@@ -8,3 +8,7 @@ class Tile38IdNotFoundError(Exception):
 
 class Tile38KeyNotFoundError(Exception):
     pass
+
+
+class Tile38NotCaughtUpError(Exception):
+    pass

@@ -66,6 +66,9 @@ class Follower(Client):
     async def hooks(self, pattern: str = "*") -> HooksResponse:
         return HooksResponse(**(await self.client.command(Command.HOOKS, [pattern])))
 
+    async def healthz(self) -> JSONResponse:
+        return JSONResponse(**(await self.client.command(Command.HEALTHZ)))
+
     def intersects(self, key: str) -> Intersects:
         return Intersects(self.client, key)
 

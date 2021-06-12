@@ -1,7 +1,12 @@
 import json
 from typing import Dict, Optional, Union
 
-from .errors import Tile38Error, Tile38IdNotFoundError, Tile38KeyNotFoundError
+from .errors import (
+    Tile38Error,
+    Tile38IdNotFoundError,
+    Tile38KeyNotFoundError,
+    Tile38NotCaughtUpError,
+)
 
 
 def parse_response(
@@ -26,6 +31,9 @@ def parse_response(
 
         if "id not found" in msg:
             raise Tile38IdNotFoundError(msg)
+
+        if "not caught up" in msg:
+            raise Tile38NotCaughtUpError(msg)
 
         raise Tile38Error(msg)
 
