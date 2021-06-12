@@ -167,7 +167,7 @@ If you already have a Tile38 instance running somewhere read on.
 
 ```python
 from pyle38 import Tile38
-tile38 = Tile38('leader:9851')
+tile38 = Tile38('redis://localhost:9851')
 ```
 
 ### Leader / Follower
@@ -180,7 +180,7 @@ For now you can set one follower `url` to bet set alongside the leader `url`.
 
 ```python
 from pyle38.tile38 import Tile38
-tile38 = Tile38('leader:9851', 'follower:9851')
+tile38 = Tile38('redis://localhost:9851', 'redis://localhost:9851')
 ```
 
 Once the client is instantiated with a follower, commands can be explicitly send to the follower, but adding `.follower()` to your command chaining.
@@ -762,6 +762,39 @@ Delete all keys and hooks.
 
 ```python
 await tile38.flushDb()
+```
+
+#### PING
+
+Ping your server
+
+```python
+await tile38.ping()
+```
+
+#### HEALTHZ
+
+Returns `OK` if server is the Leader. If server is a Follower, returns `OK` once the Follower caught up to the Leader.
+For [HTTP requests](https://tile38.com/topics/network-protocols#http) it returns `HTTP 200 OK` once caught up, or `HTTP 500 Internal Server Error` if not.
+
+The command is primarily built to be send via HTTP in orchestration frameworks such as Kubernetes as `livelinessProbe` and/or `readinessProbe`.
+Since a Follower has to catch up to the state of the Leader before it can execute queries, it is essential that it does not receive traffic prior to being caught up.
+
+`HEALTHZ` in combination with a readinessProbe ensures a ready state.
+
+```python
+await tile38.healthz()
+```
+
+```
+// values.yaml
+
+readinessProbe:
+  httpGet:
+    scheme: HTTP
+    path: /healthz
+    port: 9851
+  initialDelaySeconds: 60
 ```
 
 #### GC
