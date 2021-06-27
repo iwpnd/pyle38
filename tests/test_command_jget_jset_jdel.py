@@ -10,7 +10,7 @@ async def test_command_jset_jget_jdel(tile38_with_follower):
     response = await tile38.jset(key="user", id="901", path="name", value="Tom")
     assert response.ok
 
-    sleep(0.5)
+    sleep(2)
 
     response = await tile38.jget("user", "901")
     assert response.ok
