@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyle38"
-version = "0.3.0"
+version = "0.2.0"
 description = "Async python client for Tile38"
 authors = ["Benjamin Ramser <ahoi@iwpnd.pw>"]
 license = "MIT"
@@ -35,14 +35,16 @@ isort = "^5.9.1"
 pytest-cov = "^2.12.1"
 flake8 = "^3.9.2"
 mypy = "^0.910"
+python-semantic-release = "^7.16.2"
 
 [tool.semantic_release]
 version_variable = [
     "pyle38/__init__.py:__version__",
     "pyproject.toml:version"
 ]
+commit_subject = "ci: release v{version}"
 branch = "main"
-upload_to_pypi = false
+upload_to_pypi = true
 upload_to_release = true
 build_command = "pip install poetry && poetry build"
 
@@ -61,3 +63,4 @@ mypy       = "poetry run mypy --ignore-missing-imports --config-file pyproject.t
 lint       = "flake8 ."
 up         = "docker-compose up"
 down       = "docker-compose down"
+publish    = "poetry run semantic-release publish"
