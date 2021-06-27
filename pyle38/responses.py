@@ -322,3 +322,46 @@ class GeoFence(GenericModel, Generic[T]):
     time: str
     id: str
     object: T
+
+
+class Info(BaseModel):
+    aof_current_rewrite_time_sec: int
+    aof_enabled: int
+    aof_last_rewrite_time_sec: int
+    aof_rewrite_in_progress: int
+    cluster_enabled: int
+    connected_clients: int
+    connected_slaves: int
+    expired_keys: int
+    redis_version: str
+    role: Literal["master", "slave"]
+    tile38_version: str
+    total_messages_sent: int
+    total_connections_received: int
+    total_commands_processed: int
+    uptime_in_seconds: int
+    used_cpu_sys: int
+    used_cpu_sys_children: int
+    used_cpu_user: int
+    used_cpu_user_children: int
+    used_memory: int
+
+
+class InfoFollower(Info):
+    master_host: str
+    master_port: str
+
+
+class InfoLeader(Info):
+    # to allow for additional slaves
+    # slave0, slave1..
+    class Config:
+        extra = "allow"
+
+
+class InfoFollowerResponse(JSONResponse):
+    info: InfoFollower
+
+
+class InfoLeaderResponse(JSONResponse):
+    info: InfoLeader

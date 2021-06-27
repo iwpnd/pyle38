@@ -14,6 +14,7 @@ from .responses import (
     ConfigGetResponse,
     ConfigKeys,
     HooksResponse,
+    InfoFollowerResponse,
     JSONGetResponse,
     JSONResponse,
     KeysResponse,
@@ -68,6 +69,9 @@ class Follower(Client):
 
     async def healthz(self) -> JSONResponse:
         return JSONResponse(**(await self.client.command(Command.HEALTHZ)))
+
+    async def info(self) -> InfoFollowerResponse:
+        return InfoFollowerResponse(**(await self.client.command(Command.INFO)))
 
     def intersects(self, key: str) -> Intersects:
         return Intersects(self.client, key)

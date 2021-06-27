@@ -16,6 +16,7 @@ class Command(str, Enum):
     GC = "GC"
     HOOKS = "HOOKS"
     HEALTHZ = "HEALTHZ"
+    INFO = "INFO"
     PDEL = "PDEL"
     PERSIST = "PERSIST"
     TTL = "TTL"

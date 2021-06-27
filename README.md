@@ -827,6 +827,14 @@ Or get extended statistics:
 await tile38.server_extended()
 ```
 
+### INFO
+
+Get Tile38 info. Similar to `SERVER` but different metrics.
+
+```
+await tile38.info()
+```
+
 ### Geofencing
 
 > A [geofence](https://en.wikipedia.org/wiki/Geo-fence) is a virtual boundary that can detect when an object enters or exits the area. This boundary can be a radius or any [search area format](https://tile38.com/commands/intersects#area-formats), such as a [bounding box](https://tile38.com/topics/object-types#bounding-box), [GeoJSON](https://tile38.com/topics/object-types#geojson) object, etc. Tile38 can turn any standard search into a geofence monitor by adding the FENCE keyword to the search.

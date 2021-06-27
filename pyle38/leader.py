@@ -6,7 +6,13 @@ from .commands.set import Set
 from .commands.setchan import SetChan
 from .commands.sethook import SetHook
 from .follower import Follower
-from .responses import Fields, JSONResponse, ServerStatsResponseLeader, TTLResponse
+from .responses import (
+    Fields,
+    InfoLeaderResponse,
+    JSONResponse,
+    ServerStatsResponseLeader,
+    TTLResponse,
+)
 
 
 class Leader(Follower):
@@ -36,6 +42,9 @@ class Leader(Follower):
 
     def fset(self, key: str, id: str, fields: Fields) -> Fset:
         return Fset(self.client, key, id, fields)
+
+    async def info(self) -> InfoLeaderResponse:
+        return InfoLeaderResponse(**(await self.client.command(Command.INFO)))
 
     async def jset(
         self,
