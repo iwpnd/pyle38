@@ -95,7 +95,7 @@ CommandArgs = Union[
 
 
 class Client:
-    __redis: Optional[aioredis.Redis] = None
+    __redis = None
     __format: str = Format.RESP.value
 
     def __init__(self, url: str) -> None:
@@ -111,10 +111,11 @@ class Client:
 
     async def __getRedis(self) -> aioredis.Redis:
         if not self.__redis:
-            self.__redis = await aioredis.from_url(
+            self.__redis = aioredis.from_url(
                 self.url, encoding="utf-8", decode_responses=True
             )
             self.__format = Format.RESP.value
+
         return self.__redis
 
     async def __command_async(
