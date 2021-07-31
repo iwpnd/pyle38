@@ -44,7 +44,7 @@
 
 This is an asynchonous Python client for Tile38 that allows for fast and easy interaction with the worlds fastest in-memory geodatabase [Tile38](https://www.tile38.com).
 
-check out my introductory blog post about the project on my [blog](https://iwpnd.pw/articles/2021-07/pyle38-tile38-python-client).
+Check out my introductory blog post about the project on my [blog](https://iwpnd.pw/articles/2021-07/pyle38-tile38-python-client).
 
 ### Example
 
