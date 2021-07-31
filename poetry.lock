@@ -1,6 +1,6 @@
 [[package]]
 name = "aioredis"
-version = "2.0.0b1"
+version = "2.0.0"
 description = "asyncio (PEP 3156) Redis support"
 category = "main"
 optional = false
@@ -905,12 +905,12 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "05f4d5f95b3f0a398812936fd3e7652e247b9d5d7c11c5599e7aa22f1b0a375a"
+content-hash = "a0a8483831ed39060598590ba1eb4500cd68d80afbd5c419f9a56913f8727a43"
 
 [metadata.files]
 aioredis = [
-    {file = "aioredis-2.0.0b1-py3-none-any.whl", hash = "sha256:ca2c17093c019f88e4c1483353d38e448f72e3f24ba4119efdcbfdcf42f10a43"},
-    {file = "aioredis-2.0.0b1.tar.gz", hash = "sha256:f1dbcfd6cd664e69dbd457b4ae3d658429d3ba1c2e68d493d3562203b703a25f"},
+    {file = "aioredis-2.0.0-py3-none-any.whl", hash = "sha256:9921d68a3df5c5cdb0d5b49ad4fc88a4cfdd60c108325df4f0066e8410c55ffb"},
+    {file = "aioredis-2.0.0.tar.gz", hash = "sha256:3a2de4b614e6a5f8e104238924294dc4e811aefbe17ddf52c04a93cbf06e67db"},
 ]
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
