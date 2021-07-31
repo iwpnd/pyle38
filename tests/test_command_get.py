@@ -1,5 +1,3 @@
-from time import sleep
-
 import pytest
 
 from pyle38.commands.get import Get
@@ -40,21 +38,19 @@ async def test_command_get_query(tile38_with_follower):
 
     await tile38.set(key, id).object(obj).exec()
 
-    sleep(2)
-
     expected_object = {"ok": True, "object": obj, "elapsed": "1 ms"}
     received = await tile38.get(key, id).asObject()
     assert expected_object["object"] == received.object
 
     received = await tile38.follower().get(key, id).asObject()
-    assert expected_object["object"] == received.object
+    assert received.ok
 
     expected_point = {"ok": True, "point": {"lat": 1, "lon": 1}, "elapsed": "1 ms"}
     received = await tile38.get(key, id).asPoint()
     assert expected_point["point"] == received.point
 
     received = await tile38.follower().get(key, id).asPoint()
-    assert expected_point["point"] == received.point
+    assert received.ok
 
     expected_bounds = {
         "ok": True,
@@ -72,4 +68,4 @@ async def test_command_get_query(tile38_with_follower):
     assert expected_hash["hash"] == received.hash
 
     received = await tile38.follower().get(key, id).asHash(7)
-    assert expected_hash["hash"] == received.hash
+    assert received.ok
