@@ -4,13 +4,18 @@
 
 ## v0.3.2 (2021-07-31)
 
+-   🔧 update aioredis to v2.0.0
+-   🔧 update tile38 to v1.25.1
 
 ## v0.3.1 (2021-07-25)
+
 ### Fix
-* 🐛 redis from url is sync ([`7842e76`](https://github.com/iwpnd/pyle38/commit/7842e76a9bd870709030a4d5779d22d4faa18f0d))
+
+-   🐛 redis from url is sync ([`7842e76`](https://github.com/iwpnd/pyle38/commit/7842e76a9bd870709030a4d5779d22d4faa18f0d))
 
 ### Documentation
-* 📚️ remove duplicated changelog entries [skip ci] ([`9743221`](https://github.com/iwpnd/pyle38/commit/9743221c33282b9fc8206275f6cc3a6922efa886))
+
+-   📚️ remove duplicated changelog entries [skip ci] ([`9743221`](https://github.com/iwpnd/pyle38/commit/9743221c33282b9fc8206275f6cc3a6922efa886))
 
 ## v0.3.0 (2021-06-27)
 
