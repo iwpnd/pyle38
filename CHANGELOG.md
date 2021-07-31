@@ -2,6 +2,9 @@
 
 <!--next-version-placeholder-->
 
+## v0.3.2 (2021-07-31)
+
+
 ## v0.3.1 (2021-07-25)
 ### Fix
 * 🐛 redis from url is sync ([`7842e76`](https://github.com/iwpnd/pyle38/commit/7842e76a9bd870709030a4d5779d22d4faa18f0d))
