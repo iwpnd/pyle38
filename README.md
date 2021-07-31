@@ -1,5 +1,7 @@
 <br  />
-<h1 align="center">PYLE38</h1>
+<br  />
+<p align="center">
+<img  src=".github/img/pyle38.png"  alt="Logo"  width="500"  height="150">
 <p align="center">
 <a  href="https://iwpnd.pw">iwpnd.pw</a> · <a  href="https://github.com/iwpnd/pyle38/issues">Report Bug</a>
 · <a  href="https://github.com/iwpnd/pyle38/issues">Request Feature</a>
