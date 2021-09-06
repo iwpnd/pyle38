@@ -35,7 +35,7 @@ isort = "^5.9.3"
 pytest-cov = "^2.12.1"
 flake8 = "^3.9.2"
 mypy = "^0.910"
-python-semantic-release = "^7.19.1"
+python-semantic-release = "^7.19.2"
 
 [tool.semantic_release]
 version_variable = [
