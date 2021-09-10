@@ -899,8 +899,8 @@ Creates a webhook that points to a geosearch (NEARBY/WITHIN/INTERSECTS). Wheneve
 # latitude 33.5123 and longitude -112.2693
 await tile38.sethook('warehouse', 'http://10.0.20.78/endpoint')
 	    .nearby('fleet')
-        .point(33.5123, -112.2693, 500)
-        .activate()
+      .point(33.5123, -112.2693, 500)
+      .activate()
 ```
 
 ```python
