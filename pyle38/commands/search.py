@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import Literal, Optional, Sequence, Union
+from typing import List, Literal, Optional, Sequence, Union
 
-from ..client import Client, Command, CommandArgs
+from ..client import Client, Command, CommandArgs, SubCommand
 from ..models import Options
 from ..responses import CountResponse, IdsResponse, StringObjectsResponse
 from .executable import Compiled, Executable
@@ -16,6 +16,7 @@ class Search(Executable):
     _command: Literal["SEARCH"]
     _options: Options = {}
     _output: Optional[Output] = None
+    _where: List[List[Union[str, int]]] = []
     _all: bool = False
 
     def __init__(self, client: Client, key: str) -> None:
@@ -23,6 +24,7 @@ class Search(Executable):
 
         self.key(key)
         self._options = {}
+        self._where = []
 
     def key(self, key: str) -> Search:
         self._key = key
@@ -60,6 +62,22 @@ class Search(Executable):
 
         return self
 
+    def where(self, field: str, min: int, max: int) -> Search:
+        """Filter the search by field
+
+        Args:
+            field (str): field name
+            min (int): minimum value of field
+            max (int): maximum value of field
+
+        Returns:
+            Within
+        """
+
+        self._where.append([SubCommand.WHERE, field, min, max])
+
+        return self
+
     def output(self, format: Format) -> Search:
         if format == "OBJECTS":
             self._output = None
@@ -84,6 +102,24 @@ class Search(Executable):
 
         return StringObjectsResponse(**(await self.exec()))
 
+    def __compile_where(self) -> CommandArgs:
+        """__compile_where.
+
+        Args:
+
+        Returns:
+            CommandArgs
+
+        """
+        w = []
+
+        if len(self._where) > 0:
+            for i in self._where:
+                w.extend(i)
+            return w
+        else:
+            return []
+
     def __compile_options(self) -> CommandArgs:
         commands = []
 
@@ -106,6 +142,7 @@ class Search(Executable):
             [
                 self._key,
                 *(self.__compile_options()),
+                *(self.__compile_where()),
                 *(self._output if self._output else []),
             ],
         ]
