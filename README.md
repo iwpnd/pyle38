@@ -180,14 +180,14 @@ When it comes to replication, Tile38 follows a leader-follower model. The leader
 
 This client is not meant to setup a replication, because this should happen in your infrastructure. But it helps you to specifically execute commands on leader or follower. This way you can make sure that the leader always has enough resources to execute `SET`s and fire `geofence` events on `webhooks`.
 
-For now you can set one follower `url` to bet set alongside the leader `url`.
+For now you can set one follower `url` to set alongside the leader `url`.
 
 ```python
 from pyle38.tile38 import Tile38
 tile38 = Tile38('redis://localhost:9851', 'redis://localhost:9851')
 ```
 
-Once the client is instantiated with a follower, commands can be explicitly send to the follower, but adding `.follower()` to your command chaining.
+Once the client is instantiated with a follower, commands can be explicitly send to the follower, by adding `.follower()` to your command chaining.
 
 ```python
 await tile38.follower().get('fleet', 'truck1').asObject()
@@ -497,6 +497,14 @@ await tile38.within('fleet').nofields().asCount()
    "elapsed":"2.078168µs"
 }
 
+await tile38.within('fleet').nofields().where("maxspeed", 100, 120).asCount()
+> {
+   "ok":true,
+   "count":80,
+   "cursor":0,
+   "elapsed":"2.078168µs"
+}
+
 await tile38.within('fleet').get('warehouses', 'Berlin').asCount();
 > {
    "ok":true,
@@ -514,6 +522,7 @@ await tile38.within('fleet').get('warehouses', 'Berlin').asCount();
 | `.nofields()` | if not set and one of the objects in the key has fields attached, fields will be returned. Use this to suppress this behavior and don't return fields. |
 | `.match(pattern)` | Match can be used to filtered objects considered in the search with a glob pattern. `.match('truck*')` e.g. will only consider ids that start with `truck` within your key. |
 | `.sparse(value)` | **caution** seems bugged since Tile38 1.22.6. Accepts values between 1 and 8. Can be used to distribute the results of a search evenly across the requested area. |
+| `.where(fieldname, min value, max value)` | filter output by fieldname and values. |
 
 **Outputs**
 || |
@@ -555,6 +564,14 @@ await tile38.intersects('fleet').get('warehouses', 'Berlin').asIds()
    "cursor":0,
    "elapsed":"2.078168ms"
 }
+
+await tile38.intersects('warehouses').hash('u33d').where("maxweight", 1000, 1000).asCounts()
+> {
+   "ok":true,
+   "count":80,
+   "cursor":0,
+   "elapsed":"2.078168µs"
+}
 ```
 
 **Options**
@@ -566,6 +583,7 @@ await tile38.intersects('fleet').get('warehouses', 'Berlin').asIds()
 | `.nofields()` | if not set and one of the objects in the key has fields attached, fields will be returned. Use this to suppress this behavior and don't return fields. |
 | `.match(pattern)` | Match can be used to filtered objects considered in the search with a glob pattern. `.match('warehouse*')` e.g. will only consider ids that start with `warehouse` within your key. |
 | `.sparse(value)` | **caution** seems bugged since Tile38 1.22.6. Accepts values between 1 and 8. Can be used to distribute the results of a search evenly across the requested area. |
+| `.where(fieldname, min value, max value)` | filter output by fieldname and values. |
 
 **Outputs**
 || |
@@ -593,9 +611,10 @@ await tile38.intersects('fleet').get('warehouses', 'Berlin').asIds()
 ```python
 await tile38.set('fleet', 'truck1')
 		.point(33.5123, -112.2693)
+		.fields({"maxspeed": 100})
 		.exec()
 
-await  tile38.nearby('fleet').point(33.5124, -112.2694)
+await tile38.nearby('fleet').where("maxspeed", 100, 100).point(33.5124, -112.2694).asCount()
 > {
    "ok":true,
    "count":1,
@@ -603,10 +622,11 @@ await  tile38.nearby('fleet').point(33.5124, -112.2694)
    "elapsed":"42.8µs"
 }
 
-await  tile38.nearby('fleet').point(33.5124, -112.2694, 10)
+await tile38.nearby('fleet').point(33.5124, -112.2694, 10).asCount
 // because truck1 is further away than 10m
 > {
    "ok":true,
+	 "fields": ["maxspeed"]
    "count":0,
    "cursor":0,
    "elapsed":"36µs"
@@ -622,6 +642,7 @@ await  tile38.nearby('fleet').point(33.5124, -112.2694, 10)
 | `.nofields()` | if not set and one of the objects in the key has fields attached, fields will be returned. Use this to suppress this behavior and don't return fields. |
 | `.match(pattern)` | Match can be used to filtered objects considered in the search with a glob pattern. `.match('warehouse*')` e.g. will only consider ids that start with `warehouse` within your key. |
 | `.sparse(value)` | **caution** seems bugged since Tile38 1.22.6. Accepts values between 1 and 8. Can be used to distribute the results of a search evenly across the requested area. |
+| `.where(fieldname, min value, max value)` | filter output by fieldname and values. |
 
 **Outputs**
 || |
@@ -643,7 +664,16 @@ await  tile38.nearby('fleet').point(33.5124, -112.2694, 10)
 Incrementally iterate through a given collection key.
 
 ```python
-await  tile38.scan('fleet')
+await tile38.scan('fleet')
+
+await tile38.scan('fleet').where("maxspeed", 100, 120).asCount()
+> {
+   "ok":true,
+   "count":1,
+   "cursor":0,
+   "elapsed":"42.8µs"
+}
+
 ```
 
 **Options**
@@ -655,6 +685,7 @@ await  tile38.scan('fleet')
 | `.limit(value)` | limit the number of returned objects. Defaults to `100` if not set explicitly |
 | `.nofields()` | if not set and one of the objects in the key has fields attached, fields will be returned. Use this to suppress this behavior and don't return fields. |
 | `.match(pattern)` | Match can be used to filtered objects considered in the search with a glob pattern. `.match('warehouse*')` e.g. will only consider ids that start with `warehouse` within your key. |
+| `.where(fieldname, min value, max value)` | filter output by fieldname and values. |
 
 **Outputs**
 || |
@@ -697,6 +728,7 @@ await tile38.search('fleet').match('J*').asStringObjects()
 | `.limit(value)` | limit the number of returned objects. Defaults to `100` if not set explicitly |
 | `.nofields()` | if not set and one of the objects in the key has fields attached, fields will be returned. Use this to suppress this behavior and don't return fields. |
 | `.match(pattern)` | Match can be used to filtered objects considered in the search with a glob pattern. `.match('J*')` e.g. will only consider string values objects that have a string value starting with `J` |
+| `.where(fieldname, min value, max value)` | filter output by fieldname and values. |
 
 **Outputs**
 || |
