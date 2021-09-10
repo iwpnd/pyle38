@@ -49,6 +49,45 @@ async def test_command_scan_compile(tile38):
         [key, "MATCH", "*", "NOFIELDS", "SPARSE", 1, "DESC", "CURSOR", 0, "LIMIT", 10],
     ]
 
+    query = (
+        Scan(tile38.client, key)
+        .match("*")
+        .nofields()
+        .sparse(1)
+        .desc()
+        .cursor(0)
+        .limit(10)
+        .where("foo", 1, 1)
+        .where("bar", 1, 1)
+    )
+
+    received = query.output("OBJECTS").compile()
+
+    assert received == [
+        "SCAN",
+        [
+            key,
+            "MATCH",
+            "*",
+            "NOFIELDS",
+            "SPARSE",
+            1,
+            "DESC",
+            "CURSOR",
+            0,
+            "LIMIT",
+            10,
+            "WHERE",
+            "foo",
+            1,
+            1,
+            "WHERE",
+            "bar",
+            1,
+            1,
+        ],
+    ]
+
 
 @pytest.mark.asyncio
 async def test_command_scan(tile38):
@@ -58,6 +97,30 @@ async def test_command_scan(tile38):
     response = await tile38.scan(key).asObjects()
     assert response.ok
     assert response.objects[0].dict() == expected
+
+
+@pytest.mark.asyncio
+async def test_command_scan_where(tile38):
+    await tile38.set(key, id).fields({"maxspeed": 120, "maxweight": 1000}).object(
+        feature
+    ).exec()
+    await tile38.set(key, "truck1").fields({"maxspeed": 100, "maxweight": 1000}).object(
+        feature
+    ).exec()
+
+    response = await tile38.scan(key).where("maxspeed", 120, 120).asObjects()
+    assert response.ok
+    assert len(response.objects) == 1
+    assert response.objects[0].dict() == dict(expected, **{"fields": [120, 1000]})
+
+    response = (
+        await tile38.scan(key)
+        .where("maxspeed", 100, 120)
+        .where("maxweight", 1000, 1000)
+        .asObjects()
+    )
+    assert response.ok
+    assert len(response.objects) == 2
 
 
 @pytest.mark.asyncio
