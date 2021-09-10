@@ -254,6 +254,8 @@ class ServerStatsExtended(BaseModel):
     tile38_num_objects: int
     tile38_num_points: int
     tile38_num_strings: int
+    tile38_num_object_groups: int
+    tile38_num_hook_groups: int
     tile38_pid: int
     tile38_pointer_size: int
     tile38_read_only: bool
