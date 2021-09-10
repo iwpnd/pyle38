@@ -55,6 +55,7 @@ class Within(Executable):
     _fence: bool = False
     _detect: Optional[List[FenceDetect]] = []
     _commands: Optional[List[FenceCommand]] = []
+    _where: List[List[Union[str, int]]] = []
 
     def __init__(self, client: Client, key: str, hook=None) -> None:
         """__init__.
@@ -73,6 +74,7 @@ class Within(Executable):
         self.key(key)
         self._options = {}
         self._hook = hook
+        self._where = []
 
     def key(self, key: str) -> Within:
         """Set key to search in
@@ -198,6 +200,22 @@ class Within(Executable):
             Within
         """
         self._options["match"] = value
+
+        return self
+
+    def where(self, field: str, min: int, max: int) -> Within:
+        """Filter the search by field
+
+        Args:
+            field (str): field name
+            min (int): minimum value of field
+            max (int): maximum value of field
+
+        Returns:
+            Within
+        """
+
+        self._where.append([SubCommand.WHERE, field, min, max])
 
         return self
 
@@ -405,6 +423,24 @@ class Within(Executable):
 
         return PointsResponse(**(await self.exec()))
 
+    def __compile_where(self) -> CommandArgs:
+        """__compile_where.
+
+        Args:
+
+        Returns:
+            CommandArgs
+
+        """
+        w = []
+
+        if len(self._where) > 0:
+            for i in self._where:
+                w.extend(i)
+            return w
+        else:
+            return []
+
     def __compile_options(self) -> CommandArgs:
         """__compile_options.
 
@@ -466,6 +502,7 @@ class Within(Executable):
             [
                 self._key,
                 *(self.__compile_options()),
+                *(self.__compile_where()),
                 *(self.__compile_fence()),
                 *(self._output if self._output else []),
                 *(self._query.get()),

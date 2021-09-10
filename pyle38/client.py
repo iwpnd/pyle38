@@ -82,6 +82,7 @@ class SubCommand(str, Enum):
     ASC = "ASC"
     DESC = "DESC"
     EXT = "EXT"
+    WHERE = "WHERE"
 
 
 class Format(str, Enum):
