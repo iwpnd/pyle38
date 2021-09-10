@@ -2,6 +2,24 @@
 
 <!--next-version-placeholder-->
 
+## v0.4.0 (2021-09-10)
+### Feature
+* ✨ add where filter to scan command ([`8c78d8b`](https://github.com/iwpnd/pyle38/commit/8c78d8b54ba4554b433334f98eaaf00110fe3b99))
+* ✨ add where filter to search command ([`5e02bd4`](https://github.com/iwpnd/pyle38/commit/5e02bd40711021a09bb1db6c6ece561af707ecd8))
+* ✨ add where filter to nearby command ([`0f795c8`](https://github.com/iwpnd/pyle38/commit/0f795c878ff8c84d41a712643ae773aba25b7b04))
+* ✨ add where filter to intersects command ([`dbf8be1`](https://github.com/iwpnd/pyle38/commit/dbf8be14697f2f422e462e90140b66ce17a5a7c3))
+* ✨ add where filter to within command ([`ceb5a29`](https://github.com/iwpnd/pyle38/commit/ceb5a29aad148c96729da8b2879fbec6a5d30605))
+
+### Fix
+* 🐛 update server extended response ([`62628fb`](https://github.com/iwpnd/pyle38/commit/62628fb14b0444a381fe2da3b59e384ad39460de))
+
+### Documentation
+* 📚️ update docs ([`8a7cec2`](https://github.com/iwpnd/pyle38/commit/8a7cec286ee472361a7c2e1c7ec8c974f4a8ae71))
+* 📚️ update docs ([`4fcc6e6`](https://github.com/iwpnd/pyle38/commit/4fcc6e664fc229d68465a0cca34e9ae4c48ddd62))
+* Update readme, fix typo ([`e4a02f2`](https://github.com/iwpnd/pyle38/commit/e4a02f2c21d651d8b7bc4aa19cfaeef1ead87898))
+* 📚️ update readme ([`d318051`](https://github.com/iwpnd/pyle38/commit/d3180518c799897c8c0f65af80c669bc04c89f90))
+* 📚️ update docs, add logo ([`09b44e2`](https://github.com/iwpnd/pyle38/commit/09b44e2071d79d26ed04faa1b26d53625ea15f82))
+
 ## v0.3.2 (2021-07-31)
 
 -   🔧 update aioredis to v2.0.0
