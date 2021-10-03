@@ -76,6 +76,25 @@ class TileQuery(BaseModel):
         return [self.command, self.x, self.y, self.z]
 
 
+class SectorQuery(BaseModel):
+    command: Literal["SECTOR"] = "SECTOR"
+    lat: float
+    lon: float
+    radius: float
+    bearing1: float
+    bearing2: float
+
+    def get(self) -> Sequence[Union[str, float]]:
+        return [
+            self.command,
+            self.lat,
+            self.lon,
+            self.radius,
+            self.bearing1,
+            self.bearing2,
+        ]
+
+
 Coordinate = Tuple[float, float]
 
 
