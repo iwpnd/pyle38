@@ -193,6 +193,18 @@ async def test_command_within_bounds(tile38):
 
 
 @pytest.mark.asyncio
+async def test_command_within_sector(tile38):
+    response = await tile38.set(key, id).object(feature).exec()
+    assert response.ok
+
+    response = (
+        await tile38.within(key).sector(52.25191, 13.37230, 1000, 180, 270).asObjects()
+    )
+    assert response.ok
+    assert response.objects[0].dict() == expected
+
+
+@pytest.mark.asyncio
 async def test_command_within_get(tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok

@@ -14,6 +14,7 @@ from ..models import (
     Options,
     Polygon,
     QuadkeyQuery,
+    SectorQuery,
     TileQuery,
 )
 from ..responses import (
@@ -49,6 +50,7 @@ class Intersects(Executable):
         TileQuery,
         ObjectQuery,
         GetQuery,
+        SectorQuery,
     ]
     _output: Optional[Output] = None
     _all: bool = False
@@ -284,6 +286,27 @@ class Intersects(Executable):
             Intersects
         """
         self._query = QuadkeyQuery(quadkey=quadkey)
+
+        return self
+
+    def sector(
+        self, lat: float, lon: float, radius: float, bearing1: float, bearing2: float
+    ) -> Intersects:
+        """Define a sector as inbound area type for the within search
+
+        Args:
+            lat (float): latitude of sector center
+            lon (float): longitude of sector center
+            radius (float): radius of sector
+            bearing1 (float): start bearing
+            bearing2 (float): end bearing
+
+        Returns:
+            Within
+        """
+        self._query = SectorQuery(
+            lat=lat, lon=lon, radius=radius, bearing1=bearing1, bearing2=bearing2
+        )
 
         return self
 

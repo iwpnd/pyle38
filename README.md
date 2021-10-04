@@ -544,6 +544,7 @@ await tile38.within('fleet').get('warehouses', 'Berlin').asCount();
 | `.quadkey(value)` | Search a given [quadkey](https://docs.microsoft.com/en-us/bingmaps/articles/bing-maps-tile-system?redirectedfrom=MSDN) |
 | `.tile(x, y, z)` | Search a given [tile](https://en.wikipedia.org/wiki/Tiled_web_map#Defining_a_tiled_web_map) |
 | `.object(value)` | Search a given GeoJSON polygon feature. |
+| `.sector(lat, lon, radius, bearing1, bearing2)` | Search a given Sector polygon feature. |
 
 #### INTERSECTS
 
@@ -605,6 +606,7 @@ await tile38.intersects('warehouses').hash('u33d').where("maxweight", 1000, 1000
 | `.quadkey(value)` | Search a given [quadkey](https://docs.microsoft.com/en-us/bingmaps/articles/bing-maps-tile-system?redirectedfrom=MSDN) |
 | `.tile(x, y, z)` | Search a given [tile](https://en.wikipedia.org/wiki/Tiled_web_map#Defining_a_tiled_web_map) |
 | `.object(value)` | Search a given GeoJSON polygon feature. |
+| `.sector(lat, lon, radius, bearing1, bearing2)` | Search a given Sector polygon feature. |
 
 #### Nearby
 
