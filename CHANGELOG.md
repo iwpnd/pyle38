@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.5.0 (2021-10-04)
+### Feature
+* ✨ add sector search to within and intersects ([`4b6931b`](https://github.com/iwpnd/pyle38/commit/4b6931ba59d9c4a573a7e54452b74bc640cac0e1))
+
 ## v0.4.0 (2021-09-10)
 ### Feature
 * ✨ add where filter to scan command ([`8c78d8b`](https://github.com/iwpnd/pyle38/commit/8c78d8b54ba4554b433334f98eaaf00110fe3b99))
