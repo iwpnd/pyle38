@@ -33,7 +33,7 @@ gitlint = "^0.15.1"
 poethepoet = "^0.10.0"
 isort = "^5.9.3"
 pytest-cov = "^3.0.0"
-flake8 = "^3.9.2"
+flake8 = "^4.0.1"
 mypy = "^0.910"
 python-semantic-release = "^7.19.2"
 
