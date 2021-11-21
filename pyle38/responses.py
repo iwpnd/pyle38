@@ -56,20 +56,6 @@ class ObjectsResponse(JSONResponse, GenericModel, Generic[T]):
     fields: Optional[List[str]] = None
 
 
-StringObject = Object[str]
-
-
-class StringObjectResponse(JSONResponse, GenericModel):
-    object: Optional[str] = None
-    fields: Optional[Fields] = None
-
-
-class StringObjectsResponse(JSONResponse, GenericModel):
-    objects: Optional[List[StringObject]]
-    count: int
-    cursor: int
-
-
 class IdsResponse(JSONResponse):
     ids: List[str]
     count: int

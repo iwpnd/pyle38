@@ -3,13 +3,7 @@ from __future__ import annotations
 from typing import Literal, Optional, Sequence, Union
 
 from ..client import Client, Command, SubCommand
-from ..responses import (
-    BoundsNeSwResponse,
-    HashResponse,
-    ObjectResponse,
-    PointResponse,
-    StringObjectResponse,
-)
+from ..responses import BoundsNeSwResponse, HashResponse, ObjectResponse, PointResponse
 from .executable import Compiled, Executable
 
 Output = Union[Sequence[Union[Literal["HASH", "OBJECT", "POINT", "BOUNDS"], int]]]
@@ -61,13 +55,10 @@ class Get(Executable):
 
         return ObjectResponse(**(await self.exec()))
 
-    async def asStringObject(self) -> StringObjectResponse:
+    async def asStringObject(self) -> ObjectResponse[str]:
         self.output("OBJECT")
 
-        d = await self.exec()
-        print(d)
-
-        return StringObjectResponse(**(await self.exec()))
+        return ObjectResponse[str](**(await self.exec()))
 
     async def asBounds(self) -> BoundsNeSwResponse:
         self.output("BOUNDS")

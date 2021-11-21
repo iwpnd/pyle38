@@ -4,7 +4,7 @@ from typing import List, Literal, Optional, Sequence, Union
 
 from ..client import Client, Command, CommandArgs, SubCommand
 from ..models import Options
-from ..responses import CountResponse, IdsResponse, StringObjectsResponse
+from ..responses import CountResponse, IdsResponse, ObjectsResponse
 from .executable import Compiled, Executable
 
 Format = Literal["OBJECTS", "COUNT", "IDS"]
@@ -97,10 +97,10 @@ class Search(Executable):
 
         return IdsResponse(**(await self.exec()))
 
-    async def asStringObjects(self) -> StringObjectsResponse:
+    async def asStringObjects(self) -> ObjectsResponse[str]:
         self.output("OBJECTS")
 
-        return StringObjectsResponse(**(await self.exec()))
+        return ObjectsResponse[str](**(await self.exec()))
 
     def __compile_where(self) -> CommandArgs:
         """__compile_where.
