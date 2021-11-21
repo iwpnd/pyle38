@@ -63,6 +63,11 @@ class StringObject(BaseModel):
     fields: Optional[List[int]] = None
 
 
+class StringObjectResponse(JSONResponse, GenericModel):
+    object: Optional[str] = None
+    fields: Optional[Fields] = None
+
+
 class StringObjectsResponse(JSONResponse, GenericModel):
     objects: Optional[List[StringObject]]
     count: int

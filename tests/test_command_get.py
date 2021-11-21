@@ -34,6 +34,7 @@ async def test_command_get_compile(format, precision, expected, tile38):
 @pytest.mark.asyncio
 async def test_command_get_query(tile38):
     await tile38.set(key, id).object(obj).exec()
+    await tile38.set(key, f"{id}:driver").string("John").exec()
 
     expected_object = {"ok": True, "object": obj, "elapsed": "1 ms"}
     received = await tile38.get(key, id).asObject()
@@ -57,3 +58,7 @@ async def test_command_get_query(tile38):
     expected_hash = {"ok": True, "hash": "s00twy0", "elapsed": "1 ms"}
     received = await tile38.get(key, id).asHash(7)
     assert expected_hash["hash"] == received.hash
+
+    expected_string = {"ok": True, "object": "John", "elapsed": "1 ms"}
+    received = await tile38.get(key, f"{id}:driver").asStringObject()
+    assert expected_string["object"] == received.object
