@@ -2,7 +2,6 @@ import pytest
 
 
 @pytest.mark.asyncio
-@pytest.mark.skip
 async def test_command_gc(tile38_with_follower):
     tile38 = tile38_with_follower
 

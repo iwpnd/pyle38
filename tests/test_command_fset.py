@@ -26,7 +26,7 @@ async def test_command_fset(tile38):
     response = await tile38.set(key, id).object(obj).exec()
     assert response.ok
 
-    response = await tile38.fset(key, id, fields).exec()
+    response = await tile38.fset(key, id, fields).xx().exec()
     assert response.ok
 
     response = await tile38.get(key, id).withfields().asObject()
