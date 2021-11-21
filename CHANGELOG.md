@@ -2,6 +2,15 @@
 
 <!--next-version-placeholder-->
 
+## v0.5.1 (2021-11-21)
+### Fix
+* 🐛 remove stringobject class in favour of generics ([`8317d40`](https://github.com/iwpnd/pyle38/commit/8317d40420b4625ea2b95b392da49177e817a1ef))
+* 🐛 utilize generic model object ([`1f95d2c`](https://github.com/iwpnd/pyle38/commit/1f95d2c6d9adb06871749468991c9f38c5d5d6eb))
+* 🐛 get as string object ([`9f1a3a3`](https://github.com/iwpnd/pyle38/commit/9f1a3a3eb17a196538938d9c6cb27a19b3fe18eb))
+
+### Documentation
+* 📚️ update docs ([`04cad31`](https://github.com/iwpnd/pyle38/commit/04cad3155a9b103eef8f121f6d10a1910d796260))
+
 ## v0.5.0 (2021-10-04)
 ### Feature
 * ✨ add sector search to within and intersects ([`4b6931b`](https://github.com/iwpnd/pyle38/commit/4b6931ba59d9c4a573a7e54452b74bc640cac0e1))
