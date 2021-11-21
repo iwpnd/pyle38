@@ -243,7 +243,7 @@ response = await tile38.set('fleet','truck1')
 print(response.dict())
 > {'ok': True, 'elapsed': '40.7µs'}
 
-response = await tile38.get('fleet', 'truck1')
+response = await tile38.get('fleet', 'truck1').asObject()
 
 print(response.ok)
 > True
@@ -317,7 +317,14 @@ await tile38.fset('fleet', 'truck1', { "maxSpeed": 90, "milage": 90000 })
 Get the object of an id.
 
 ```python
-await tile38.get('fleet', 'truck1')
+await tile38.get('fleet', 'truck1').asObject()
+```
+
+Get a string object.
+
+```python
+await tile38.set('fleet', 'truck1:driver').string('John').exec()
+await tile38.get('fleet', 'truck1:driver').asStringObject()
 ```
 
 **Options**
@@ -332,6 +339,7 @@ await tile38.get('fleet', 'truck1')
 | `.asBounds()` | get as minimum bounding rectangle |
 | `.asHash(precision)` | get as hash |
 | `.asPoint()` | get as point |
+| `.asStringObject()` | get a string |
 
 #### DEL
 
