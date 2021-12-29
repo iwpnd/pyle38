@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Dict, Optional, Sequence, Union
+from typing import Dict, Sequence, Union
 
 import aioredis
 
@@ -120,18 +120,15 @@ class Client:
 
         return self.__redis
 
-    async def __command_async(
-        self, command: str, command_args: Optional[CommandArgs] = []
-    ):
+    async def __command_async(self, command: str, command_args: CommandArgs = []):
         pool = await self.__getRedis()
         async with pool.client() as c:
-            await c.connection.send_command(command, *command_args)
-            response = await c.connection.read_response()
-            return response
+            if c.connection:
+                await c.connection.send_command(command, *command_args)
+                response = await c.connection.read_response()
+                return response
 
-    async def command(
-        self, command: str, command_args: Optional[CommandArgs] = []
-    ) -> Dict:
+    async def command(self, command: str, command_args: CommandArgs = []) -> Dict:
         await self.__force_json()
 
         response = await self.__command_async(command, command_args)
