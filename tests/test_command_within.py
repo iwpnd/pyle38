@@ -37,6 +37,8 @@ expected = {"id": id, "object": feature}
                     key,
                     "MATCH",
                     "*",
+                    "BUFFER",
+                    10,
                     "NOFIELDS",
                     "SPARSE",
                     1,
@@ -72,6 +74,7 @@ async def test_command_within_compile(tile38, format, precision, expected):
     query = (
         Within(tile38.client, key)
         .match("*")
+        .buffer(10)
         .nofields()
         .sparse(1)
         .cursor(0)
@@ -274,3 +277,34 @@ async def test_command_within_return_bounds(tile38):
             "sw": {"lat": 52.25, "lon": 13.37},
         },
     }
+
+
+@pytest.mark.asyncio
+async def test_command_within_buffer_return_count(tile38):
+    response = await tile38.set(key, id).object(feature).exec()
+    assert response.ok
+
+    search_area = {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+                [
+                    [13.37009847164154, 52.2498254610514],
+                    [13.370516896247862, 52.2498254610514],
+                    [13.370516896247862, 52.25017851139772],
+                    [13.37009847164154, 52.25017851139772],
+                    [13.37009847164154, 52.2498254610514],
+                ]
+            ],
+        },
+    }
+
+    response = await tile38.within(key).object(search_area).asCount()
+    assert response.ok
+    assert response.count == 0
+
+    response = await tile38.within(key).buffer(10).object(search_area).asCount()
+    assert response.ok
+    assert response.count == 1

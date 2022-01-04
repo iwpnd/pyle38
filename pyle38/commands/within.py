@@ -121,6 +121,19 @@ class Within(Executable):
 
         return self
 
+    def buffer(self, value: int) -> Within:
+        """Apply a buffer around area formats to increase the search area by x meters.
+
+        Args:
+            value (int): buffer size in meters
+
+        Returns:
+            Within
+        """
+        self._options["buffer"] = value
+
+        return self
+
     def limit(self, value: int) -> Within:
         """Limit the number of returned objects in a search.
 
