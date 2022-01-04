@@ -121,6 +121,19 @@ class Intersects(Executable):
 
         return self
 
+    def buffer(self, value: int) -> Intersects:
+        """Apply a buffer around area formats to increase the search area by x meters.
+
+        Args:
+            value (int): buffer size in meters
+
+        Returns:
+            Intersects
+        """
+        self._options["buffer"] = value
+
+        return self
+
     def fence(self, flag: bool = True) -> Intersects:
         """Flag to indicate that the Intersects Query is used for a geo fence.
 

@@ -14,6 +14,7 @@ class Options(TypedDict, total=False):
     distance: Optional[bool]
     asc: Optional[bool]
     desc: Optional[bool]
+    buffer: Optional[int]
 
 
 class CircleQuery(BaseModel):
