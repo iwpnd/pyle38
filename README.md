@@ -531,6 +531,7 @@ await tile38.within('fleet').get('warehouses', 'Berlin').asCount();
 | `.match(pattern)` | Match can be used to filtered objects considered in the search with a glob pattern. `.match('truck*')` e.g. will only consider ids that start with `truck` within your key. |
 | `.sparse(value)` | **caution** seems bugged since Tile38 1.22.6. Accepts values between 1 and 8. Can be used to distribute the results of a search evenly across the requested area. |
 | `.where(fieldname, min value, max value)` | filter output by fieldname and values. |
+| `.buffer(value)` | Apply a buffer around area formats to increase the search area by x meters |
 
 **Outputs**
 || |
@@ -593,6 +594,7 @@ await tile38.intersects('warehouses').hash('u33d').where("maxweight", 1000, 1000
 | `.match(pattern)` | Match can be used to filtered objects considered in the search with a glob pattern. `.match('warehouse*')` e.g. will only consider ids that start with `warehouse` within your key. |
 | `.sparse(value)` | **caution** seems bugged since Tile38 1.22.6. Accepts values between 1 and 8. Can be used to distribute the results of a search evenly across the requested area. |
 | `.where(fieldname, min value, max value)` | filter output by fieldname and values. |
+| `.buffer(value)` | Apply a buffer around area formats to increase the search area by x meters |
 
 **Outputs**
 || |
