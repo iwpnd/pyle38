@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v0.6.0 (2022-01-04)
+### Feature
+* ✨ add buffer search option to within search ([`1ad3655`](https://github.com/iwpnd/pyle38/commit/1ad3655c022b67f6b1a33928219641818974e152))
+* ✨ add buffer search option to intersects search ([`f23d800`](https://github.com/iwpnd/pyle38/commit/f23d8002b3fcefef242d0cd1ec8bbaec656fef15))
+
+### Documentation
+* 📚️ update readme ([`4b57fbf`](https://github.com/iwpnd/pyle38/commit/4b57fbfadd5e7bb89797801f8e516f317effaa19))
+
 ## v0.5.1 (2021-11-21)
 ### Fix
 * 🐛 remove stringobject class in favour of generics ([`8317d40`](https://github.com/iwpnd/pyle38/commit/8317d40420b4625ea2b95b392da49177e817a1ef))
