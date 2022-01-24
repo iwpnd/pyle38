@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.6.1 (2022-01-24)
+### Fix
+* 🐛 generic types and defaults ([`45fcd5d`](https://github.com/iwpnd/pyle38/commit/45fcd5d6574242943d35ad5712403bbe1e70c81c))
+
+### Documentation
+* 📚️ new logo ([`d0c95d3`](https://github.com/iwpnd/pyle38/commit/d0c95d394dc584f2625e4c2c7206cd509ae3498f))
+
 ## v0.6.0 (2022-01-04)
 ### Feature
 * ✨ add buffer search option to within search ([`1ad3655`](https://github.com/iwpnd/pyle38/commit/1ad3655c022b67f6b1a33928219641818974e152))
