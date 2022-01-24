@@ -3,7 +3,7 @@ from typing import Dict, Generic, List, Literal, Optional, TypeVar, Union
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic.generics import GenericModel as PydanticGenericModel
 
-T = TypeVar("T", bound=Union[Dict, str])
+T = TypeVar("T")
 S = TypeVar("S", bound=str)
 
 
@@ -45,12 +45,12 @@ class Object(GenericModel, Generic[T]):
 
 
 class ObjectResponse(JSONResponse, GenericModel, Generic[T]):
-    object: Optional[T] = None
+    object: T
     fields: Optional[Fields] = None
 
 
 class ObjectsResponse(JSONResponse, GenericModel, Generic[T]):
-    objects: Optional[List[Object[T]]] = []
+    objects: List[Object[T]] = []
     count: int
     cursor: int
     fields: Optional[List[str]] = None
@@ -80,7 +80,7 @@ class Point(BaseModel):
 
 
 class PointsResponse(JSONResponse):
-    points: Optional[List[Point]] = []
+    points: List[Point] = []
     count: int
     cursor: int
     fields: Optional[List[str]] = None
