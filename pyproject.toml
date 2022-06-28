@@ -27,7 +27,7 @@ aioredis = "^2.0.1"
 [tool.poetry.dev-dependencies]
 pytest = "^7.1"
 pre-commit = "^2.19.0"
-black = "^22.3"
+black = "^22.6"
 pytest-asyncio = "^0.18.3"
 gitlint = "^0.17.0"
 poethepoet = "^0.14.0"
