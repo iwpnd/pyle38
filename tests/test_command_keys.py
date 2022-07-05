@@ -14,6 +14,3 @@ async def test_command_keys(tile38_with_follower):
     response = await tile38.keys()
     assert response.ok
     assert response.keys == [key]
-
-    response = await tile38.follower().keys("fl*")
-    assert response.ok

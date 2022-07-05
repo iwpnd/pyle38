@@ -12,9 +12,6 @@ async def test_command_jset_jget_jdel(tile38_with_follower):
     assert response.ok
     assert response.value == '{"name":"Tom"}'
 
-    response = await tile38.follower().jget("user", "901")
-    assert response.ok
-
     response = await tile38.jdel("user", "901", "name")
     assert response.ok
 
