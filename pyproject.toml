@@ -57,8 +57,8 @@ python_version = 3.8
 ignore_missing_imports = true
 
 [tool.poe.tasks]
-test       = "poetry run pytest -vv -s tests/"
-test-cov   = "poetry run pytest -vv -s --cov=pyle38 tests/"
+test       = "poetry run pytest -vv --asyncio-mode=auto -s tests/"
+test-cov   = "poetry run pytest -vv --asyncio-mode=auto -s --cov=pyle38 tests/"
 mypy       = "poetry run mypy --ignore-missing-imports --config-file pyproject.toml"
 lint       = "flake8 ."
 up         = "docker-compose up"
