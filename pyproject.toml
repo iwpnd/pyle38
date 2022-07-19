@@ -34,7 +34,7 @@ poethepoet = "^0.16.0"
 isort = "^5.10.1"
 pytest-cov = "^3.0.0"
 flake8 = "^4.0.1"
-mypy = "^0.961"
+mypy = "^0.971"
 python-semantic-release = "^7.29.6"
 
 [tool.semantic_release]
