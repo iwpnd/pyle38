@@ -685,7 +685,7 @@ yaml = ["PyYaml (>=5.2)"]
 
 [[package]]
 name = "python-semantic-release"
-version = "7.30.2"
+version = "7.31.2"
 description = "Automatic Semantic Versioning for Python projects"
 category = "dev"
 optional = false
@@ -963,7 +963,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "8969d954522b042f656283d87dc38f589b5f71f0f9f1ba7a563ba0c272152ff4"
+content-hash = "f7ebcdb3ef80b228e9eea6c9f27dd7b96f05fe5cdc5c8a6461e9c6e8279a0bf1"
 
 [metadata.files]
 aioredis = [
@@ -1374,8 +1374,8 @@ python-gitlab = [
     {file = "python_gitlab-2.10.1-py3-none-any.whl", hash = "sha256:581a219759515513ea9399e936ed7137437cfb681f52d2641626685c492c999d"},
 ]
 python-semantic-release = [
-    {file = "python-semantic-release-7.30.2.tar.gz", hash = "sha256:28f2c0fa588cfdaf4719c5a57c8e3e1827e02632a268223b14a60aa95799ae60"},
-    {file = "python_semantic_release-7.30.2-py3-none-any.whl", hash = "sha256:6799a967bd5ef43f2470da1c58cc21bbdb9be3f3fdfa87584643d1fc13b35bdd"},
+    {file = "python-semantic-release-7.31.2.tar.gz", hash = "sha256:4d6a135ebbdfdb78999ccb0e6d58774e5b2145898a0faf74ca38a0919ff07440"},
+    {file = "python_semantic_release-7.31.2-py3-none-any.whl", hash = "sha256:a0c10dc5f02de270cd7efbed89a7326d40ca9024bde00f2fcf1262c979bb3dee"},
 ]
 pywin32-ctypes = [
     {file = "pywin32-ctypes-0.2.0.tar.gz", hash = "sha256:24ffc3b341d457d48e8922352130cf2644024a4ff09762a2261fd34c36ee5942"},
