@@ -1,5 +1,7 @@
 import json
-from typing import Dict, Optional, Union
+from typing import Dict, List, Optional, Union
+
+from redis.typing import EncodableT
 
 from .errors import (
     Tile38Error,
@@ -10,9 +12,10 @@ from .errors import (
 
 
 def parse_response(
-    response: Optional[Union[bytes, memoryview, str, int, float]] = None
+    response: Optional[
+        Union[bytes, memoryview, str, int, float, List[EncodableT], None]
+    ] = None
 ) -> Dict[str, Union[float, str, int, list, dict]]:
-
     if not isinstance(response, str) or isinstance(response, bytes):
         raise Tile38Error("invalid response")
 
