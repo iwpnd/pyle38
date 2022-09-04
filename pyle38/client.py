@@ -1,9 +1,13 @@
 from enum import Enum
 from typing import Dict, Sequence, Union
 
-import aioredis
+import redis.asyncio as redis
+from redis.asyncio.connection import parse_url
 
 from .parse_response import parse_response
+
+TILE38_DEFAULT_HOST = "localhost"
+TILE38_DEFAULT_PORT = 9851
 
 
 class Command(str, Enum):
@@ -102,36 +106,55 @@ class Client:
 
     def __init__(self, url: str) -> None:
         self.url = url
+        self.__redis = None
+        self.__format = Format.RESP.value
 
-    async def __force_json(self) -> None:
+    async def force_json(self) -> None:
         if self.__format == Format.JSON.value:
             return
 
-        await self.__command_async(Command.OUTPUT.value, [Format.JSON.value])
-
+        await self.__execute_and_read_response(
+            Command.OUTPUT.value, [Format.JSON.value]
+        )
         self.__format = Format.JSON.value
 
-    async def __getRedis(self) -> aioredis.Redis:
+    async def __on_connect(self, connection: redis.Connection):
+        await connection.on_connect()
+        self.format = Format.RESP.value
+
+    async def __get_redis(self) -> redis.Redis:
         if not self.__redis:
-            self.__redis = aioredis.from_url(
-                self.url, encoding="utf-8", decode_responses=True
+            url_components = parse_url(self.url)
+            host: str = url_components.get("host") or TILE38_DEFAULT_HOST
+            port: int = url_components.get("port") or TILE38_DEFAULT_PORT
+
+            r: redis.Redis = redis.Redis(
+                host=host,
+                port=port,
+                encoding="utf-8",
+                single_connection_client=True,
+                decode_responses=True,
+                redis_connect_func=self.__on_connect,
             )
-            self.__format = Format.RESP.value
+
+            self.__redis = r
 
         return self.__redis
 
-    async def __command_async(self, command: str, command_args: CommandArgs = []):
-        pool = await self.__getRedis()
-        async with pool.client() as c:
-            if c.connection:
-                await c.connection.send_command(command, *command_args)
-                response = await c.connection.read_response()
-                return response
+    async def __execute_and_read_response(
+        self, command: str, command_args: CommandArgs = []
+    ):
+        r = await self.__get_redis()
+        await r.initialize()
+
+        if r.connection:
+            await r.connection.send_command(command, *command_args)
+            response = await r.connection.read_response()
+            return response
 
     async def command(self, command: str, command_args: CommandArgs = []) -> Dict:
-        await self.__force_json()
-
-        response = await self.__command_async(command, command_args)
+        await self.force_json()
+        response = await self.__execute_and_read_response(command, command_args)
 
         return parse_response(response)
 
@@ -139,7 +162,7 @@ class Client:
         if not self.__redis:
             return "OK"
 
-        c = await self.__getRedis()
+        c = await self.__get_redis()
 
         await c.close()
         await c.connection_pool.disconnect()
