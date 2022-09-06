@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.7.0 (2022-09-06)
+### Feature
+* ✨ upgrade to redis-py, use single connection instead of pool ([`b31136d`](https://github.com/iwpnd/pyle38/commit/b31136d0d18b9d78d6a286abaab0e2ba3b33f6c0))
+
 ## v0.6.1 (2022-01-24)
 ### Fix
 * 🐛 generic types and defaults ([`45fcd5d`](https://github.com/iwpnd/pyle38/commit/45fcd5d6574242943d35ad5712403bbe1e70c81c))
