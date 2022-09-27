@@ -930,7 +930,7 @@ urllib3 = ">=1.26.0"
 
 [[package]]
 name = "types-redis"
-version = "4.3.20"
+version = "4.3.21"
 description = "Typing stubs for redis"
 category = "dev"
 optional = false
@@ -1016,7 +1016,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "3bd44a969efbb6e55e01e08b3dc3926594b23d5fb877ecb75ec441e00e11dacf"
+content-hash = "30c1e026a8e74d71905900111c04440c4e86a9ddfbbec21cbeca3be1e932077b"
 
 [metadata.files]
 arrow = [
@@ -1572,8 +1572,8 @@ twine = [
     {file = "twine-3.8.0.tar.gz", hash = "sha256:8efa52658e0ae770686a13b675569328f1fba9837e5de1867bfe5f46a9aefe19"},
 ]
 types-redis = [
-    {file = "types-redis-4.3.20.tar.gz", hash = "sha256:74ed02945470ddea2dd21447c185dabb3169e5a5328d26b25cf3547d949b8e04"},
-    {file = "types_redis-4.3.20-py3-none-any.whl", hash = "sha256:b22e0f5a18b98b6a197dd403daed52a22cb76f50e3cbd7ddc539196af52ec23e"},
+    {file = "types-redis-4.3.21.tar.gz", hash = "sha256:fd017a6733af193d14f1bb29b4ff79c0abc906e8654158d17aba457a6381afe2"},
+    {file = "types_redis-4.3.21-py3-none-any.whl", hash = "sha256:cca7e17e3efb5dfdc7c9841bd5963fdd717ab68c4d2d8c6f49a9175fe2f29ce4"},
 ]
 typing-extensions = [
     {file = "typing_extensions-4.3.0-py3-none-any.whl", hash = "sha256:25642c956049920a5aa49edcdd6ab1e06d7e5d467fc00e0506c44ac86fbfca02"},
