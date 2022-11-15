@@ -64,7 +64,7 @@ ignore_missing_imports = true
 test       = "poetry run pytest -vv --asyncio-mode=auto -s tests/"
 test-cov   = "poetry run pytest -vv --asyncio-mode=auto -s --cov=pyle38 tests/"
 mypy       = "poetry run mypy --ignore-missing-imports --config-file pyproject.toml"
-lint       = "flake8 ."
+lint       = "ruff ."
 up         = "docker-compose up"
 down       = "docker-compose down"
 publish    = "poetry run semantic-release publish"
