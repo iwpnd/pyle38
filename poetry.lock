@@ -232,19 +232,6 @@ docs = ["furo (>=2022.6.21)", "sphinx (>=5.1.1)", "sphinx-autodoc-typehints (>=1
 testing = ["covdefaults (>=2.2)", "coverage (>=6.4.2)", "pytest (>=7.1.2)", "pytest-cov (>=3)", "pytest-timeout (>=2.1)"]
 
 [[package]]
-name = "flake8"
-version = "5.0.4"
-description = "the modular source code checker: pep8 pyflakes and co"
-category = "dev"
-optional = false
-python-versions = ">=3.6.1"
-
-[package.dependencies]
-mccabe = ">=0.7.0,<0.8.0"
-pycodestyle = ">=2.9.0,<2.10.0"
-pyflakes = ">=2.5.0,<2.6.0"
-
-[[package]]
 name = "gitdb"
 version = "4.0.9"
 description = "Git Object Database"
@@ -414,14 +401,6 @@ docs = ["jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)
 testing = ["flake8 (<5)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-flake8", "pytest-mypy (>=0.9.1)"]
 
 [[package]]
-name = "mccabe"
-version = "0.7.0"
-description = "McCabe checker, plugin for flake8"
-category = "dev"
-optional = false
-python-versions = ">=3.6"
-
-[[package]]
 name = "more-itertools"
 version = "9.0.0"
 description = "More routines for operating on iterables, beyond itertools"
@@ -561,14 +540,6 @@ toml = "*"
 virtualenv = ">=20.0.8"
 
 [[package]]
-name = "pycodestyle"
-version = "2.9.1"
-description = "Python style guide checker"
-category = "dev"
-optional = false
-python-versions = ">=3.6"
-
-[[package]]
 name = "pycparser"
 version = "2.21"
 description = "C parser in Python"
@@ -590,14 +561,6 @@ typing-extensions = ">=4.1.0"
 [package.extras]
 dotenv = ["python-dotenv (>=0.10.4)"]
 email = ["email-validator (>=1.0.3)"]
-
-[[package]]
-name = "pyflakes"
-version = "2.5.0"
-description = "passive checker of Python programs"
-category = "dev"
-optional = false
-python-versions = ">=3.6"
 
 [[package]]
 name = "pygments"
@@ -815,6 +778,14 @@ python-versions = ">=3.7"
 idna2008 = ["idna"]
 
 [[package]]
+name = "ruff"
+version = "0.0.120"
+description = "An extremely fast Python linter, written in Rust."
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
 name = "secretstorage"
 version = "3.3.3"
 description = "Python bindings to FreeDesktop.org Secret Service API"
@@ -1020,7 +991,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "5233f6dca08a2aa123b9900c892978d3b44430fe018ab1c546bfa05d7c2a2bfc"
+content-hash = "261762a7923ea4f08cefb0dc9ab23b0269bf0881fe243d1e54f13d0e78c97abd"
 
 [metadata.files]
 arrow = [
@@ -1256,10 +1227,6 @@ filelock = [
     {file = "filelock-3.8.0-py3-none-any.whl", hash = "sha256:617eb4e5eedc82fc5f47b6d61e4d11cb837c56cb4544e39081099fa17ad109d4"},
     {file = "filelock-3.8.0.tar.gz", hash = "sha256:55447caa666f2198c5b6b13a26d2084d26fa5b115c00d065664b2124680c4edc"},
 ]
-flake8 = [
-    {file = "flake8-5.0.4-py2.py3-none-any.whl", hash = "sha256:7a1cf6b73744f5806ab95e526f6f0d8c01c66d7bbe349562d22dfca20610b248"},
-    {file = "flake8-5.0.4.tar.gz", hash = "sha256:6fbe320aad8d6b95cec8b8e47bc933004678dc63095be98528b7bdd2a9f510db"},
-]
 gitdb = [
     {file = "gitdb-4.0.9-py3-none-any.whl", hash = "sha256:8033ad4e853066ba6ca92050b9df2f89301b8fc8bf7e9324d412a63f8bf1a8fd"},
     {file = "gitdb-4.0.9.tar.gz", hash = "sha256:bac2fd45c0a1c9cf619e63a90d62bdc63892ef92387424b855792a6cabe789aa"},
@@ -1311,10 +1278,6 @@ jeepney = [
 keyring = [
     {file = "keyring-23.9.3-py3-none-any.whl", hash = "sha256:69732a15cb1433bdfbc3b980a8a36a04878a6cfd7cb99f497b573f31618001c0"},
     {file = "keyring-23.9.3.tar.gz", hash = "sha256:69b01dd83c42f590250fe7a1f503fc229b14de83857314b1933a3ddbf595c4a5"},
-]
-mccabe = [
-    {file = "mccabe-0.7.0-py2.py3-none-any.whl", hash = "sha256:6c2d30ab6be0e4a46919781807b4f0d834ebdd6c6e3dca0bda5a15f863427b6e"},
-    {file = "mccabe-0.7.0.tar.gz", hash = "sha256:348e0240c33b60bbdf4e523192ef919f28cb2c3d7d5c7794f74009290f236325"},
 ]
 more-itertools = [
     {file = "more-itertools-9.0.0.tar.gz", hash = "sha256:5a6257e40878ef0520b1803990e3e22303a41b5714006c32a3fd8304b26ea1ab"},
@@ -1392,10 +1355,6 @@ pre-commit = [
     {file = "pre_commit-2.20.0-py2.py3-none-any.whl", hash = "sha256:51a5ba7c480ae8072ecdb6933df22d2f812dc897d5fe848778116129a681aac7"},
     {file = "pre_commit-2.20.0.tar.gz", hash = "sha256:a978dac7bc9ec0bcee55c18a277d553b0f419d259dadb4b9418ff2d00eb43959"},
 ]
-pycodestyle = [
-    {file = "pycodestyle-2.9.1-py2.py3-none-any.whl", hash = "sha256:d1735fc58b418fd7c5f658d28d943854f8a849b01a5d0a1e6f3f3fdd0166804b"},
-    {file = "pycodestyle-2.9.1.tar.gz", hash = "sha256:2c9607871d58c76354b697b42f5d57e1ada7d261c261efac224b664affdc5785"},
-]
 pycparser = [
     {file = "pycparser-2.21-py2.py3-none-any.whl", hash = "sha256:8ee45429555515e1f6b185e78100aea234072576aa43ab53aefcae078162fca9"},
     {file = "pycparser-2.21.tar.gz", hash = "sha256:e644fdec12f7872f86c58ff790da456218b10f863970249516d60a5eaca77206"},
@@ -1437,10 +1396,6 @@ pydantic = [
     {file = "pydantic-1.10.2-cp39-cp39-win_amd64.whl", hash = "sha256:c1ba1afb396148bbc70e9eaa8c06c1716fdddabaf86e7027c5988bae2a829ab6"},
     {file = "pydantic-1.10.2-py3-none-any.whl", hash = "sha256:1b6ee725bd6e83ec78b1aa32c5b1fa67a3a65badddde3976bca5fe4568f27709"},
     {file = "pydantic-1.10.2.tar.gz", hash = "sha256:91b8e218852ef6007c2b98cd861601c6a09f1aa32bbbb74fab5b1c33d4a1e410"},
-]
-pyflakes = [
-    {file = "pyflakes-2.5.0-py2.py3-none-any.whl", hash = "sha256:4579f67d887f804e67edb544428f264b7b24f435b263c4614f384135cea553d2"},
-    {file = "pyflakes-2.5.0.tar.gz", hash = "sha256:491feb020dca48ccc562a8c0cbe8df07ee13078df59813b83959cbdada312ea3"},
 ]
 pygments = [
     {file = "Pygments-2.13.0-py3-none-any.whl", hash = "sha256:f643f331ab57ba3c9d89212ee4a2dabc6e94f117cf4eefde99a0574720d14c42"},
@@ -1539,6 +1494,24 @@ requests-toolbelt = [
 rfc3986 = [
     {file = "rfc3986-2.0.0-py2.py3-none-any.whl", hash = "sha256:50b1502b60e289cb37883f3dfd34532b8873c7de9f49bb546641ce9cbd256ebd"},
     {file = "rfc3986-2.0.0.tar.gz", hash = "sha256:97aacf9dbd4bfd829baad6e6309fa6573aaf1be3f6fa735c8ab05e46cecb261c"},
+]
+ruff = [
+    {file = "ruff-0.0.120-py3-none-macosx_10_7_x86_64.whl", hash = "sha256:a4a748f49d7c136772bb3934517462bc292912fcd7e691280fe33d041a2d04b7"},
+    {file = "ruff-0.0.120-py3-none-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:72bf9bd3ed1128b0f539adf035116f9d88a6adac6d7da5a6d3f77a81c236ce64"},
+    {file = "ruff-0.0.120-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:73b4defb46ec436b1a82525a133cb1ee9e542bb35e4fcd2d64c783e67ca58639"},
+    {file = "ruff-0.0.120-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:edb82c6451bad2c07aaa7c6d7fec30b3e395e8be641db5448bed9fe75bf098ee"},
+    {file = "ruff-0.0.120-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:b35b92e0add75c5d64670300e29a9f6081b99ff46e6784955d43ac58de4466cf"},
+    {file = "ruff-0.0.120-py3-none-manylinux_2_17_ppc64.manylinux2014_ppc64.whl", hash = "sha256:adcf5b9a6bf9ab6a543618fab0773dcc197648107565218ab07bd8ae461f17c4"},
+    {file = "ruff-0.0.120-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:4b50204a67e02c286b20531d70132a7532195c3da730f0fd2c78b163136a8bdc"},
+    {file = "ruff-0.0.120-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:2146466cc720d953ef574951035df78510190d2ba35739bbe97bb6780617220a"},
+    {file = "ruff-0.0.120-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a77e27b04327df70ba527b2963a0b6cd4e4573f27ed2843e233920325d110d06"},
+    {file = "ruff-0.0.120-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:392ab64781bf8a7e3a8256cd27e1bce6df5917942099e8c183d62ff57db5e67b"},
+    {file = "ruff-0.0.120-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:9b89e41ee49432526e3fbb7dc6418dcb2c89e23c48a66fd46412432bf376a26a"},
+    {file = "ruff-0.0.120-py3-none-musllinux_1_2_i686.whl", hash = "sha256:da8260440d3176523b125c827e070863afd1bf73efc0f155d4dfe50dd64d6d7a"},
+    {file = "ruff-0.0.120-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:856647e4aa10e91f45351fd43151227476fcca1042541f96ff69941dbdc5b078"},
+    {file = "ruff-0.0.120-py3-none-win32.whl", hash = "sha256:bb846242b164d56b6eda9f7de26cc85c474bb5f50bc5ea6c9b8d2642a7a68d62"},
+    {file = "ruff-0.0.120-py3-none-win_amd64.whl", hash = "sha256:35b94ad5864e6b179ca5afada2fd82b9ecacb8dce2d06b551266c9a385c67b97"},
+    {file = "ruff-0.0.120.tar.gz", hash = "sha256:513a20a23e5be50f04ab229357da1fcb90e7e531ca898bf7e131df97223f15c6"},
 ]
 secretstorage = [
     {file = "SecretStorage-3.3.3-py3-none-any.whl", hash = "sha256:f356e6628222568e3af06f2eba8df495efa13b3b63081dafd4f7d9a7b7bc9f99"},
