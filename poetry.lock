@@ -244,18 +244,18 @@ smmap = ">=3.0.1,<6"
 
 [[package]]
 name = "gitlint"
-version = "0.17.0"
+version = "0.18.0"
 description = "Git commit message linter written in python, checks your commit messages for style."
 category = "dev"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-gitlint-core = {version = "0.17.0", extras = ["trusted-deps"]}
+gitlint-core = {version = "0.18.0", extras = ["trusted-deps"]}
 
 [[package]]
 name = "gitlint-core"
-version = "0.17.0"
+version = "0.18.0"
 description = "Git commit message linter written in python, checks your commit messages for style."
 category = "dev"
 optional = false
@@ -991,7 +991,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "fa65b12af3a09eee04f5715d99a0c4d65666ac6cfcad52849be4bced9044e3f7"
+content-hash = "1f5fcbc260649fb5bbeb0ecefcc31d7cadf37742ff588de9dadee9e6fa90a36c"
 
 [metadata.files]
 arrow = [
@@ -1232,12 +1232,12 @@ gitdb = [
     {file = "gitdb-4.0.9.tar.gz", hash = "sha256:bac2fd45c0a1c9cf619e63a90d62bdc63892ef92387424b855792a6cabe789aa"},
 ]
 gitlint = [
-    {file = "gitlint-0.17.0-py2.py3-none-any.whl", hash = "sha256:46469d5db3f3bca72fa946c159d0733dc8c75211309477676295cf2d80d177b4"},
-    {file = "gitlint-0.17.0.tar.gz", hash = "sha256:8c10c6b404d255b43ddc4a2f5f13bcb10284bc162adfb2c03b10708309009189"},
+    {file = "gitlint-0.18.0-py2.py3-none-any.whl", hash = "sha256:77ad954738b400019c1bc51241abdae5fea28c81d1586ef9fe133b96b503531e"},
+    {file = "gitlint-0.18.0.tar.gz", hash = "sha256:b0edf947a9202ace282d084bbf481a1d0fdb2fba40e32dd4a520bfd3ef6d3963"},
 ]
 gitlint-core = [
-    {file = "gitlint-core-0.17.0.tar.gz", hash = "sha256:772dfd33effaa8515ca73e901466aa938c19ced894bec6783d19691f57429691"},
-    {file = "gitlint_core-0.17.0-py2.py3-none-any.whl", hash = "sha256:cb99ccd736a698b910385211203bda94bf4ce29086d0c08f8f58a18c40a98377"},
+    {file = "gitlint-core-0.18.0.tar.gz", hash = "sha256:b032eb574f7399aec6a5246a78810bacb7ce9c9fd2d9e4375950549196cae681"},
+    {file = "gitlint_core-0.18.0-py2.py3-none-any.whl", hash = "sha256:6434ca13360e448f9a7b00d24651aabab9b3a1875b4590d20e1d6cb55c78444f"},
 ]
 gitpython = [
     {file = "GitPython-3.1.29-py3-none-any.whl", hash = "sha256:41eea0deec2deea139b459ac03656f0dd28fc4a3387240ec1d3c259a2c47850f"},
