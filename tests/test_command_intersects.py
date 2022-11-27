@@ -25,53 +25,42 @@ polygon = {
 expected = {"id": id, "object": feature}
 
 
-@pytest.mark.parametrize(
-    "format, precision, expected",
-    [
-        (
-            "OBJECTS",
-            None,
-            [
-                "INTERSECTS",
-                [
-                    key,
-                    "MATCH",
-                    "*",
-                    "BUFFER",
-                    10,
-                    "NOFIELDS",
-                    "SPARSE",
-                    1,
-                    "CLIP",
-                    "CURSOR",
-                    0,
-                    "LIMIT",
-                    10,
-                    "WHERE",
-                    "foo",
-                    1,
-                    1,
-                    "WHERE",
-                    "bar",
-                    1,
-                    1,
-                    "FENCE",
-                    "DETECT",
-                    "enter,exit",
-                    "COMMANDS",
-                    "del,set",
-                    "CIRCLE",
-                    1.0,
-                    1.0,
-                    100,
-                ],
-            ],
-        )
-    ],
-    ids=["OBJECTS"],
-)
 @pytest.mark.asyncio
-async def test_command_intersects_compile(tile38, format, precision, expected):
+async def test_command_intersects_compile(tile38):
+    expected = [
+        "INTERSECTS",
+        [
+            key,
+            "MATCH",
+            "*",
+            "BUFFER",
+            10,
+            "NOFIELDS",
+            "SPARSE",
+            1,
+            "CLIP",
+            "CURSOR",
+            0,
+            "LIMIT",
+            10,
+            "WHERE",
+            "foo",
+            1,
+            1,
+            "WHERE",
+            "bar == 1",
+            "FENCE",
+            "DETECT",
+            "enter,exit",
+            "COMMANDS",
+            "del,set",
+            "CIRCLE",
+            1.0,
+            1.0,
+            100,
+        ],
+    ]
+
     query = (
         Intersects(tile38.client, key)
         .match("*")
@@ -82,14 +71,14 @@ async def test_command_intersects_compile(tile38, format, precision, expected):
         .cursor(0)
         .limit(10)
         .where_with_fields("foo", 1, 1)
-        .where_with_fields("bar", 1, 1)
+        .where_with_expr("bar == 1")
         .fence()
         .detect(["enter", "exit"])
         .commands(["del", "set"])
         .circle(1, 1, 100)
     )
 
-    received = query.output(format, precision).compile()
+    received = query.output("OBJECTS", None).compile()
 
     assert expected == received
 
@@ -127,6 +116,25 @@ async def test_command_intersects_where_circle(tile38):
         await tile38.intersects(key)
         .where_with_fields("maxspeed", 100, 120)
         .where_with_fields("maxweight", 1000, 1000)
+        .circle(52.25, 13.37, 100)
+        .asObjects()
+    )
+    assert response.ok
+    assert len(response.objects) == 2
+
+
+@pytest.mark.asyncio
+async def test_command_intersects_where_expr_circle(tile38):
+    await tile38.set(key, id).fields({"maxspeed": 120, "maxweight": 1000}).object(
+        feature
+    ).exec()
+    await tile38.set(key, "truck1").fields({"maxspeed": 100, "maxweight": 1000}).object(
+        feature
+    ).exec()
+
+    response = (
+        await tile38.intersects(key)
+        .where_with_expr("maxspeed >= 100 && maxspeed <= 120 && maxweight == 1000")
         .circle(52.25, 13.37, 100)
         .asObjects()
     )
