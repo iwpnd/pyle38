@@ -10,7 +10,8 @@ repos:
       rev: v0.991
       hooks:
           - id: mypy
-            args: [--no-strict-optional, --ignore-missing-imports]
+            args: [--ignore-missing-imports]
+            additional_dependencies: [types-redis]
     - repo: https://github.com/pycqa/isort
       rev: 5.10.1
       hooks:
