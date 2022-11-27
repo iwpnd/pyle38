@@ -2,8 +2,7 @@ import pytest
 
 
 @pytest.mark.asyncio
-async def test_command_bounds(tile38_with_follower):
-    tile38 = tile38_with_follower
+async def test_command_bounds(tile38):
     key = "fleet"
     id = "truck"
 
@@ -19,9 +18,7 @@ async def test_command_bounds(tile38_with_follower):
             ],
         },
     }
-
     received = await tile38.bounds(key)
-    assert expected["bounds"] == received.bounds
 
-    received = await tile38.follower().bounds(key)
-    assert received.ok
+    assert received.ok is True
+    assert expected["bounds"] == received.bounds

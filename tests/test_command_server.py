@@ -1,3 +1,5 @@
+import time
+
 import pytest
 
 
@@ -11,6 +13,8 @@ async def test_command_server(tile38_with_follower):
 
     with pytest.raises(AttributeError):
         assert response.stats.caught_up
+
+    time.sleep(0.2)
 
     response = await tile38.follower().server()
     assert response.ok
