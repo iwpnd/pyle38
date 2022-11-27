@@ -79,8 +79,8 @@ async def test_command_within_compile(tile38, format, precision, expected):
         .sparse(1)
         .cursor(0)
         .limit(10)
-        .where("foo", 1, 1)
-        .where("bar", 1, 1)
+        .where_with_fields("foo", 1, 1)
+        .where_with_fields("bar", 1, 1)
         .fence()
         .detect(["enter", "exit"])
         .commands(["del", "set"])
@@ -109,7 +109,7 @@ async def test_command_within_where_circle(tile38):
 
     response = (
         await tile38.within(key)
-        .where("maxspeed", 120, 120)
+        .where_with_fields("maxspeed", 120, 120)
         .circle(52.25, 13.37, 100)
         .asObjects()
     )
@@ -119,7 +119,7 @@ async def test_command_within_where_circle(tile38):
 
     response = (
         await tile38.within(key)
-        .where("maxspeed", 100, 120)
+        .where_with_fields("maxspeed", 100, 120)
         .circle(52.25, 13.37, 100)
         .asObjects()
     )

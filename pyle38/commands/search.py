@@ -2,16 +2,17 @@ from __future__ import annotations
 
 from typing import List, Literal, Optional, Sequence, Union
 
-from ..client import Client, Command, CommandArgs, SubCommand
+from ..client import Client, Command, CommandArgs
 from ..models import Options
 from ..responses import CountResponse, IdsResponse, ObjectsResponse
 from .executable import Compiled, Executable
+from .whereable import Whereable
 
 Format = Literal["OBJECTS", "COUNT", "IDS"]
-Output = Union[Sequence[Union[Format, int]]]
+Output = Sequence[Union[Format, int]]
 
 
-class Search(Executable):
+class Search(Executable, Whereable):
     _key: str
     _command: Literal["SEARCH"]
     _options: Options = {}
@@ -62,22 +63,6 @@ class Search(Executable):
 
         return self
 
-    def where(self, field: str, min: int, max: int) -> Search:
-        """Filter the search by field
-
-        Args:
-            field (str): field name
-            min (int): minimum value of field
-            max (int): maximum value of field
-
-        Returns:
-            Within
-        """
-
-        self._where.append([SubCommand.WHERE, field, min, max])
-
-        return self
-
     def output(self, format: Format) -> Search:
         if format == "OBJECTS":
             self._output = None
@@ -102,24 +87,6 @@ class Search(Executable):
 
         return ObjectsResponse[str](**(await self.exec()))
 
-    def __compile_where(self) -> CommandArgs:
-        """__compile_where.
-
-        Args:
-
-        Returns:
-            CommandArgs
-
-        """
-        w = []
-
-        if len(self._where) > 0:
-            for i in self._where:
-                w.extend(i)
-            return w
-        else:
-            return []
-
     def __compile_options(self) -> CommandArgs:
         commands = []
 
@@ -142,7 +109,7 @@ class Search(Executable):
             [
                 self._key,
                 *(self.__compile_options()),
-                *(self.__compile_where()),
+                *(self.compile_where()),
                 *(self._output if self._output else []),
             ],
         ]

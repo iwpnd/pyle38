@@ -30,12 +30,13 @@ from ..responses import (
 )
 from ..utils import flatten
 from .executable import Compiled, Executable
+from .whereable import Whereable
 
 Format = Literal["BOUNDS", "COUNT", "HASHES", "IDS", "OBJECTS", "POINTS"]
-Output = Union[Sequence[Union[Format, int]]]
+Output = Sequence[Union[Format, int]]
 
 
-class Intersects(Executable):
+class Intersects(Executable, Whereable):
     """INTERSECTS searches a key for objects that are crossing given bounding area."""
 
     _key: str
@@ -57,7 +58,6 @@ class Intersects(Executable):
     _fence: bool = False
     _detect: Optional[List[FenceDetect]] = []
     _commands: Optional[List[FenceCommand]] = []
-    _where: List[List[Union[str, int]]] = []
 
     def __init__(self, client: Client, key: str, hook=None) -> None:
         """__init__.
@@ -165,8 +165,9 @@ class Intersects(Executable):
         """Option to filter what commands should be triggering a geo fence event.
 
         Args:
-            which (Optional[List[FenceCommand]]): which commands trigger a geo fence event
-                defaults to 'SET,DEL,JSET,JDEL' if not set
+            which (Optional[List[FenceCommand]]): which commands
+            trigger a geo fence event
+            defaults to 'SET,DEL,JSET,JDEL' if not set
 
         Returns:
             Intersects
@@ -206,7 +207,8 @@ class Intersects(Executable):
         return self
 
     def match(self, value: str) -> Intersects:
-        """Match can be used to filtered objects considered in the search with a glob pattern.
+        """Match can be used to filtered objects considered in the
+        search with a glob pattern.
 
         Args:
             value (str): value
@@ -219,7 +221,8 @@ class Intersects(Executable):
         return self
 
     def sparse(self, value: int) -> Intersects:
-        """Instead of returning all results of a search. Return a sparse result evenly distributed
+        """Instead of returning all results of a search.
+        Return a sparse result evenly distributed
         in the given search area. EXPERIMENTAL
 
         Args:
@@ -234,22 +237,6 @@ class Intersects(Executable):
 
     def clip(self, flag: bool = True) -> Intersects:
         self._options["clip"] = flag
-
-        return self
-
-    def where(self, field: str, min: int, max: int) -> Intersects:
-        """Filter the search by field
-
-        Args:
-            field (str): field name
-            min (int): minimum value of field
-            max (int): maximum value of field
-
-        Returns:
-            Within
-        """
-
-        self._where.append([SubCommand.WHERE, field, min, max])
 
         return self
 
@@ -464,24 +451,6 @@ class Intersects(Executable):
 
         return PointsResponse(**(await self.exec()))
 
-    def __compile_where(self) -> CommandArgs:
-        """__compile_where.
-
-        Args:
-
-        Returns:
-            CommandArgs
-
-        """
-        w = []
-
-        if len(self._where) > 0:
-            for i in self._where:
-                w.extend(i)
-            return w
-        else:
-            return []
-
     def __compile_options(self) -> CommandArgs:
         """__compile_options.
 
@@ -543,7 +512,7 @@ class Intersects(Executable):
             [
                 self._key,
                 *(self.__compile_options()),
-                *(self.__compile_where()),
+                *(self.compile_where()),
                 *(self.__compile_fence()),
                 *(self._output if self._output else []),
                 *(self._query.get()),

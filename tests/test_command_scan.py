@@ -57,8 +57,8 @@ async def test_command_scan_compile(tile38):
         .desc()
         .cursor(0)
         .limit(10)
-        .where("foo", 1, 1)
-        .where("bar", 1, 1)
+        .where_with_fields("foo", 1, 1)
+        .where_with_fields("bar", 1, 1)
     )
 
     received = query.output("OBJECTS").compile()
@@ -108,15 +108,17 @@ async def test_command_scan_where(tile38):
         feature
     ).exec()
 
-    response = await tile38.scan(key).where("maxspeed", 120, 120).asObjects()
+    response = (
+        await tile38.scan(key).where_with_fields("maxspeed", 120, 120).asObjects()
+    )
     assert response.ok
     assert len(response.objects) == 1
     assert response.objects[0].dict() == dict(expected, **{"fields": [120, 1000]})
 
     response = (
         await tile38.scan(key)
-        .where("maxspeed", 100, 120)
-        .where("maxweight", 1000, 1000)
+        .where_with_fields("maxspeed", 100, 120)
+        .where_with_fields("maxweight", 1000, 1000)
         .asObjects()
     )
     assert response.ok

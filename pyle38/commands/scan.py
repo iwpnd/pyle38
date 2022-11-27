@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List, Literal, Optional, Sequence, Union
 
-from ..client import Client, Command, CommandArgs, SubCommand
+from ..client import Client, Command, CommandArgs
 from ..models import Options
 from ..responses import (
     BoundsNeSwResponses,
@@ -13,12 +13,13 @@ from ..responses import (
     PointsResponse,
 )
 from .executable import Compiled, Executable
+from .whereable import Whereable
 
 Format = Literal["BOUNDS", "COUNT", "HASHES", "IDS", "OBJECTS", "POINTS"]
-Output = Union[Sequence[Union[Format, int]]]
+Output = Sequence[Union[Format, int]]
 
 
-class Scan(Executable):
+class Scan(Executable, Whereable):
     _key: str
     _command: Literal["SCAN"]
     _options: Options = {}
@@ -79,22 +80,6 @@ class Scan(Executable):
 
         return self
 
-    def where(self, field: str, min: int, max: int) -> Scan:
-        """Filter the search by field
-
-        Args:
-            field (str): field name
-            min (int): minimum value of field
-            max (int): maximum value of field
-
-        Returns:
-            Within
-        """
-
-        self._where.append([SubCommand.WHERE, field, min, max])
-
-        return self
-
     def output(self, format: Format, precision: Optional[int] = None) -> Scan:
         if format == "OBJECTS":
             self._output = None
@@ -141,24 +126,6 @@ class Scan(Executable):
 
         return PointsResponse(**(await self.exec()))
 
-    def __compile_where(self) -> CommandArgs:
-        """__compile_where.
-
-        Args:
-
-        Returns:
-            CommandArgs
-
-        """
-        w = []
-
-        if len(self._where) > 0:
-            for i in self._where:
-                w.extend(i)
-            return w
-        else:
-            return []
-
     def __compile_options(self) -> CommandArgs:
         commands = []
 
@@ -181,7 +148,7 @@ class Scan(Executable):
             [
                 self._key,
                 *(self.__compile_options()),
-                *(self.__compile_where()),
+                *(self.compile_where()),
                 *(self._output if self._output else []),
             ],
         ]
