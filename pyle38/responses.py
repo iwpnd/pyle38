@@ -1,4 +1,4 @@
-from typing import Dict, Generic, List, Literal, Optional, TypeVar, Union
+from typing import Any, Dict, Generic, List, Literal, Optional, TypeVar, Union
 
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic.generics import GenericModel as PydanticGenericModel
@@ -27,7 +27,7 @@ class NeSw(BaseModel):
     sw: LatLon
 
 
-Fields = Dict[str, int]
+Fields = Dict[str, Any]
 Meta = Dict[str, str]
 
 
@@ -76,7 +76,7 @@ class Point(BaseModel):
     point: LatLon
     id: Union[str, int]
     distance: Optional[int] = None
-    fields: Optional[List[int]] = None
+    fields: Optional[List[Any]] = None
 
 
 class PointsResponse(JSONResponse):
@@ -90,7 +90,7 @@ class Hash(BaseModel):
     hash: str
     id: Union[str, int]
     distance: Optional[float] = None
-    fields: Optional[List[int]]
+    fields: Optional[List[Any]]
 
 
 class HashResponse(JSONResponse):
@@ -109,7 +109,7 @@ class Bounds(BaseModel):
     bounds: NeSw
     id: Union[str, int]
     distance: Optional[float] = None
-    fields: Optional[List[int]] = None
+    fields: Optional[List[Any]] = None
 
 
 class BoundsNeSwResponse(JSONResponse):
