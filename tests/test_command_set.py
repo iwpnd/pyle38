@@ -5,16 +5,19 @@ import pytest
 from pyle38.client import Client
 from pyle38.commands.set import Set
 
+from .helper.random_data import (
+    random_feature,
+    random_float,
+    random_integer,
+    random_position,
+    random_string,
+)
+
 client = Client("test")
 
-key = "fleet"
-id = "truck1"
-obj = {
-    "type": "Feature",
-    "geometry": {"type": "Point", "coordinates": [1, 1]},
-    "properties": {},
-}
-
+key = random_string()
+id = random_string()
+obj: dict = random_feature("Polygon")
 fields = {"speed": 100, "state": 1}
 
 
@@ -50,25 +53,59 @@ fields = {"speed": 100, "state": 1}
 )
 @pytest.mark.asyncio
 async def test_command_set_compile(expected, received):
-
     assert expected == received
 
 
 @pytest.mark.asyncio
-async def test_command_set_query(tile38):
+async def test_command_set_get(tile38):
+    key = random_string()
+    id = random_string()
+    obj = random_feature("Polygon")
+
     response = await tile38.set(key, id).object(obj).exec()
     assert response.ok
 
-    expected = {"ok": True, "object": obj, "elapsed": "1ms"}
-
+    expected = obj
     received = await tile38.get(key, id).asObject()
 
-    assert expected["object"] == received.object
+    assert received.ok
+    assert expected == received.object
 
 
+@pytest.mark.parametrize(
+    "key, value",
+    [
+        (
+            "integer",
+            random_integer(),
+        ),
+        (
+            "float",
+            random_float(),
+        ),
+        (
+            "string",
+            random_string(),
+        ),
+        (
+            "dictionary",
+            {
+                "foo": random_string(),
+                "bar": random_float(),
+            },
+        ),
+    ],
+    ids=["integer", "float", "string", "dictionary"],
+)
 @pytest.mark.asyncio
-async def test_command_set_with_fields(tile38):
-    response = await tile38.set(key, id).fields(fields).point(1, 1).exec()
+async def test_command_set_get_with_fields(tile38, key, value):
+    key = random_string()
+    id = random_string()
+    [lng, lat] = random_position()
+
+    fields = {key: value}
+
+    response = await tile38.set(key, id).fields(fields).point(lat, lng).exec()
     assert response.ok
 
     response = await tile38.get(key, id).withfields().asObject()

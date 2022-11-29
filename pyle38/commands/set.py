@@ -12,7 +12,7 @@ class Set(Executable):
     _key: str
     _id: str
     _ex: Optional[int] = None
-    _nx_or_xx: Optional[Union[Literal["NX", "XX"]]] = None
+    _nx_or_xx: Optional[Literal["NX", "XX"]] = None
     _fields: Optional[Fields] = {}
     _input: Optional[
         Sequence[
@@ -90,6 +90,10 @@ class Set(Executable):
     def __unpack_fields(fields: Fields):
         command = []
         for k, v in fields.items():
+            if type(v) is dict:
+                command.extend([SubCommand.FIELD.value, k, json.dumps(v)])
+                continue
+
             command.extend([SubCommand.FIELD.value, k, v])
 
         return command
