@@ -8,6 +8,7 @@ from .errors import (
     Tile38IdNotFoundError,
     Tile38KeyNotFoundError,
     Tile38NotCaughtUpError,
+    Tile38PathNotFoundError,
 )
 
 
@@ -37,6 +38,9 @@ def parse_response(
 
         if "not caught up" in msg:
             raise Tile38NotCaughtUpError(msg)
+
+        if "path not found" in msg:
+            raise Tile38PathNotFoundError(msg)
 
         raise Tile38Error(msg)
 

@@ -1,5 +1,9 @@
 import pytest
 
+from pyle38.errors import Tile38KeyNotFoundError, Tile38PathNotFoundError
+
+from .helper.random_data import random_string
+
 
 @pytest.mark.asyncio
 async def test_command_jset_jget_jdel(tile38_with_follower):
@@ -35,7 +39,11 @@ async def test_command_j_options(tile38):
     assert response.ok
 
     response = await tile38.jget("linestring", "1")
-    response.ok
-    response.value == '{"type":"LineString","coordinates":[[0,0],[1,1],[2,2]]}'
+    assert response.ok
+    assert response.value == '{"type":"LineString","coordinates":[[0,0],[1,1],[2,2]]}'
 
-    # TODO: test for raise Tile38Error on deleted key
+    with pytest.raises(Tile38KeyNotFoundError):
+        await tile38.jdel(random_string(), random_string(), random_string())
+
+    with pytest.raises(Tile38PathNotFoundError):
+        await tile38.jdel("linestring", random_string(), random_string())
