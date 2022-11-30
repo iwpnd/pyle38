@@ -2,8 +2,10 @@ import pytest
 
 from pyle38.commands.scan import Scan
 
-key = "fleet"
-id = "truck"
+from .helper.random_data import random_string
+
+key = random_string()
+id = random_string()
 feature = {
     "type": "Feature",
     "geometry": {"type": "Point", "coordinates": [13.37, 52.25]},

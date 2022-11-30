@@ -1,16 +1,17 @@
 import pytest
 
+from .helper.random_data import random_string
+
 
 @pytest.mark.asyncio
 async def test_command_bounds(tile38):
-    key = "fleet"
-    id = "truck"
+    key = random_string()
+    id = random_string()
 
-    await tile38.set(key, id).point(1, 1).exec()
+    response = await tile38.set(key, id).point(1, 1).exec()
+    assert response.ok
 
     expected = {
-        "ok": True,
-        "elapsed": "1 ms",
         "bounds": {
             "type": "Polygon",
             "coordinates": [

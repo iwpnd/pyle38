@@ -31,13 +31,13 @@ def random_position() -> Position:
     return [random_longitude(), random_latitude()]
 
 
-def random_point(
+def random_point_geometry(
     position: Optional[Position] = None,
 ) -> Dict[str, Union[str, List[float]]]:
     return {"type": "Point", "coordinates": position if position else random_position()}
 
 
-def random_polygon(
+def random_polygon_geometry(
     bbox: BoundingBox = [13.1632, 52.4099, 13.6402, 52.6353],
 ) -> Dict[str, Union[str, Polygon]]:
     [min_lng, min_lat, max_lng, max_lat] = bbox
@@ -77,7 +77,7 @@ def random_polygon(
 
 def random_feature(feature_type: Literal["Point", "Polygon"]) -> dict:
     if feature_type == "Point":
-        return {"type": "Feature", "geometry": random_point()}
+        return {"type": "Feature", "geometry": random_point_geometry()}
 
     if feature_type == "Polygon":
-        return random_polygon()
+        return random_polygon_geometry()

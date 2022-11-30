@@ -8,6 +8,7 @@ async def test_command_config(tile38_with_follower):
 
     response = await tile38.config_set("keepalive", 500)
     assert response.ok
+
     response = await tile38.follower().config_set("keepalive", 500)
     assert response.ok
 

@@ -2,31 +2,13 @@ import pytest
 
 from pyle38.commands.intersects import Intersects
 
-key = "fleet"
-id = "truck"
-feature = {
-    "type": "Feature",
-    "geometry": {"type": "Point", "coordinates": [13.37, 52.25]},
-    "properties": {"id": id},
-}
-polygon = {
-    "type": "Polygon",
-    "coordinates": [
-        [
-            [13.361263275146484, 52.24630137198303],
-            [13.379974365234373, 52.24630137198303],
-            [13.379974365234373, 52.256705331409506],
-            [13.361263275146484, 52.256705331409506],
-            [13.361263275146484, 52.24630137198303],
-        ]
-    ],
-}
-
-expected = {"id": id, "object": feature}
+from .helper.random_data import random_string
 
 
 @pytest.mark.asyncio
 async def test_command_intersects_compile(tile38):
+    key = random_string()
+
     expected = [
         "INTERSECTS",
         [
@@ -81,6 +63,29 @@ async def test_command_intersects_compile(tile38):
     received = query.output("OBJECTS", None).compile()
 
     assert expected == received
+
+
+key = random_string()
+id = random_string()
+feature = {
+    "type": "Feature",
+    "geometry": {"type": "Point", "coordinates": [13.37, 52.25]},
+    "properties": {"id": id},
+}
+polygon = {
+    "type": "Polygon",
+    "coordinates": [
+        [
+            [13.361263275146484, 52.24630137198303],
+            [13.379974365234373, 52.24630137198303],
+            [13.379974365234373, 52.256705331409506],
+            [13.361263275146484, 52.256705331409506],
+            [13.361263275146484, 52.24630137198303],
+        ]
+    ],
+}
+
+expected = {"id": id, "object": feature}
 
 
 @pytest.mark.asyncio
@@ -228,7 +233,10 @@ async def test_command_intersects_bounds(tile38):
 
 @pytest.mark.asyncio
 async def test_command_intersects_object_with_intersection(tile38):
-    response = await tile38.set("zones", "zone").object(polygon).exec()
+    key = random_string()
+    id = random_string()
+
+    response = await tile38.set(key, id).object(polygon).exec()
     assert response.ok
 
     intersecting_feature = {
@@ -244,15 +252,19 @@ async def test_command_intersects_object_with_intersection(tile38):
         ],
     }
 
-    response = await tile38.intersects("zones").object(intersecting_feature).asObjects()
+    response = await tile38.intersects(key).object(intersecting_feature).asObjects()
 
     assert response.ok
-    assert response.objects[0].dict() == {"id": "zone", "object": polygon}
+    assert response.objects[0].dict() == {"id": id, "object": polygon}
 
 
 @pytest.mark.asyncio
 async def test_command_intersects_get(tile38):
-    response = await tile38.set("zones", "zone").object(polygon).exec()
+    key = random_string()
+    id = random_string()
+    id2 = random_string()
+
+    response = await tile38.set(key, id).object(polygon).exec()
     assert response.ok
 
     intersecting_feature = {
@@ -268,17 +280,13 @@ async def test_command_intersects_get(tile38):
         ],
     }
 
-    response = (
-        await tile38.set("zones", "zone_intersect").object(intersecting_feature).exec()
-    )
+    response = await tile38.set(key, id2).object(intersecting_feature).exec()
     assert response.ok
 
-    response = (
-        await tile38.intersects("zones").get("zones", "zone_intersect").asObjects()
-    )
+    response = await tile38.intersects(key).get(key, id2).asObjects()
 
     assert response.ok
-    assert response.objects[0].dict() == {"id": "zone", "object": polygon}
+    assert response.objects[0].dict() == {"id": id, "object": polygon}
 
 
 @pytest.mark.asyncio
