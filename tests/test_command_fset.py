@@ -2,7 +2,7 @@ import pytest
 
 from pyle38.commands.fset import Fset
 
-from .helper.random_data import random_feature, random_integer, random_string
+from .helper.random_data import random_integer, random_point_feature, random_string
 
 
 @pytest.mark.asyncio
@@ -26,7 +26,7 @@ async def test_command_fset(tile38):
     fkey = random_string()
     fvalue = random_integer(1, 10)
     fields = {fkey: fvalue}
-    object = random_feature("Point")
+    object = random_point_feature()
 
     response = await tile38.set(key, id).object(object).exec()
     assert response.ok

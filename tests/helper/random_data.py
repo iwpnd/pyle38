@@ -1,6 +1,6 @@
 import random
 import uuid
-from typing import Dict, List, Literal, Optional, Union
+from typing import Dict, List, Optional, Union
 
 Position = List[float]
 Polygon = List[List[Position]]
@@ -75,9 +75,17 @@ def random_polygon_geometry(
     }
 
 
-def random_feature(feature_type: Literal["Point", "Polygon"]) -> dict:
-    if feature_type == "Point":
-        return {"type": "Feature", "geometry": random_point_geometry()}
+def random_point_feature(geometry={}, properties={}) -> dict:
+    return {
+        "type": "Feature",
+        "geometry": geometry if geometry else random_point_geometry(),
+        "properties": properties,
+    }
 
-    if feature_type == "Polygon":
-        return random_polygon_geometry()
+
+def random_polygon_feature(geometry={}, properties={}) -> dict:
+    return {
+        "type": "Feature",
+        "geometry": geometry if geometry else random_polygon_geometry(),
+        "properties": properties,
+    }

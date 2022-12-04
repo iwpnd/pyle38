@@ -6,9 +6,9 @@ from pyle38.client import Client
 from pyle38.commands.set import Set
 
 from .helper.random_data import (
-    random_feature,
     random_float,
     random_integer,
+    random_polygon_feature,
     random_position,
     random_string,
 )
@@ -17,7 +17,7 @@ client = Client("test")
 
 key = random_string()
 id = random_string()
-obj: dict = random_feature("Polygon")
+obj: dict = random_polygon_feature()
 fields = {"speed": 100, "state": 1}
 
 
@@ -60,7 +60,7 @@ async def test_command_set_compile(expected, received):
 async def test_command_set_get(tile38):
     key = random_string()
     id = random_string()
-    obj = random_feature("Polygon")
+    obj = random_polygon_feature()
 
     response = await tile38.set(key, id).object(obj).exec()
     assert response.ok

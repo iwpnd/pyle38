@@ -1,13 +1,13 @@
 import pytest
 
-key = "fleet"
-id = "truck"
+from .helper.random_data import random_point_feature, random_string
+
+key = random_string()
+id = random_string()
 fields = {"speed": 100, "state": 1}
-feature = {
-    "type": "Feature",
-    "geometry": {"type": "Point", "coordinates": [13.37, 52.25]},
-    "properties": {"id": id},
-}
+feature = random_point_feature(
+    {"type": "Point", "coordinates": [13.37, 52.25]}, {"id": id}
+)
 
 
 @pytest.mark.asyncio

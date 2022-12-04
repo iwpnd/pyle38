@@ -2,11 +2,11 @@ import pytest
 
 from pyle38.commands.get import Get
 
-from .helper.random_data import random_feature, random_string
+from .helper.random_data import random_point_feature, random_string
 
 key = random_string()
 id = random_string()
-object = random_feature("Point")
+object = random_point_feature("Point")
 
 
 @pytest.mark.parametrize(
