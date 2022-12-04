@@ -3,17 +3,21 @@ import pytest
 from pyle38.commands.sethook import SetHook
 from pyle38.errors import Tile38Error
 
-key = "fleet"
-name = "warehouse"
+from .helper.random_data import random_string
+
 endpoint = "kafka://10.0.20.78:9092/warehouse"
-meta = {"city": "Berlin"}
 
 
 @pytest.mark.asyncio
 async def test_command_sethook_compile_within(tile38):
+    key = random_string()
+    name = random_string()
+    meta_key = random_string()
+    meta_value = random_string()
+
     received = (
         SetHook(tile38.client, name, endpoint)
-        .meta(meta)
+        .meta({meta_key: meta_value})
         .ex(10)
         .within(key)
         .circle(52.25, 13.37, 100)
@@ -26,8 +30,8 @@ async def test_command_sethook_compile_within(tile38):
             name,
             endpoint,
             "META",
-            "city",
-            "Berlin",
+            meta_key,
+            meta_value,
             "EX",
             10,
             "WITHIN",
@@ -43,6 +47,8 @@ async def test_command_sethook_compile_within(tile38):
 
 @pytest.mark.asyncio
 async def test_command_Sethook_compile_nearby(tile38):
+    key = random_string()
+    name = random_string()
 
     received = (
         SetHook(tile38.client, name, endpoint)
@@ -59,6 +65,8 @@ async def test_command_Sethook_compile_nearby(tile38):
 
 @pytest.mark.asyncio
 async def test_command_sethook_compile_nearby(tile38):
+    key = random_string()
+    name = random_string()
 
     received = (
         SetHook(tile38.client, name, endpoint)
@@ -75,6 +83,9 @@ async def test_command_sethook_compile_nearby(tile38):
 
 @pytest.mark.asyncio
 async def test_command_sethook(tile38):
+    key = random_string()
+    name = random_string()
+
     response = (
         await tile38.sethook(name, endpoint)
         .within(key)
@@ -102,6 +113,7 @@ async def test_command_sethook(tile38):
 
 @pytest.mark.asyncio
 async def test_command_sethook_raises(tile38):
+    key = random_string()
 
     with pytest.raises(Tile38Error):
         await tile38.within(key).circle(52.25, 13.37, 100).activate()
@@ -115,6 +127,9 @@ async def test_command_sethook_raises(tile38):
 
 @pytest.mark.asyncio
 async def test_command_pdelhook(tile38):
+    key = random_string()
+    name = random_string()
+
     response = (
         await tile38.sethook(name, endpoint)
         .within(key)
@@ -137,6 +152,9 @@ async def test_command_pdelhook(tile38):
 
 @pytest.mark.asyncio
 async def test_command_delhook(tile38):
+    key = random_string()
+    name = random_string()
+
     response = (
         await tile38.sethook(name, endpoint)
         .within(key)
