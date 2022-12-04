@@ -3,16 +3,19 @@ import pytest
 from pyle38.commands.setchan import SetChan
 from pyle38.errors import Tile38Error
 
-key = "fleet"
-name = "warehouse"
-meta = {"city": "Berlin"}
+from .helper.random_data import random_string
 
 
 @pytest.mark.asyncio
 async def test_command_setchan_compile_within(tile38):
+    key = random_string()
+    name = random_string()
+    meta_key = random_string()
+    meta_value = random_string()
+
     received = (
         SetChan(tile38.client, name)
-        .meta(meta)
+        .meta({meta_key: meta_value})
         .ex(10)
         .within(key)
         .circle(52.25, 13.37, 100)
@@ -24,8 +27,8 @@ async def test_command_setchan_compile_within(tile38):
         [
             name,
             "META",
-            "city",
-            "Berlin",
+            meta_key,
+            meta_value,
             "EX",
             10,
             "WITHIN",
@@ -41,6 +44,8 @@ async def test_command_setchan_compile_within(tile38):
 
 @pytest.mark.asyncio
 async def test_command_Sethook_compile_nearby(tile38):
+    key = random_string()
+    name = random_string()
 
     received = (
         SetChan(tile38.client, name).intersects(key).circle(52.25, 13.37, 100).compile()
@@ -54,6 +59,8 @@ async def test_command_Sethook_compile_nearby(tile38):
 
 @pytest.mark.asyncio
 async def test_command_setchan_compile_nearby(tile38):
+    key = random_string()
+    name = random_string()
 
     received = (
         SetChan(tile38.client, name).nearby(key).point(52.25, 13.37, 100).compile()
@@ -67,6 +74,9 @@ async def test_command_setchan_compile_nearby(tile38):
 
 @pytest.mark.asyncio
 async def test_command_setchan(tile38):
+    key = random_string()
+    name = random_string()
+
     response = (
         await tile38.setchan(name).within(key).circle(52.25, 13.37, 100).activate()
     )
@@ -85,6 +95,7 @@ async def test_command_setchan(tile38):
 
 @pytest.mark.asyncio
 async def test_command_setchan_raises(tile38):
+    key = random_string()
 
     with pytest.raises(Tile38Error):
         await tile38.within(key).circle(52.25, 13.37, 100).activate()
@@ -98,6 +109,9 @@ async def test_command_setchan_raises(tile38):
 
 @pytest.mark.asyncio
 async def test_command_pdelhook(tile38):
+    key = random_string()
+    name = random_string()
+
     response = (
         await tile38.setchan(name).within(key).circle(52.25, 13.37, 100).activate()
     )
@@ -117,6 +131,9 @@ async def test_command_pdelhook(tile38):
 
 @pytest.mark.asyncio
 async def test_command_delhook(tile38):
+    key = random_string()
+    name = random_string()
+
     response = (
         await tile38.setchan(name).within(key).circle(52.25, 13.37, 100).activate()
     )
