@@ -68,8 +68,8 @@ async def test_command_nearby_compile(tile38, format, precision, expected):
         .distance()
         .cursor(0)
         .limit(10)
-        .where_with_fields("foo", 1, 1)
-        .where_with_fields("bar", 1, 1)
+        .where("foo", 1, 1)
+        .where("bar", 1, 1)
         .fence()
         .detect(["enter", "exit"])
         .commands(["del", "set"])
@@ -102,7 +102,7 @@ async def test_command_nearby_where_point(tile38):
 
     response = (
         await tile38.nearby(key)
-        .where_with_fields("maxspeed", 120, 120)
+        .where("maxspeed", 120, 120)
         .point(52.250212, 13.370871)
         .asObjects()
     )
@@ -112,8 +112,8 @@ async def test_command_nearby_where_point(tile38):
 
     response = (
         await tile38.nearby(key)
-        .where_with_fields("maxspeed", 100, 120)
-        .where_with_fields("maxweight", 1000, 1000)
+        .where("maxspeed", 100, 120)
+        .where("maxweight", 1000, 1000)
         .point(52.250212, 13.370871)
         .asObjects()
     )

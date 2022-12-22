@@ -24,7 +24,7 @@ async def test_command_search_compile(tile38):
     query = (
         Search(tile38.client, key)
         .match("*")
-        .where_with_fields("foo", 1, 1)
+        .where("foo", 1, 1)
         .desc()
         .cursor(0)
         .limit(10)
@@ -70,7 +70,7 @@ async def test_command_search_returns_where_stringobjects(tile38):
 
     response = (
         await tile38.search(key)
-        .where_with_fields("maxspeed", 120, 120)
+        .where("maxspeed", 120, 120)
         .match(pattern)
         .asStringObjects()
     )
@@ -82,8 +82,8 @@ async def test_command_search_returns_where_stringobjects(tile38):
 
     response = (
         await tile38.search(key)
-        .where_with_fields("maxspeed", 100, 120)
-        .where_with_fields("maxweight", 1000, 1000)
+        .where("maxspeed", 100, 120)
+        .where("maxweight", 1000, 1000)
         .match(pattern)
         .asStringObjects()
     )

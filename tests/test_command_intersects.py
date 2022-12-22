@@ -52,8 +52,8 @@ async def test_command_intersects_compile(tile38):
         .clip()
         .cursor(0)
         .limit(10)
-        .where_with_fields("foo", 1, 1)
-        .where_with_expr("bar == 1")
+        .where("foo", 1, 1)
+        .where_expr("bar == 1")
         .fence()
         .detect(["enter", "exit"])
         .commands(["del", "set"])
@@ -109,7 +109,7 @@ async def test_command_intersects_where_circle(tile38):
 
     response = (
         await tile38.intersects(key)
-        .where_with_fields("maxspeed", 120, 120)
+        .where("maxspeed", 120, 120)
         .circle(52.25, 13.37, 100)
         .asObjects()
     )
@@ -119,8 +119,8 @@ async def test_command_intersects_where_circle(tile38):
 
     response = (
         await tile38.intersects(key)
-        .where_with_fields("maxspeed", 100, 120)
-        .where_with_fields("maxweight", 1000, 1000)
+        .where("maxspeed", 100, 120)
+        .where("maxweight", 1000, 1000)
         .circle(52.25, 13.37, 100)
         .asObjects()
     )
@@ -139,7 +139,7 @@ async def test_command_intersects_where_expr_circle(tile38):
 
     response = (
         await tile38.intersects(key)
-        .where_with_expr("maxspeed >= 100 && maxspeed <= 120 && maxweight == 1000")
+        .where_expr("maxspeed >= 100 && maxspeed <= 120 && maxweight == 1000")
         .circle(52.25, 13.37, 100)
         .asObjects()
     )

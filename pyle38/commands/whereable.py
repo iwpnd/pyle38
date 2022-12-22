@@ -41,34 +41,22 @@ class Whereable:
 
         return self
 
-    def where_with_fields(
-        self: TWhereable, field: str, minimum: int, maximum: int
-    ) -> TWhereable:
-        """Filter the search by field
+    def where_expr(self: TWhereable, expr: str) -> TWhereable:
+        """Filter the search with an expression
 
         Args:
-            field (str): field name
-            minimum (int): minimum value of field
-            maximum (int): maximum value of field
+            expr (str): expression
 
         Returns:
             TWhereable
-        """
 
-        self._where.append([SubCommand.WHERE, field, minimum, maximum])
+        Example:
 
-        return self
+        ```python
+        await tile38.set('fleet', 'truck').fields({ 'driver': 'John'})
+        await tile38.scan('fleet').where_expr("driver === 'John'")
+        ```
 
-    def where_with_expr(self: TWhereable, expr: str) -> TWhereable:
-        """Filter the search by field
-
-        Args:
-            field (str): field name
-            minimum (int): minimum value of field
-            maximum (int): maximum value of field
-
-        Returns:
-            Within
         """
 
         self._where.append([SubCommand.WHERE, expr])
