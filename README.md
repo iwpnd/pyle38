@@ -658,7 +658,7 @@ await tile38.nearby('fleet').point(33.5124, -112.2694, 10).asCount
 |--|--|
 | `.point(lat, lon, radius: Optional[int])` | Search nearby a given of latitude, longitude. If radius is set, searches nearby the given radius. |
 
-#### Scan
+#### SCAN
 
 Incrementally iterate through a given collection key.
 
@@ -697,7 +697,7 @@ await tile38.scan('fleet').where("maxspeed", 100, 120).asCount()
 | `.asIds()` | returns an array of ids |
 | `.asPoints()` | returns objects as points: `{"id": str,"point":{"lat": float,"lon": float}`. If the searched key is a collection of `Polygon` objects, the returned points are the centroids.|
 
-#### Search
+#### SEARCH
 
 Used to iterate through a keys string values.
 
