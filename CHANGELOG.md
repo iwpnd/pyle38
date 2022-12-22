@@ -2,6 +2,20 @@
 
 <!--next-version-placeholder-->
 
+## v0.8.0 (2022-12-22)
+### Feature
+* ✨ allow field Any field value ([`ddc3f4a`](https://github.com/iwpnd/pyle38/commit/ddc3f4a34807d801a3c98ed452e0bd355b641caf))
+* ✨ add test helpers ([`277679b`](https://github.com/iwpnd/pyle38/commit/277679b65de53711fc4ee711ff4477562f23bd84))
+* ✨ implement whereable ([`65fa065`](https://github.com/iwpnd/pyle38/commit/65fa0652d24c77dd02eeb9f1c1057a236d305fa2))
+
+### Fix
+* 🐛 rename to where_expr ([`8002e6a`](https://github.com/iwpnd/pyle38/commit/8002e6a627a95b1e7ddada7ca422bff7818d5484))
+* 🐛 add whereable ([`1194a70`](https://github.com/iwpnd/pyle38/commit/1194a70ab21a82ac870a369abf22869822832312))
+
+### Documentation
+* Fix ([`d792507`](https://github.com/iwpnd/pyle38/commit/d792507be425151d9a63ef49af356143f499d519))
+* 📚️ update readme ([`001f719`](https://github.com/iwpnd/pyle38/commit/001f719c7ab7c1240ec9a18a0afef1f956e2a22d))
+
 ## v0.7.0 (2022-09-06)
 ### Feature
 * ✨ upgrade to redis-py, use single connection instead of pool ([`b31136d`](https://github.com/iwpnd/pyle38/commit/b31136d0d18b9d78d6a286abaab0e2ba3b33f6c0))
