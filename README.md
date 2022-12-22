@@ -114,7 +114,7 @@ In [6]: print(response.dict())
 
 ### Requirements
 
-Python==^3.8.2
+Python==^3.10.0
 
 ### Installation
 
