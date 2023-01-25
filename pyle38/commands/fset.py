@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from typing import Literal, Optional
 
 from ..client import Client, Command
@@ -8,6 +9,17 @@ from .executable import Compiled, Executable
 
 
 class Fset(Executable):
+    """Set the value for one or more fields of an id.
+
+    Example::
+
+        key = fleet
+        id = truck1
+        fields = {"driver":"John"}
+        await tile38.set(key, id).point(52.25, 13.37).exec()
+        await tile38.fset(key, id, fields)
+    """
+
     _key: str
     _id: str
     _xx: Optional[Literal["XX"]] = None
@@ -20,29 +32,76 @@ class Fset(Executable):
         self.key(key).id(id).fields(fields)
 
     def key(self, key: str) -> Fset:
+        """Set key of id to add fields to
+
+        Args:
+        key (str): key of a collection
+
+        Returns:
+            Self
+        """
         self._key = key
 
         return self
 
     def id(self, id: str) -> Fset:
+        """Set id to add fields to
+
+        Args:
+        id (str): id of an object
+
+        Returns:
+            Self
+        """
         self._id = id
 
         return self
 
     def fields(self, fields: Fields) -> Fset:
+        """Set fields to add to object in collection
+
+        Args:
+        fields (Fields): Fields to set
+
+        Returns:
+            Self
+        """
         self._fields = fields
 
         return self
 
     def xx(self, flag: bool = True) -> Fset:
+        """Alter behaviour if key/id does not exists
+
+        If set, command will return 0 if key/id was not foundotherwise errors
+
+        Args:
+        flag (bool): Set True to return 0 if
+        key/id not found else False to error on key/id not found.
+
+        Returns:
+            Self
+        """
         self._xx = "XX" if flag else None
 
         return self
+
+    # @staticmethod
+    # def __unpack_fields(fields: Fields):
+    #     command = []
+    #     for k, v in fields.items():
+    #         command.extend([k, v])
+    #
+    #     return command
 
     @staticmethod
     def __unpack_fields(fields: Fields):
         command = []
         for k, v in fields.items():
+            if type(v) is dict:
+                command.extend([k, json.dumps(v)])
+                continue
+
             command.extend([k, v])
 
         return command

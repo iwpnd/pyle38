@@ -37,3 +37,25 @@ async def test_command_fset(tile38):
     response = await tile38.get(key, id).withfields().asObject()
     assert response.ok
     assert response.fields == fields
+
+
+@pytest.mark.asyncio
+async def test_command_fset_expr(tile38):
+    key = random_string()
+    id = random_string()
+    fkey = random_string()
+    fvalue = {random_string(): random_integer(1, 10)}
+    fields = {fkey: fvalue}
+    object = random_point_feature()
+
+    response = await tile38.set(key, id).object(object).exec()
+    assert response.ok
+
+    response = await tile38.fset(key, id, fields).xx().exec()
+    assert response.ok
+
+    response = await tile38.get(key, id).withfields().asObject()
+
+    print(response)
+    assert response.ok
+    assert response.fields == fields
