@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.8.1 (2023-01-25)
+### Fix
+* 🐛 fset when field value is object ([`c16f487`](https://github.com/iwpnd/pyle38/commit/c16f4873948d2f1f4fc8be314ff268a6479b5b3b))
+
 ## v0.8.0 (2022-12-22)
 ### Feature
 * ✨ allow field Any field value ([`ddc3f4a`](https://github.com/iwpnd/pyle38/commit/ddc3f4a34807d801a3c98ed452e0bd355b641caf))
