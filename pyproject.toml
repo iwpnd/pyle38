@@ -36,7 +36,7 @@ isort = "^5.10.1"
 pytest-cov = "^4.0.0"
 mypy = "^0.991"
 python-semantic-release = "^7.32.1"
-ruff = "^0.0.146"
+ruff = "^0.0.231"
 
 [tool.semantic_release]
 version_variable = [
@@ -99,7 +99,7 @@ target-version = "py310"
 max-complexity = 10
 
 [tool.ruff.per-file-ignores]
-"__init__.py" = ["E401"]
+"__init__.py" = ["F401"]
 
 [tool.poe.tasks]
 test       = "poetry run pytest -vv --asyncio-mode=auto -s tests/"
