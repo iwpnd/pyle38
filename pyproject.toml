@@ -34,7 +34,7 @@ gitlint = "^0.18.0"
 poethepoet = ">=0.16.4,<0.19.0"
 isort = "^5.10.1"
 pytest-cov = "^4.0.0"
-mypy = ">=0.991,<1.1"
+mypy = ">=0.991,<1.2"
 python-semantic-release = "^7.32.1"
 ruff = "^0.0.231"
 
