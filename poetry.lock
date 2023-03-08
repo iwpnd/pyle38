@@ -2,14 +2,14 @@
 
 [[package]]
 name = "arrow"
-version = "1.2.1"
+version = "1.2.3"
 description = "Better dates & times for Python"
 category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "arrow-1.2.1-py3-none-any.whl", hash = "sha256:6b2914ef3997d1fd7b37a71ce9dd61a6e329d09e1c7b44f4d3099ca4a5c0933e"},
-    {file = "arrow-1.2.1.tar.gz", hash = "sha256:c2dde3c382d9f7e6922ce636bf0b318a7a853df40ecb383b29192e6c5cc82840"},
+    {file = "arrow-1.2.3-py3-none-any.whl", hash = "sha256:5a49ab92e3b7b71d96cd6bfcc4df14efefc9dfa96ea19045815914a6ab6b1fe2"},
+    {file = "arrow-1.2.3.tar.gz", hash = "sha256:3934b30ca1b9f292376d9db15b19446088d12ec58629bc3f0da28fd55fb633a1"},
 ]
 
 [package.dependencies]
@@ -301,14 +301,14 @@ files = [
 
 [[package]]
 name = "click"
-version = "8.0.3"
+version = "8.1.3"
 description = "Composable command line interface toolkit"
 category = "dev"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "click-8.0.3-py3-none-any.whl", hash = "sha256:353f466495adaeb40b6b5f592f9f91cb22372351c84caeb068132442a4518ef3"},
-    {file = "click-8.0.3.tar.gz", hash = "sha256:410e932b050f5eed773c4cda94de75971c89cdb3155a72a0831139a79e5ecb5b"},
+    {file = "click-8.1.3-py3-none-any.whl", hash = "sha256:bb4d8133cb15a609f44e8213d9b391b0809795062913b383c62be0ee95b1db48"},
+    {file = "click-8.1.3.tar.gz", hash = "sha256:7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e"},
 ]
 
 [package.dependencies]
@@ -536,47 +536,47 @@ smmap = ">=3.0.1,<6"
 
 [[package]]
 name = "gitlint"
-version = "0.18.0"
+version = "0.19.0"
 description = "Git commit message linter written in python, checks your commit messages for style."
 category = "dev"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "gitlint-0.18.0-py2.py3-none-any.whl", hash = "sha256:77ad954738b400019c1bc51241abdae5fea28c81d1586ef9fe133b96b503531e"},
-    {file = "gitlint-0.18.0.tar.gz", hash = "sha256:b0edf947a9202ace282d084bbf481a1d0fdb2fba40e32dd4a520bfd3ef6d3963"},
+    {file = "gitlint-0.19.0-py3-none-any.whl", hash = "sha256:3a566c6f641e054be26ecf67210c237e4fe45472f6606761c9fea7b44e570d3c"},
+    {file = "gitlint-0.19.0.tar.gz", hash = "sha256:82d3768fb21bc98ab8c45cc16b24e351934bcf91398f1821b7ef89f235bf5bcf"},
 ]
 
 [package.dependencies]
-gitlint-core = {version = "0.18.0", extras = ["trusted-deps"]}
+gitlint-core = {version = "0.19.0", extras = ["trusted-deps"]}
 
 [[package]]
 name = "gitlint-core"
-version = "0.18.0"
+version = "0.19.0"
 description = "Git commit message linter written in python, checks your commit messages for style."
 category = "dev"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "gitlint-core-0.18.0.tar.gz", hash = "sha256:b032eb574f7399aec6a5246a78810bacb7ce9c9fd2d9e4375950549196cae681"},
-    {file = "gitlint_core-0.18.0-py2.py3-none-any.whl", hash = "sha256:6434ca13360e448f9a7b00d24651aabab9b3a1875b4590d20e1d6cb55c78444f"},
+    {file = "gitlint_core-0.19.0-py3-none-any.whl", hash = "sha256:b5c66ac380eae983bed3fa21e5dd35c03d93f3024c7a2bce3a0d1fa9a43c9494"},
+    {file = "gitlint_core-0.19.0.tar.gz", hash = "sha256:97d5d65a39f40d72f82545134e89949ea17d3845415bea7ce3c465b93a1ef2f2"},
 ]
 
 [package.dependencies]
 arrow = [
     {version = ">=1"},
-    {version = "1.2.1", optional = true, markers = "extra == \"trusted-deps\""},
+    {version = "1.2.3", optional = true, markers = "extra == \"trusted-deps\""},
 ]
-Click = [
+click = [
     {version = ">=8"},
-    {version = "8.0.3", optional = true, markers = "extra == \"trusted-deps\""},
+    {version = "8.1.3", optional = true, markers = "extra == \"trusted-deps\""},
 ]
 sh = [
     {version = ">=1.13.0", markers = "sys_platform != \"win32\""},
-    {version = "1.14.2", optional = true, markers = "sys_platform != \"win32\""},
+    {version = "1.14.3", optional = true, markers = "sys_platform != \"win32\""},
 ]
 
 [package.extras]
-trusted-deps = ["Click (==8.0.3)", "arrow (==1.2.1)", "sh (==1.14.2)"]
+trusted-deps = ["arrow (==1.2.3)", "click (==8.1.3)", "sh (==1.14.3)"]
 
 [[package]]
 name = "gitpython"
@@ -1383,14 +1383,13 @@ testing-integration = ["build[virtualenv]", "filelock (>=3.4.0)", "jaraco.envs (
 
 [[package]]
 name = "sh"
-version = "1.14.2"
+version = "1.14.3"
 description = "Python subprocess replacement"
 category = "dev"
 optional = false
 python-versions = "*"
 files = [
-    {file = "sh-1.14.2-py2.py3-none-any.whl", hash = "sha256:4921ac9c1a77ec8084bdfaf152fe14138e2b3557cc740002c1a97076321fce8a"},
-    {file = "sh-1.14.2.tar.gz", hash = "sha256:9d7bd0334d494b2a4609fe521b2107438cdb21c0e469ffeeb191489883d6fe0d"},
+    {file = "sh-1.14.3.tar.gz", hash = "sha256:e4045b6c732d9ce75d571c79f5ac2234edd9ae4f5fa9d59b09705082bdca18c7"},
 ]
 
 [[package]]
@@ -1613,4 +1612,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "d4d0f2d3cb790dafbeee994b77e70e0fc1b09808b6b36235f11589a12b014f74"
+content-hash = "47da8fb5d6042e4d9f3e9ea0ba123773967449b894df825dd8b4e405a1296fab"
