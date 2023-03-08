@@ -13,13 +13,15 @@ default_tile38_follower_url = (
 @pytest.fixture()
 def create_tile38(request, event_loop):
     async def f(url: str = default_tile38_leader_url):
-
         tile38 = Tile38(url)
+        # make sure to reset readonly
+        await tile38.readonly(False)
 
         def teardown():
             async def ateardown():
                 try:
                     await tile38.flushdb()
+                    await tile38.readonly(False)
                 # TODO: find explicit exception
                 except Exception:
                     await tile38.flushdb()
@@ -43,8 +45,9 @@ def create_tile38_with_follower(request, event_loop):
         url: str = default_tile38_leader_url,
         follower_url: str = default_tile38_follower_url,
     ):
-
         tile38 = Tile38(url, follower_url)
+        # make sure to reset readonly
+        await tile38.readonly(False)
 
         def teardown():
             async def ateardown():

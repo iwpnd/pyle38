@@ -55,7 +55,5 @@ async def test_command_fset_expr(tile38):
     assert response.ok
 
     response = await tile38.get(key, id).withfields().asObject()
-
-    print(response)
     assert response.ok
     assert response.fields == fields
