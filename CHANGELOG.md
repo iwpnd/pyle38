@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.9.0 (2023-03-08)
+### Fix
+* 🐛 make client coroutine safe ([`6ab44c7`](https://github.com/iwpnd/pyle38/commit/6ab44c7b79ff9bd239d1b0c393d6da1286c3d110))
+
 ## v0.8.1 (2023-01-25)
 ### Fix
 * 🐛 fset when field value is object ([`c16f487`](https://github.com/iwpnd/pyle38/commit/c16f4873948d2f1f4fc8be314ff268a6479b5b3b))
