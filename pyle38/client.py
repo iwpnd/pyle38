@@ -99,6 +99,20 @@ CommandArgs = Union[
     Sequence[Union[str, float, int]], Sequence[Sequence[Union[str, float, int]]]
 ]
 
+NO_RESPONSE_CALLBACKS_FOR = [
+    Command.SET,
+    Command.SCAN,
+    Command.RENAME,
+    Command.RENAMENX,
+    Command.PING,
+    Command.PERSIST,
+    Command.INFO,
+    Command.EXPIRE,
+    Command.FLUSHDB,
+    Command.DEL,
+    Command.READONLY,
+]
+
 
 class Client:
     __redis = None
@@ -110,6 +124,14 @@ class Client:
         self.__format = Format.RESP.value
 
     async def force_json(self) -> None:
+        """Force the OUTPUT to JSON
+
+        When a new connection is established
+        the on_connect callback makes sure to reset the
+        OUTPUT to RESP.
+        This method makes sure to enforce the OUTPUT to
+        JSON on any consecutive command using the connection.
+        """
         if self.__format == Format.JSON.value:
             return
 
@@ -119,10 +141,29 @@ class Client:
         self.__format = Format.JSON.value
 
     async def __on_connect(self, connection: redis.Connection):
+        """On connect callback to set OUTPUT to RESP
+
+        That way we can keep track of the OUTPUT set
+        for the connection.
+        """
         await connection.on_connect()
         self.format = Format.RESP.value
 
+    async def __delete_response_callbacks(self):
+        """Delete response callbacks in redis-py
+
+        redis-py has default callbacks for certain commands
+        that are not necessary and cause issues using it with Tile38
+        """
+        r = await self.__get_redis()
+        for command in NO_RESPONSE_CALLBACKS_FOR:
+            try:
+                del r.response_callbacks[command]
+            except KeyError:
+                continue
+
     async def __get_redis(self) -> redis.Redis:
+        """Redis connection singleton"""
         if not self.__redis:
             url_components = parse_url(self.url)
             host: str = url_components.get("host") or TILE38_DEFAULT_HOST
@@ -139,18 +180,15 @@ class Client:
 
             self.__redis = r
 
+            await self.__delete_response_callbacks()
+
         return self.__redis
 
     async def __execute_and_read_response(
         self, command: str, command_args: CommandArgs = []
     ):
         r = await self.__get_redis()
-        await r.initialize()
-
-        if r.connection:
-            await r.connection.send_command(command, *command_args)
-            response = await r.connection.read_response()
-            return response
+        return await r.execute_command(command, *command_args)
 
     async def command(self, command: str, command_args: CommandArgs = []) -> Dict:
         await self.force_json()
