@@ -1,111 +1,111 @@
 name: CI
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  workflow_dispatch:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+    workflow_dispatch:
 
 jobs:
-  lint:
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ['3.10']
-        poetry-version: [1.1.2]
-        os: [ubuntu-22.04]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install poetry
-        uses: snok/install-poetry@v1.3
-        with:
-            virtualenvs-create: true
-            virtualenvs-in-project: true
-      - name: Load cached venv
-        id: cached-poetry-dependencies
-        uses: actions/cache@v3.2.6
-        with:
-            path: .venv
-            key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}-${{ matrix.python-version }}
-      - name: Install dependencies
-        run: poetry install
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      - name: lint
-        run: |
-          source .venv/bin/activate
-          poetry run poe lint
-  mypy:
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ['3.10']
-        poetry-version: [1.1.2]
-        os: [ubuntu-22.04]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install poetry
-        uses: snok/install-poetry@v1.3
-        with:
-            virtualenvs-create: true
-            virtualenvs-in-project: true
-      - name: Load cached venv
-        id: cached-poetry-dependencies
-        uses: actions/cache@v3.2.6
-        with:
-            path: .venv
-            key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}-${{ matrix.python-version }}
-      - name: Install dependencies
-        run: poetry install
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      - name: Mypy
-        run: |
-          source .venv/bin/activate
-          poetry run poe mypy .
-  test:
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ['3.10']
-        poetry-version: [1.1.2]
-        os: [ubuntu-22.04]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: start tile38 leader and follower
-        run: docker-compose up -d
-      - name: Install poetry
-        uses: snok/install-poetry@v1.3
-        with:
-            virtualenvs-create: true
-            virtualenvs-in-project: true
-      - name: Load cached venv
-        id: cached-poetry-dependencies
-        uses: actions/cache@v3.2.6
-        with:
-            path: .venv
-            key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}-${{ matrix.python-version }}
-      - name: Install dependencies
-        run: poetry install
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      - name: Test
-        run: |
-          source .venv/bin/activate
-          poetry run poe test . --cov=pyle38/ --cov-report=xml
-      - name: Upload coverage to codecov
-        uses: codecov/codecov-action@v3.1.1
-        with:
-            token: ${{ secrets.CODECOV_TOKEN }}
-            file: /home/runner/coverage.xml
-            fail_ci_if_error: true
+    lint:
+        strategy:
+            fail-fast: false
+            matrix:
+                python-version: ["3.10"]
+                poetry-version: [1.1.2]
+                os: [ubuntu-22.04]
+        runs-on: ${{ matrix.os }}
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-python@v4
+              with:
+                  python-version: ${{ matrix.python-version }}
+            - name: Install poetry
+              uses: snok/install-poetry@v1.3
+              with:
+                  virtualenvs-create: true
+                  virtualenvs-in-project: true
+            - name: Load cached venv
+              id: cached-poetry-dependencies
+              uses: actions/cache@v3.2.6
+              with:
+                  path: .venv
+                  key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}-${{ matrix.python-version }}
+            - name: Install dependencies
+              run: poetry install
+              if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+            - name: lint
+              run: |
+                  source .venv/bin/activate
+                  poetry run poe lint
+    mypy:
+        strategy:
+            fail-fast: false
+            matrix:
+                python-version: ["3.10"]
+                poetry-version: [1.1.2]
+                os: [ubuntu-22.04]
+        runs-on: ${{ matrix.os }}
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-python@v4
+              with:
+                  python-version: ${{ matrix.python-version }}
+            - name: Install poetry
+              uses: snok/install-poetry@v1.3
+              with:
+                  virtualenvs-create: true
+                  virtualenvs-in-project: true
+            - name: Load cached venv
+              id: cached-poetry-dependencies
+              uses: actions/cache@v3.2.6
+              with:
+                  path: .venv
+                  key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}-${{ matrix.python-version }}
+            - name: Install dependencies
+              run: poetry install
+              if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+            - name: Mypy
+              run: |
+                  source .venv/bin/activate
+                  poetry run poe mypy .
+    test:
+        strategy:
+            fail-fast: false
+            matrix:
+                python-version: ["3.10"]
+                poetry-version: [1.1.2]
+                os: [ubuntu-22.04]
+        runs-on: ${{ matrix.os }}
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-python@v4
+              with:
+                  python-version: ${{ matrix.python-version }}
+            - name: start tile38 leader and follower
+              run: docker-compose up -d
+            - name: Install poetry
+              uses: snok/install-poetry@v1.3
+              with:
+                  virtualenvs-create: true
+                  virtualenvs-in-project: true
+            - name: Load cached venv
+              id: cached-poetry-dependencies
+              uses: actions/cache@v3.2.6
+              with:
+                  path: .venv
+                  key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}-${{ matrix.python-version }}
+            - name: Install dependencies
+              run: poetry install
+              if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+            - name: Test
+              run: |
+                  source .venv/bin/activate
+                  poetry run poe test-cov
+            - name: Upload coverage to codecov
+              uses: codecov/codecov-action@v3.1.1
+              with:
+                  token: ${{ secrets.CODECOV_TOKEN }}
+                  file: /home/runner/coverage.xml
+                  fail_ci_if_error: true
