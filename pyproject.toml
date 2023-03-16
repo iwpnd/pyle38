@@ -103,7 +103,7 @@ max-complexity = 10
 
 [tool.poe.tasks]
 test       = "poetry run pytest -vv --asyncio-mode=auto -s tests/"
-test-cov   = "poetry run pytest -vv --asyncio-mode=auto -s --cov=pyle38 tests/"
+test-cov   = "poetry run pytest -vv --asyncio-mode=auto -s --cov=pyle38 tests/ --cov-report xml:/home/runner/coverage.xml"
 mypy       = "poetry run mypy --ignore-missing-imports --config-file pyproject.toml"
 lint       = "ruff ."
 up         = "docker-compose up"
