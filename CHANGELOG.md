@@ -2,6 +2,9 @@
 
 <!--next-version-placeholder-->
 
+## v0.9.1 (2023-03-24)
+
+
 ## v0.9.0 (2023-03-08)
 ### Fix
 * 🐛 make client coroutine safe ([`6ab44c7`](https://github.com/iwpnd/pyle38/commit/6ab44c7b79ff9bd239d1b0c393d6da1286c3d110))
