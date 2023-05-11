@@ -35,8 +35,9 @@ async def main():
         .asObjects()
 
     assert response.ok
-
+    
     print(response.dict())
+    await tile38.quit()
 
 asyncio.run(main())
 
