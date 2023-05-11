@@ -15,7 +15,7 @@ interaction with the worlds fastest in-memory
 geodatabase [Tile38](https://www.tile38.com).
 
 Check out my introductory blog post about the project
-on my [blog](https://iwpnd.pw/articles/2021-07/pyle38-tile38-python-client).
+on my [blog](https://iwpnd.github.io/articles/2021-07/pyle38-tile38-python-client).
 
 ### Example
 
