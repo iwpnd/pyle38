@@ -339,7 +339,7 @@ class InfoFollower(Info):
 class InfoLeader(Info):
     # to allow for additional slaves
     # slave0, slave1..
-    model_config: ConfigDict = {"extra": "allow"}
+    model_config = ConfigDict(extra="allow")
 
 
 class InfoFollowerResponse(JSONResponse):
