@@ -1,7 +1,7 @@
 import json
 from typing import List, Literal, Optional, Sequence, Tuple, TypedDict, Union
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class Options(TypedDict, total=False):
@@ -100,12 +100,12 @@ Coordinate = Tuple[float, float]
 
 
 class Polygon(BaseModel):
-    type: str = Field("Polygon", const=True)
+    type: Literal["Polygon"] = "Polygon"
     coordinates: List[List[Coordinate]]
 
 
 class Feature(BaseModel):
-    type: str = Field("Feature", const=True)
+    type: Literal["Feature"] = "Feature"
     geometry: Polygon
 
 
@@ -114,7 +114,7 @@ class ObjectQuery(BaseModel):
     object: Union[Polygon, Feature]
 
     def get(self) -> Sequence[str]:
-        return [self.command, json.dumps(self.object.dict())]
+        return [self.command, json.dumps(self.object.model_dump())]
 
 
 class GetQuery(BaseModel):

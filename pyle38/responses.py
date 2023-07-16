@@ -1,20 +1,14 @@
 from typing import Any, Dict, Generic, List, Literal, Optional, TypeVar, Union
 
 from pydantic import BaseModel as PydanticBaseModel
-from pydantic.generics import GenericModel as PydanticGenericModel
 
 T = TypeVar("T")
 S = TypeVar("S", bound=str)
 
 
-class GenericModel(PydanticGenericModel):
-    def dict(self, exclude_unset=True, **kwargs):
-        return super().dict(exclude_unset=exclude_unset, **kwargs)
-
-
 class BaseModel(PydanticBaseModel):
     def dict(self, exclude_unset=True, **kwargs):
-        return super().dict(exclude_unset=exclude_unset, **kwargs)
+        return super().model_dump(exclude_unset=exclude_unset, **kwargs)
 
 
 class LatLon(BaseModel):
@@ -37,19 +31,19 @@ class JSONResponse(BaseModel):
     err: Optional[str] = None
 
 
-class Object(GenericModel, Generic[T]):
+class Object(BaseModel, Generic[T]):
     object: T
     id: Union[str, int]
     distance: Optional[float] = None
     fields: Optional[List[int]] = None
 
 
-class ObjectResponse(JSONResponse, GenericModel, Generic[T]):
+class ObjectResponse(JSONResponse, BaseModel, Generic[T]):
     object: T
     fields: Optional[Fields] = None
 
 
-class ObjectsResponse(JSONResponse, GenericModel, Generic[T]):
+class ObjectsResponse(JSONResponse, BaseModel, Generic[T]):
     objects: List[Object[T]] = []
     count: int
     cursor: int
@@ -90,7 +84,7 @@ class Hash(BaseModel):
     hash: str
     id: Union[str, int]
     distance: Optional[float] = None
-    fields: Optional[List[Any]]
+    fields: Optional[List[Any]] = None
 
 
 class HashResponse(JSONResponse):
@@ -128,7 +122,7 @@ Position = List[float]
 
 
 class Polygon(BaseModel):
-    type = "Polygon"
+    type: Literal["Polygon"] = "Polygon"
     coordinates: List[List[Position]]
 
 
@@ -197,9 +191,9 @@ class ServerStatsExtended(BaseModel):
     alloc_bytes: int
     alloc_bytes_total: int
     buck_hash_sys_bytes: int
-    frees_total: Union[int, float]
-    gc_cpu_fraction: int
-    gc_sys_bytes: int
+    frees_total: float
+    gc_cpu_fraction: float
+    gc_sys_bytes: float
     go_goroutines: int
     go_threads: int
     go_version: str
@@ -209,7 +203,7 @@ class ServerStatsExtended(BaseModel):
     heap_objects: int
     heap_released_bytes: int
     heap_sys_bytes: int
-    last_gc_time_seconds: int
+    last_gc_time_seconds: float
     lookups_total: int
     mallocs_total: int
     mcache_inuse_bytes: int
@@ -250,7 +244,7 @@ class ServerStatsExtended(BaseModel):
     tile38_total_connections_received: int
     tile38_total_messages_sent: int
     tile38_type: str
-    tile38_uptime_in_seconds: int
+    tile38_uptime_in_seconds: float
     tile38_version: str
 
 
@@ -264,7 +258,7 @@ ConfigKeys = Literal[
 
 
 class ConfigGetResponse(JSONResponse):
-    properties: Dict[ConfigKeys, Union[int, float, str]]
+    properties: Dict[ConfigKeys, str]
 
 
 class JSONGetResponse(JSONResponse):
@@ -302,7 +296,7 @@ FenceDetect = Literal["enter", "exit", "inside", "outside", "crosses"]
 FenceCommand = Literal["set", "del"]
 
 
-class GeoFence(GenericModel, Generic[T]):
+class GeoFence(BaseModel, Generic[T]):
     command: FenceCommand
     group: str
     detect: FenceDetect
@@ -338,14 +332,13 @@ class Info(BaseModel):
 
 class InfoFollower(Info):
     master_host: str
-    master_port: str
+    master_port: int
 
 
 class InfoLeader(Info):
     # to allow for additional slaves
     # slave0, slave1..
-    class Config:
-        extra = "allow"
+    model_config: Dict = {"extra": "allow"}
 
 
 class InfoFollowerResponse(JSONResponse):

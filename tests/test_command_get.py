@@ -44,16 +44,17 @@ async def test_command_get_query(tile38):
 
     expected_point = {"lat": 1, "lon": 1}
     received = await tile38.get(key, id).asPoint()
-    assert expected_point == received.point
+    assert received.point.dict() == expected_point
 
     expected_bounds = {"ne": {"lat": 1, "lon": 1}, "sw": {"lat": 1, "lon": 1}}
     received = await tile38.get(key, id).asBounds()
-    assert expected_bounds == received.bounds
+    assert received.bounds.dict() == expected_bounds
 
     expected_hash = "s00twy0"
     received = await tile38.get(key, id).asHash(7)
     assert expected_hash == received.hash
+    assert received.hash == expected_hash
 
     expected_string = "John"
     received = await tile38.get(key, f"{id}:driver").asStringObject()
-    assert expected_string == received.object
+    assert received.object == expected_string

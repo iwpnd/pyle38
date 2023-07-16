@@ -22,4 +22,4 @@ async def test_command_bounds(tile38):
     received = await tile38.bounds(key)
 
     assert received.ok is True
-    assert expected["bounds"] == received.bounds
+    assert received.bounds.dict() == expected["bounds"]

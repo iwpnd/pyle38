@@ -18,7 +18,11 @@ async def test_option_fields_in_objects(tile38):
     response = await tile38.within(key).circle(52.25, 13.37, 100).asObjects()
     assert response.ok
     assert response.fields == ["speed", "state"]
-    assert response.objects[0] == {"id": id, "object": feature, "fields": [100, 1]}
+    assert response.objects[0].dict() == {
+        "id": id,
+        "object": feature,
+        "fields": [100, 1],
+    }
 
 
 @pytest.mark.asyncio

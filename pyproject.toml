@@ -21,7 +21,7 @@ include = ["LICENSE"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-pydantic = "^1.8.1"
+pydantic = "^2.0.3"
 redis = "^4.5.3"
 
 [tool.poetry.group.dev.dependencies]
@@ -104,6 +104,7 @@ max-complexity = 10
 [tool.poe.tasks]
 test       = "poetry run pytest -vv --asyncio-mode=auto -s tests/"
 test-cov   = "poetry run pytest -vv --asyncio-mode=auto -s --cov=pyle38 tests/ --cov-report xml:/home/runner/coverage.xml"
+test-single = "poetry run pytest -vv --asyncio-mode=auto -s"
 mypy       = "poetry run mypy --ignore-missing-imports --config-file pyproject.toml"
 lint       = "ruff ."
 up         = "docker-compose up"
