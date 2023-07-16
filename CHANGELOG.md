@@ -2,6 +2,22 @@
 
 <!--next-version-placeholder-->
 
+## v0.10.0 (2023-07-16)
+
+### Feature
+
+* ✨ bump pydantic to v2 ([`6a1c557`](https://github.com/iwpnd/pyle38/commit/6a1c557965e52bf1bc2fda836a55e1fc4a4939a6))
+
+### Fix
+
+* 🐛 model_config ([`d8e7d59`](https://github.com/iwpnd/pyle38/commit/d8e7d594a16a2006181bee75a8011e3a02a43cc3))
+* 🐛 incompatible types in assignment ([`8a70323`](https://github.com/iwpnd/pyle38/commit/8a70323b89d8b3c2703645a4e2fbc06c292b9b3a))
+
+### Documentation
+
+* Fix link to blog ([`1023fe7`](https://github.com/iwpnd/pyle38/commit/1023fe7708d820eb3c53a9ec2c0785d811c8d25a))
+* Update README.md ([`1dac812`](https://github.com/iwpnd/pyle38/commit/1dac8124a6cdae2bd168125a744e1275418b58ff))
+
 ## v0.9.1 (2023-03-24)
 
 
