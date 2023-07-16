@@ -1,6 +1,7 @@
 from typing import Any, Dict, Generic, List, Literal, Optional, TypeVar, Union
 
 from pydantic import BaseModel as PydanticBaseModel
+from pydantic import ConfigDict
 
 T = TypeVar("T")
 S = TypeVar("S", bound=str)
@@ -338,7 +339,7 @@ class InfoFollower(Info):
 class InfoLeader(Info):
     # to allow for additional slaves
     # slave0, slave1..
-    model_config: Dict = {"extra": "allow"}
+    model_config: ConfigDict = {"extra": "allow"}
 
 
 class InfoFollowerResponse(JSONResponse):
