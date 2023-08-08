@@ -2,6 +2,18 @@
 
 <!--next-version-placeholder-->
 
+## v0.11.0 (2023-08-08)
+
+### Feature
+
+* ✨ add z coordinate to set and get point ([`3b4bd85`](https://github.com/iwpnd/pyle38/commit/3b4bd85bc6e2acba331bdf9806cb3f3f939a2e5d))
+* ✨ release v0.10.0 ([`ace3647`](https://github.com/iwpnd/pyle38/commit/ace36479e0d02ab5d8e534736a514f7bfd73b403))
+
+### Documentation
+
+* 📚️ docstring ([`c295aee`](https://github.com/iwpnd/pyle38/commit/c295aee085243205860e4619127ed659275b5ed1))
+* 📚️ update ([`45473e3`](https://github.com/iwpnd/pyle38/commit/45473e3b9f0144c1bbd67f02436b031edb235c4a))
+
 ## v0.10.0 (2023-07-16)
 
 ### Feature
