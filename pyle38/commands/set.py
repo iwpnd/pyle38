@@ -66,7 +66,11 @@ class Set(Executable):
 
         return self
 
-    def point(self, lat: float, lon: float) -> Set:
+    def point(self, lat: float, lon: float, z: Optional[float] = None) -> Set:
+        if z:
+            self._input = ["POINT", lat, lon, z]
+            return self
+
         self._input = ["POINT", lat, lon]
 
         return self
@@ -99,7 +103,6 @@ class Set(Executable):
         return command
 
     def compile(self) -> Compiled:
-
         return [
             Command.SET.value,
             [

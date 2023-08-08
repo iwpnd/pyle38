@@ -15,6 +15,7 @@ class BaseModel(PydanticBaseModel):
 class LatLon(BaseModel):
     lat: float
     lon: float
+    z: Optional[float] = None
 
 
 class NeSw(BaseModel):

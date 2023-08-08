@@ -29,6 +29,10 @@ fields = {"speed": 100, "state": 1}
             Set(client, key, id).nx().point(1, 1).compile(),
         ),
         (
+            ["SET", [key, id, "NX", "POINT", 1, 1, 1]],
+            Set(client, key, id).nx().point(1, 1, 1).compile(),
+        ),
+        (
             ["SET", [key, id, "EX", 5, "BOUNDS", 1, 1, 1, 1]],
             Set(client, key, id).ex(5).bounds(1, 1, 1, 1).compile(),
         ),
@@ -49,7 +53,7 @@ fields = {"speed": 100, "state": 1}
             Set(client, key, id).fields(fields).point(1, 1).compile(),
         ),
     ],
-    ids=["point", "bounds", "object", "hash", "string", "with fields"],
+    ids=["point", "point_z", "bounds", "object", "hash", "string", "with fields"],
 )
 @pytest.mark.asyncio
 async def test_command_set_compile(expected, received):
@@ -70,6 +74,32 @@ async def test_command_set_get(tile38):
 
     assert received.ok
     assert expected == received.object
+
+
+@pytest.mark.asyncio
+async def test_command_set_get_point_z(tile38):
+    key = random_string()
+    id = random_string()
+
+    response = await tile38.set(key, id).point(1, 1, 1).exec()
+    assert response.ok
+
+    received = await tile38.get(key, id).asPoint()
+
+    assert received.ok
+    assert received.point.lat == 1.0
+    assert received.point.lon == 1.0
+    assert received.point.z == 1.0
+
+    response = await tile38.set(key, id).point(1, 1).exec()
+    assert response.ok
+
+    received = await tile38.get(key, id).asPoint()
+
+    assert received.ok
+    assert received.point.lat == 1.0
+    assert received.point.lon == 1.0
+    assert not received.point.z
 
 
 @pytest.mark.parametrize(
