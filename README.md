@@ -35,7 +35,7 @@ async def main():
         .asObjects()
 
     assert response.ok
-    
+
     print(response.dict())
     await tile38.quit()
 
@@ -100,16 +100,16 @@ In [6]: print(response.dict())
 
 ### Features
 
--   fully typed using mypy and pydantic
--   lazy client
--   optional build-in leader/follower logic
--   easy to use and integrate
--   next to no external dependencies
+- fully typed using mypy and pydantic
+- lazy client
+- optional build-in leader/follower logic
+- easy to use and integrate
+- next to no external dependencies
 
 ### Built With
 
--   [aioredis](https://pypi.org/project/aioredis/2.0.0a1/)
--   [pydantic](https://pypi.org/project/pydantic/)
+- [aioredis](https://pypi.org/project/aioredis/2.0.0a1/)
+- [pydantic](https://pypi.org/project/pydantic/)
 
 ## Getting Started
 
@@ -267,25 +267,33 @@ await tile38.set('fleet', 'truck1')
   .point(33.5123, -112.2693)
   .exec()
 
+# with z coordinate
+await tile38.set('fleet', 'truck2')
+  .point(33.5123, -112.2693, 100)
+  .exec()
+
 await tile38.set('fleet', 'truck1:driver').string('John Denton').exec()
 ```
 
 **Options**
-|command| description|
-|--|--|
-| `.fields()` | Optional additional fields. **MUST BE** numerical|
-| `.ex(value)` | Set the specified expire time, in seconds.|
-| `.nx()` | Only set the object if it does not already exist.|
-| `.xx()` | Only set the object if it already exist.|
+
+| command      | description                                       |
+| ------------ | ------------------------------------------------- |
+| `.fields()`  | Optional additional fields. **MUST BE** numerical |
+| `.ex(value)` | Set the specified expire time, in seconds.        |
+| `.nx()`      | Only set the object if it does not already exist. |
+| `.xx()`      | Only set the object if it already exist.          |
 
 **Input**
-| command | description |
-|--|--|
-| `.point(lat, lon)` | Set a simple point in latitude, longitude |
-| `.bounds(minlat, minlon, maxlat, maxlon)` | Set as minimum bounding rectangle |
-| `.object(feature)` | Set as feature |
-| `.hash(geohash)` | Set as geohash |
-| `.string(value)` | Set as string. To retrieve string values you can use `.get()`, `scan()` or `.search()` |
+
+| command                                   | description                                                                            |
+| ----------------------------------------- | -------------------------------------------------------------------------------------- |
+| `.point(lat, lon)`                        | Set a simple point in latitude, longitude                                              |
+| `.point(lat, lon, z)`                     | Set a simple point in latitude, longitude, height                                      |
+| `.bounds(minlat, minlon, maxlat, maxlon)` | Set as minimum bounding rectangle                                                      |
+| `.object(feature)`                        | Set as feature                                                                         |
+| `.hash(geohash)`                          | Set as geohash                                                                         |
+| `.string(value)`                          | Set as string. To retrieve string values you can use `.get()`, `scan()` or `.search()` |
 
 #### FSET
 
@@ -296,8 +304,9 @@ await tile38.fset('fleet', 'truck1', { "maxSpeed": 90, "milage": 90000 })
 ```
 
 **Options**
-| command | description |
-|--|--|
+
+| command | description                                                                                                                                                                                      |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `.xx()` | `FSET` returns error if fields are set on non-existing ids. `xx()` options changes this behaviour and instead returns `0` if id does not exist. If key does not exist `FSET` still returns error |
 
 #### GET
@@ -316,18 +325,20 @@ await tile38.get('fleet', 'truck1:driver').asStringObject()
 ```
 
 **Options**
-| command | description |
-|--|--|
-| `.withfields()` | will also return the [fields](https://tile38.com/commands/set#fields) that belong to the object. Field values that are equal to zero are omitted.|
+
+| command         | description                                                                                                                                       |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.withfields()` | will also return the [fields](https://tile38.com/commands/set#fields) that belong to the object. Field values that are equal to zero are omitted. |
 
 **Output**
-| command | description |
-|--|--|
-| `.asObject()` | (default) get as object |
-| `.asBounds()` | get as minimum bounding rectangle |
-| `.asHash(precision)` | get as hash |
-| `.asPoint()` | get as point |
-| `.asStringObject()` | get a string |
+
+| command              | description                       |
+| -------------------- | --------------------------------- |
+| `.asObject()`        | (default) get as object           |
+| `.asBounds()`        | get as minimum bounding rectangle |
+| `.asHash(precision)` | get as hash                       |
+| `.asPoint()`         | get as point                      |
+| `.asStringObject()`  | get a string                      |
 
 #### DEL
 
@@ -403,11 +414,12 @@ await tile38.stats('fleet1', 'fleet2')
 ```
 
 **Returns**
-| command | description |
-|--|--|
-| `in_memory_size` | estimated memory size in bytes |
-| `num_objects` | objects in the given key |
-| `num_points` | number of geographical objects in the given key |
+
+| command          | description                                     |
+| ---------------- | ----------------------------------------------- |
+| `in_memory_size` | estimated memory size in bytes                  |
+| `num_objects`    | objects in the given key                        |
+| `num_points`     | number of geographical objects in the given key |
 
 #### JSET/JSET/JDEL
 
@@ -434,9 +446,10 @@ await tile38.jget('user', 901);
 Renames a collection `key` to `newkey`.
 
 **Options**
-| command | description |
-|--|--|
-| `.nx()` | Default: false. Changes behavior on how renaming acts if `newkey` already exists|
+
+| command | description                                                                      |
+| ------- | -------------------------------------------------------------------------------- |
+| `.nx()` | Default: false. Changes behavior on how renaming acts if `newkey` already exists |
 
 If the `newkey` already exists it will be deleted prior to renaming.
 
@@ -511,38 +524,41 @@ await tile38.within('fleet').get('warehouses', 'Berlin').asCount();
 ```
 
 **Options**
-| command | description |
-|--|--|
-| `.cursor(value)` | used to iterate through your search results. Defaults to `0` if not set explicitly |
-| `.limit(value)` | limit the number of returned objects. Defaults to `100` if not set explicitly |
-| `.nofields()` | if not set and one of the objects in the key has fields attached, fields will be returned. Use this to suppress this behavior and don't return fields. |
-| `.match(pattern)` | Match can be used to filtered objects considered in the search with a glob pattern. `.match('truck*')` e.g. will only consider ids that start with `truck` within your key. |
-| `.sparse(value)` | **caution** seems bugged since Tile38 1.22.6. Accepts values between 1 and 8. Can be used to distribute the results of a search evenly across the requested area. |
-| `.where(fieldname, min value, max value)` | filter output by fieldname and values. |
-| `.where_expr(expr)` | filter output with [filter-expression](https://tile38.com/topics/filter-expressions). |
-| `.buffer(value)` | Apply a buffer around area formats to increase the search area by x meters |
+
+| command                                   | description                                                                                                                                                                 |
+| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.cursor(value)`                          | used to iterate through your search results. Defaults to `0` if not set explicitly                                                                                          |
+| `.limit(value)`                           | limit the number of returned objects. Defaults to `100` if not set explicitly                                                                                               |
+| `.nofields()`                             | if not set and one of the objects in the key has fields attached, fields will be returned. Use this to suppress this behavior and don't return fields.                      |
+| `.match(pattern)`                         | Match can be used to filtered objects considered in the search with a glob pattern. `.match('truck*')` e.g. will only consider ids that start with `truck` within your key. |
+| `.sparse(value)`                          | **caution** seems bugged since Tile38 1.22.6. Accepts values between 1 and 8. Can be used to distribute the results of a search evenly across the requested area.           |
+| `.where(fieldname, min value, max value)` | filter output by fieldname and values.                                                                                                                                      |
+| `.where_expr(expr)`                       | filter output with [filter-expression](https://tile38.com/topics/filter-expressions).                                                                                       |
+| `.buffer(value)`                          | Apply a buffer around area formats to increase the search area by x meters                                                                                                  |
 
 **Outputs**
-| command | description |
-|--|--|
-| `.asObjects()` | return as array of objects |
-| `.asBounds()` | return as array of minimum bounding rectangles: `{"id": str,"bounds":{"sw":{"lat": float,"lon": float},"ne":{"lat": float,"lon": float}}}` |
-| `.asCount()` | returns a count of the objects in the search |
-| `.asHashes(precision)` | returns an array of `{"id": str,"hash": str}` |
-| `.asIds()` | returns an array of ids |
-| `.asPoints()` | returns objects as points: `{"id": str,"point":{"lat": float,"lon": float}`. If the searched key is a collection of `Polygon` objects, the returned points are the centroids.|
+
+| command                | description                                                                                                                                                                   |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.asObjects()`         | return as array of objects                                                                                                                                                    |
+| `.asBounds()`          | return as array of minimum bounding rectangles: `{"id": str,"bounds":{"sw":{"lat": float,"lon": float},"ne":{"lat": float,"lon": float}}}`                                    |
+| `.asCount()`           | returns a count of the objects in the search                                                                                                                                  |
+| `.asHashes(precision)` | returns an array of `{"id": str,"hash": str}`                                                                                                                                 |
+| `.asIds()`             | returns an array of ids                                                                                                                                                       |
+| `.asPoints()`          | returns objects as points: `{"id": str,"point":{"lat": float,"lon": float}`. If the searched key is a collection of `Polygon` objects, the returned points are the centroids. |
 
 **Query**
-| command | description |
-|--|--|
-| `.get(key, id)` | Search a given stored item in a collection. |
-| `.circle(lat, lon, radius)` | Search a given circle of latitude, longitude and radius. |
-| `.bounds(minlat, minlon, maxlat, maxlon)` | Search a given bounding box. |
-| `.hash(value)` | Search a given [geohash](https://en.wikipedia.org/wiki/Geohash). |
-| `.quadkey(value)` | Search a given [quadkey](https://docs.microsoft.com/en-us/bingmaps/articles/bing-maps-tile-system?redirectedfrom=MSDN) |
-| `.tile(x, y, z)` | Search a given [tile](https://en.wikipedia.org/wiki/Tiled_web_map#Defining_a_tiled_web_map) |
-| `.object(value)` | Search a given GeoJSON polygon feature. |
-| `.sector(lat, lon, radius, bearing1, bearing2)` | Search a given Sector polygon feature. |
+
+| command                                         | description                                                                                                            |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `.get(key, id)`                                 | Search a given stored item in a collection.                                                                            |
+| `.circle(lat, lon, radius)`                     | Search a given circle of latitude, longitude and radius.                                                               |
+| `.bounds(minlat, minlon, maxlat, maxlon)`       | Search a given bounding box.                                                                                           |
+| `.hash(value)`                                  | Search a given [geohash](https://en.wikipedia.org/wiki/Geohash).                                                       |
+| `.quadkey(value)`                               | Search a given [quadkey](https://docs.microsoft.com/en-us/bingmaps/articles/bing-maps-tile-system?redirectedfrom=MSDN) |
+| `.tile(x, y, z)`                                | Search a given [tile](https://en.wikipedia.org/wiki/Tiled_web_map#Defining_a_tiled_web_map)                            |
+| `.object(value)`                                | Search a given GeoJSON polygon feature.                                                                                |
+| `.sector(lat, lon, radius, bearing1, bearing2)` | Search a given Sector polygon feature.                                                                                 |
 
 #### INTERSECTS
 
@@ -574,39 +590,42 @@ await tile38.intersects('warehouses').hash('u33d').where("maxweight", 1000, 1000
 ```
 
 **Options**
-| command | description |
-|--|--|
-| `.clip()` | Tells Tile38 to clip returned objects at the bounding box of the requested area. Works with `.bounds()`, `.hash()`, `.tile()` and `.quadkey()` |
-| `.cursor(value)` | used to iterate through your search results. Defaults to `0` if not set explicitly |
-| `.limit(value)` | limit the number of returned objects. Defaults to `100` if not set explicitly |
-| `.nofields()` | if not set and one of the objects in the key has fields attached, fields will be returned. Use this to suppress this behavior and don't return fields. |
-| `.match(pattern)` | Match can be used to filtered objects considered in the search with a glob pattern. `.match('warehouse*')` e.g. will only consider ids that start with `warehouse` within your key. |
-| `.sparse(value)` | **caution** seems bugged since Tile38 1.22.6. Accepts values between 1 and 8. Can be used to distribute the results of a search evenly across the requested area. |
-| `.where(fieldname, min value, max value)` | filter output by fieldname and values. |
-| `.where_expr(expr)` | filter output with [filter-expression](https://tile38.com/topics/filter-expressions). |
-| `.buffer(value)` | Apply a buffer around area formats to increase the search area by x meters |
+
+| command                                   | description                                                                                                                                                                         |
+| ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.clip()`                                 | Tells Tile38 to clip returned objects at the bounding box of the requested area. Works with `.bounds()`, `.hash()`, `.tile()` and `.quadkey()`                                      |
+| `.cursor(value)`                          | used to iterate through your search results. Defaults to `0` if not set explicitly                                                                                                  |
+| `.limit(value)`                           | limit the number of returned objects. Defaults to `100` if not set explicitly                                                                                                       |
+| `.nofields()`                             | if not set and one of the objects in the key has fields attached, fields will be returned. Use this to suppress this behavior and don't return fields.                              |
+| `.match(pattern)`                         | Match can be used to filtered objects considered in the search with a glob pattern. `.match('warehouse*')` e.g. will only consider ids that start with `warehouse` within your key. |
+| `.sparse(value)`                          | **caution** seems bugged since Tile38 1.22.6. Accepts values between 1 and 8. Can be used to distribute the results of a search evenly across the requested area.                   |
+| `.where(fieldname, min value, max value)` | filter output by fieldname and values.                                                                                                                                              |
+| `.where_expr(expr)`                       | filter output with [filter-expression](https://tile38.com/topics/filter-expressions).                                                                                               |
+| `.buffer(value)`                          | Apply a buffer around area formats to increase the search area by x meters                                                                                                          |
 
 **Outputs**
-| command | description |
-|--|--|
-| `.asObjects()` | return as array of objects |
-| `.asBounds()` | return as array of minimum bounding rectangles: `{"id": str,"bounds":{"sw":{"lat": float,"lon": float},"ne":{"lat": float,"lon": float}}}` |
-| `.asCount()` | returns a count of the objects in the search |
-| `.asHashes(precision)` | returns an array of `{"id": str,"hash": str}` |
-| `.asIds()` | returns an array of ids |
-| `.asPoints()` | returns objects as points: `{"id": str,"point":{"lat": float,"lon": float}`. If the searched key is a collection of `Polygon` objects, the returned points are the centroids.|
+
+| command                | description                                                                                                                                                                   |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.asObjects()`         | return as array of objects                                                                                                                                                    |
+| `.asBounds()`          | return as array of minimum bounding rectangles: `{"id": str,"bounds":{"sw":{"lat": float,"lon": float},"ne":{"lat": float,"lon": float}}}`                                    |
+| `.asCount()`           | returns a count of the objects in the search                                                                                                                                  |
+| `.asHashes(precision)` | returns an array of `{"id": str,"hash": str}`                                                                                                                                 |
+| `.asIds()`             | returns an array of ids                                                                                                                                                       |
+| `.asPoints()`          | returns objects as points: `{"id": str,"point":{"lat": float,"lon": float}`. If the searched key is a collection of `Polygon` objects, the returned points are the centroids. |
 
 **Query**
-| command | description |
-|--|--|
-| `.get(key, id)` | Search a given stored item in a collection. |
-| `.circle(lat, lon, radius)` | Search a given circle of latitude, longitude and radius. |
-| `.bounds(minlat, minlon, maxlat, maxlon)` | Search a given bounding box. |
-| `.hash(value)` | Search a given [geohash](https://en.wikipedia.org/wiki/Geohash). |
-| `.quadkey(value)` | Search a given [quadkey](https://docs.microsoft.com/en-us/bingmaps/articles/bing-maps-tile-system?redirectedfrom=MSDN) |
-| `.tile(x, y, z)` | Search a given [tile](https://en.wikipedia.org/wiki/Tiled_web_map#Defining_a_tiled_web_map) |
-| `.object(value)` | Search a given GeoJSON polygon feature. |
-| `.sector(lat, lon, radius, bearing1, bearing2)` | Search a given Sector polygon feature. |
+
+| command                                         | description                                                                                                            |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `.get(key, id)`                                 | Search a given stored item in a collection.                                                                            |
+| `.circle(lat, lon, radius)`                     | Search a given circle of latitude, longitude and radius.                                                               |
+| `.bounds(minlat, minlon, maxlat, maxlon)`       | Search a given bounding box.                                                                                           |
+| `.hash(value)`                                  | Search a given [geohash](https://en.wikipedia.org/wiki/Geohash).                                                       |
+| `.quadkey(value)`                               | Search a given [quadkey](https://docs.microsoft.com/en-us/bingmaps/articles/bing-maps-tile-system?redirectedfrom=MSDN) |
+| `.tile(x, y, z)`                                | Search a given [tile](https://en.wikipedia.org/wiki/Tiled_web_map#Defining_a_tiled_web_map)                            |
+| `.object(value)`                                | Search a given GeoJSON polygon feature.                                                                                |
+| `.sector(lat, lon, radius, bearing1, bearing2)` | Search a given Sector polygon feature.                                                                                 |
 
 #### Nearby
 
@@ -633,30 +652,33 @@ await tile38.nearby('fleet').point(33.5124, -112.2694, 10).asCount
 ```
 
 **Options**
-| command | description |
-|--|--|
-| `.distance()` | Returns the distance in `meters` to the object from the query `.point()`|
-| `.cursor(value)` | used to iterate through your search results. Defaults to `0` if not set explicitly |
-| `.limit(value)` | limit the number of returned objects. Defaults to `100` if not set explicitly |
-| `.nofields()` | if not set and one of the objects in the key has fields attached, fields will be returned. Use this to suppress this behavior and don't return fields. |
-| `.match(pattern)` | Match can be used to filtered objects considered in the search with a glob pattern. `.match('warehouse*')` e.g. will only consider ids that start with `warehouse` within your key. |
-| `.sparse(value)` | **caution** seems bugged since Tile38 1.22.6. Accepts values between 1 and 8. Can be used to distribute the results of a search evenly across the requested area. |
-| `.where(fieldname, min value, max value)` | filter output by fieldname and values. |
-| `.where_expr(expr)` | filter output with [filter-expression](https://tile38.com/topics/filter-expressions). |
+
+| command                                   | description                                                                                                                                                                         |
+| ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.distance()`                             | Returns the distance in `meters` to the object from the query `.point()`                                                                                                            |
+| `.cursor(value)`                          | used to iterate through your search results. Defaults to `0` if not set explicitly                                                                                                  |
+| `.limit(value)`                           | limit the number of returned objects. Defaults to `100` if not set explicitly                                                                                                       |
+| `.nofields()`                             | if not set and one of the objects in the key has fields attached, fields will be returned. Use this to suppress this behavior and don't return fields.                              |
+| `.match(pattern)`                         | Match can be used to filtered objects considered in the search with a glob pattern. `.match('warehouse*')` e.g. will only consider ids that start with `warehouse` within your key. |
+| `.sparse(value)`                          | **caution** seems bugged since Tile38 1.22.6. Accepts values between 1 and 8. Can be used to distribute the results of a search evenly across the requested area.                   |
+| `.where(fieldname, min value, max value)` | filter output by fieldname and values.                                                                                                                                              |
+| `.where_expr(expr)`                       | filter output with [filter-expression](https://tile38.com/topics/filter-expressions).                                                                                               |
 
 **Outputs**
-| command | description |
-|--|--|
-| `.asObjects()` | return as array of objects |
-| `.asBounds()` | return as array of minimum bounding rectangles: `{"id": str,"bounds":{"sw":{"lat": float,"lon": float},"ne":{"lat": float,"lon": float}}}` |
-| `.asCount()` | returns a count of the objects in the search |
-| `.asHashes(precision)` | returns an array of `{"id": str,"hash": str}` |
-| `.asIds()` | returns an array of ids |
-| `.asPoints()` | returns objects as points: `{"id": str,"point":{"lat": float,"lon": float}`. If the searched key is a collection of `Polygon` objects, the returned points are the centroids.|
+
+| command                | description                                                                                                                                                                   |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.asObjects()`         | return as array of objects                                                                                                                                                    |
+| `.asBounds()`          | return as array of minimum bounding rectangles: `{"id": str,"bounds":{"sw":{"lat": float,"lon": float},"ne":{"lat": float,"lon": float}}}`                                    |
+| `.asCount()`           | returns a count of the objects in the search                                                                                                                                  |
+| `.asHashes(precision)` | returns an array of `{"id": str,"hash": str}`                                                                                                                                 |
+| `.asIds()`             | returns an array of ids                                                                                                                                                       |
+| `.asPoints()`          | returns objects as points: `{"id": str,"point":{"lat": float,"lon": float}`. If the searched key is a collection of `Polygon` objects, the returned points are the centroids. |
 
 **Query**
-| command | description |
-|--|--|
+
+| command                                   | description                                                                                       |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | `.point(lat, lon, radius: Optional[int])` | Search nearby a given of latitude, longitude. If radius is set, searches nearby the given radius. |
 
 #### SCAN
@@ -677,26 +699,28 @@ await tile38.scan('fleet').where("maxspeed", 100, 120).asCount()
 ```
 
 **Options**
-| command | description |
-|--|--|
-| `.asc()` | Values are returned in ascending order. Default if not set. |
-| `.desc()` | Values are returned in descending order.|
-| `.cursor(value)` | used to iterate through your search results. Defaults to `0` if not set explicitly |
-| `.limit(value)` | limit the number of returned objects. Defaults to `100` if not set explicitly |
-| `.nofields()` | if not set and one of the objects in the key has fields attached, fields will be returned. Use this to suppress this behavior and don't return fields. |
-| `.match(pattern)` | Match can be used to filtered objects considered in the search with a glob pattern. `.match('warehouse*')` e.g. will only consider ids that start with `warehouse` within your key. |
-| `.where(fieldname, min value, max value)` | filter output by fieldname and values. |
-| `.where_expr(expr)` | filter output with [filter-expression](https://tile38.com/topics/filter-expressions). |
+
+| command                                   | description                                                                                                                                                                         |
+| ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.asc()`                                  | Values are returned in ascending order. Default if not set.                                                                                                                         |
+| `.desc()`                                 | Values are returned in descending order.                                                                                                                                            |
+| `.cursor(value)`                          | used to iterate through your search results. Defaults to `0` if not set explicitly                                                                                                  |
+| `.limit(value)`                           | limit the number of returned objects. Defaults to `100` if not set explicitly                                                                                                       |
+| `.nofields()`                             | if not set and one of the objects in the key has fields attached, fields will be returned. Use this to suppress this behavior and don't return fields.                              |
+| `.match(pattern)`                         | Match can be used to filtered objects considered in the search with a glob pattern. `.match('warehouse*')` e.g. will only consider ids that start with `warehouse` within your key. |
+| `.where(fieldname, min value, max value)` | filter output by fieldname and values.                                                                                                                                              |
+| `.where_expr(expr)`                       | filter output with [filter-expression](https://tile38.com/topics/filter-expressions).                                                                                               |
 
 **Outputs**
-| command | description |
-|--|--|
-| `.asObjects()` | return as array of objects |
-| `.asBounds()` | return as array of minimum bounding rectangles: `{"id": str,"bounds":{"sw":{"lat": float,"lon": float},"ne":{"lat": float,"lon": float}}}` |
-| `.asCount()` | returns a count of the objects in the search |
-| `.asHashes(precision)` | returns an array of `{"id": str,"hash": str}` |
-| `.asIds()` | returns an array of ids |
-| `.asPoints()` | returns objects as points: `{"id": str,"point":{"lat": float,"lon": float}`. If the searched key is a collection of `Polygon` objects, the returned points are the centroids.|
+
+| command                | description                                                                                                                                                                   |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.asObjects()`         | return as array of objects                                                                                                                                                    |
+| `.asBounds()`          | return as array of minimum bounding rectangles: `{"id": str,"bounds":{"sw":{"lat": float,"lon": float},"ne":{"lat": float,"lon": float}}}`                                    |
+| `.asCount()`           | returns a count of the objects in the search                                                                                                                                  |
+| `.asHashes(precision)` | returns an array of `{"id": str,"hash": str}`                                                                                                                                 |
+| `.asIds()`             | returns an array of ids                                                                                                                                                       |
+| `.asPoints()`          | returns objects as points: `{"id": str,"point":{"lat": float,"lon": float}`. If the searched key is a collection of `Polygon` objects, the returned points are the centroids. |
 
 #### SEARCH
 
@@ -721,23 +745,25 @@ await tile38.search('fleet').match('J*').asStringObjects()
 ```
 
 **Options**
-| command | description |
-|--|--|
-| `.asc()` | Values are returned in ascending order. Default if not set. |
-| `.desc()` | Values are returned in descending order.|
-| `.cursor(value)` | used to iterate through your search results. Defaults to `0` if not set explicitly |
-| `.limit(value)` | limit the number of returned objects. Defaults to `100` if not set explicitly |
-| `.nofields()` | if not set and one of the objects in the key has fields attached, fields will be returned. Use this to suppress this behavior and don't return fields. |
-| `.match(pattern)` | Match can be used to filtered objects considered in the search with a glob pattern. `.match('J*')` e.g. will only consider string values objects that have a string value starting with `J` |
-| `.where(fieldname, min value, max value)` | filter output by fieldname and values. |
-| `.where_expr(expr)` | filter output with [filter-expression](https://tile38.com/topics/filter-expressions). |
+
+| command                                   | description                                                                                                                                                                                 |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.asc()`                                  | Values are returned in ascending order. Default if not set.                                                                                                                                 |
+| `.desc()`                                 | Values are returned in descending order.                                                                                                                                                    |
+| `.cursor(value)`                          | used to iterate through your search results. Defaults to `0` if not set explicitly                                                                                                          |
+| `.limit(value)`                           | limit the number of returned objects. Defaults to `100` if not set explicitly                                                                                                               |
+| `.nofields()`                             | if not set and one of the objects in the key has fields attached, fields will be returned. Use this to suppress this behavior and don't return fields.                                      |
+| `.match(pattern)`                         | Match can be used to filtered objects considered in the search with a glob pattern. `.match('J*')` e.g. will only consider string values objects that have a string value starting with `J` |
+| `.where(fieldname, min value, max value)` | filter output by fieldname and values.                                                                                                                                                      |
+| `.where_expr(expr)`                       | filter output with [filter-expression](https://tile38.com/topics/filter-expressions).                                                                                                       |
 
 **Outputs**
-| command | description |
-|--|--|
-| `.asStringObjects()` | return as array of objects |
-| `.asCount()` | returns a count of the objects in the search |
-| `.asIds()` | returns an array of ids |
+
+| command              | description                                  |
+| -------------------- | -------------------------------------------- |
+| `.asStringObjects()` | return as array of objects                   |
+| `.asCount()`         | returns a count of the objects in the search |
+| `.asIds()`           | returns an array of ids                      |
 
 ### Server and Connection
 
@@ -748,14 +774,15 @@ While `.config_get()` fetches the requested configuration, `.config_set()` can b
 **Important**, changes made with `.set()` will only take affect after `.config_rewrite()` is used.
 
 **Options**
-| command | description |
-|--|--|
-| `requirepass` | Set a password and make server password-protected, if not set defaults to `""` (no password required). |
-| `leaderauth` | If leader is password-protected, followers have to authenticate before they are allowed to follow. Set `leaderauth` to password of the leader, prior to `.follow()`. |
-| `protected-mode` | Tile38 only allows authenticated clients or connections from `localhost`. Defaults to: `"yes"` |
-| `maxmemory` | Set max memory in bytes. Get max memory in bytes/kb/mb/gb. |
-| `autogc` | Set auto garbage collection to time in seconds where server performs a garbage collection. Defaults to: `0` (no garbage collection) |
-| `keep_alive` | Time server keeps client connections alive. Defaults to: `300` (seconds) |
+
+| command          | description                                                                                                                                                          |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `requirepass`    | Set a password and make server password-protected, if not set defaults to `""` (no password required).                                                               |
+| `leaderauth`     | If leader is password-protected, followers have to authenticate before they are allowed to follow. Set `leaderauth` to password of the leader, prior to `.follow()`. |
+| `protected-mode` | Tile38 only allows authenticated clients or connections from `localhost`. Defaults to: `"yes"`                                                                       |
+| `maxmemory`      | Set max memory in bytes. Get max memory in bytes/kb/mb/gb.                                                                                                           |
+| `autogc`         | Set auto garbage collection to time in seconds where server performs a garbage collection. Defaults to: `0` (no garbage collection)                                  |
+| `keep_alive`     | Time server keeps client connections alive. Defaults to: `300` (seconds)                                                                                             |
 
 ```python
 await tile38.config_get('keepalive')
@@ -787,14 +814,15 @@ await tile38.config_get('keepalive')
 Advanced configuration can not be set with commands, but has to be set
 in a `config` file in your data directory. **Options** above, as
 well as advanced options can be set and are loaded on start-up.
-| command | description |
-|--|--|
-| `follow_host` | URI of Leader to follow |
-| `follow_port` | PORT of Leader to follow |
-| `follow_pos` | ? |
-| `follow_id` | ID of Leader |
-| `server_id` | Server ID of the current instance |
-| `read_only` | Make Tile38 read-only |
+
+| command       | description                       |
+| ------------- | --------------------------------- |
+| `follow_host` | URI of Leader to follow           |
+| `follow_port` | PORT of Leader to follow          |
+| `follow_pos`  | ?                                 |
+| `follow_id`   | ID of Leader                      |
+| `server_id`   | Server ID of the current instance |
+| `read_only`   | Make Tile38 read-only             |
 
 #### FLUSHDB
 
@@ -893,17 +921,17 @@ FENCE keyword to the search.
 
 Geofence events can be:
 
--   `inside` (object in specified area),
--   `outside` (object outside specified area),
--   `enter` (object enters specified area),
--   `exit` (object exits specified area),
--   `crosses` (object that was not in specified area, has enter/exit it).
+- `inside` (object in specified area),
+- `outside` (object outside specified area),
+- `enter` (object enters specified area),
+- `exit` (object exits specified area),
+- `crosses` (object that was not in specified area, has enter/exit it).
 
 Geofence events can be send on upon commands:
 
--   `set` which sends an event when an object is `.set()`
--   `del` which sends a last event when the object that resides in the geosearch is deleted via `.del()`
--   `drop`which sends a message when the entire collection is dropped
+- `set` which sends an event when an object is `.set()`
+- `del` which sends a last event when the object that resides in the geosearch is deleted via `.del()`
+- `drop`which sends a message when the entire collection is dropped
 
 #### SETHOOK
 
@@ -938,32 +966,35 @@ await tile38.set('fleet', 'bus').point(33.5123001, -112.2693001).exec()
 ```
 
 **Geosearch**
-| command | description |
-|--|--|
-| `.nearby(name, endpoint)` | |
-| `.within(name, endpoint)` | |
-| `.intersects(name, endpoint)` | |
+
+| command                       | description |
+| ----------------------------- | ----------- |
+| `.nearby(name, endpoint)`     |             |
+| `.within(name, endpoint)`     |             |
+| `.intersects(name, endpoint)` |             |
 
 **Options**
-| command | description |
-|--|--|
-| `.meta(meta)` | Optional add additional meta information that are send in the geofence event. |
-| `.ex(value)` | Optional TTL in seconds |
-| `.commands(which[])` | Select on which command a hook should send an event. Defaults to: `['set', 'del', 'drop']` |
-| `.detect(what[])` | Select what events should be detected. Defaults to: `['enter', 'exit', 'crosses', 'inside', 'outside']` |
+
+| command              | description                                                                                             |
+| -------------------- | ------------------------------------------------------------------------------------------------------- |
+| `.meta(meta)`        | Optional add additional meta information that are send in the geofence event.                           |
+| `.ex(value)`         | Optional TTL in seconds                                                                                 |
+| `.commands(which[])` | Select on which command a hook should send an event. Defaults to: `['set', 'del', 'drop']`              |
+| `.detect(what[])`    | Select what events should be detected. Defaults to: `['enter', 'exit', 'crosses', 'inside', 'outside']` |
 
 **Endpoints**
-| command | description |
-|--|--|
-| HTTP/HTTPS | `http://` `https://` send messages over HTTP/S. For options see [link](https://tile38.com/commands/sethook#http--https).|
-| gRPC | `grpc://` send messages over [gRPC](http://www.grpc.io/). For options see [link](https://tile38.com/commands/sethook#grpc).|
-| Redis | `redis://` send messages to [Redis](https://redis.io/). For options see [link](https://tile38.com/commands/sethook#redis)|
-| Disque | `disque://` send messages to [Disque](https://github.com/antirez/disque). For options see [link](https://tile38.com/commands/sethook#disque).|
-| Kafka | `kafka://` send messages to a [Kafka](https://kafka.apache.org/) topic. For options see [link](https://tile38.com/commands/sethook#kafka).|
-| AMQP | `amqp://` send messages to [RabbitMQ](https://www.rabbitmq.com/). For options see [link](https://tile38.com/commands/sethook#amqp).|
-| MQTT | `mqtt://` send messages to an MQTT broker. For options see [link](https://tile38.com/commands/sethook#mqtt).|
-| SQS | `sqs://` send messages to an [Amazon SQS](https://aws.amazon.com/sqs/) queue. For options see [link](https://tile38.com/commands/sethook#sqs).|
-| NATS | `nats://` send messages to a [NATS](https://www.nats.io/) topic. For options see [link](https://tile38.com/commands/sethook#nats).|
+
+| command    | description                                                                                                                                    |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| HTTP/HTTPS | `http://` `https://` send messages over HTTP/S. For options see [link](https://tile38.com/commands/sethook#http--https).                       |
+| gRPC       | `grpc://` send messages over [gRPC](http://www.grpc.io/). For options see [link](https://tile38.com/commands/sethook#grpc).                    |
+| Redis      | `redis://` send messages to [Redis](https://redis.io/). For options see [link](https://tile38.com/commands/sethook#redis)                      |
+| Disque     | `disque://` send messages to [Disque](https://github.com/antirez/disque). For options see [link](https://tile38.com/commands/sethook#disque).  |
+| Kafka      | `kafka://` send messages to a [Kafka](https://kafka.apache.org/) topic. For options see [link](https://tile38.com/commands/sethook#kafka).     |
+| AMQP       | `amqp://` send messages to [RabbitMQ](https://www.rabbitmq.com/). For options see [link](https://tile38.com/commands/sethook#amqp).            |
+| MQTT       | `mqtt://` send messages to an MQTT broker. For options see [link](https://tile38.com/commands/sethook#mqtt).                                   |
+| SQS        | `sqs://` send messages to an [Amazon SQS](https://aws.amazon.com/sqs/) queue. For options see [link](https://tile38.com/commands/sethook#sqs). |
+| NATS       | `nats://` send messages to a [NATS](https://www.nats.io/) topic. For options see [link](https://tile38.com/commands/sethook#nats).             |
 
 #### SETCHAN / SUBSCRIBE / PSUBSCRIBE
 
@@ -1000,25 +1031,27 @@ await tile38.set('fleet', 'bus')
 ```
 
 **Geosearch**
-| command | description |
-|--|--|
-| `.nearby(name, endpoint)` | |
-| `.within(name, endpoint)` | |
-| `.intersects(name, endpoint)` | |
+
+| command                       | description |
+| ----------------------------- | ----------- |
+| `.nearby(name, endpoint)`     |             |
+| `.within(name, endpoint)`     |             |
+| `.intersects(name, endpoint)` |             |
 
 **Options**
-| command | description |
-|--|--|
-| `.meta(meta)` | Optional addition meta information that a send in the geofence event. |
-| `.ex(value)` | Optional TTL in seconds |
-| `.commands(which[])` | Select on which command a hook should send an event. Defaults to: `['set', 'del', 'drop']` |
-| `.detect(what[])` | Select what events should be detected. Defaults to: `['enter', 'exit', 'crosses', 'inside', 'outside']` |
+
+| command              | description                                                                                             |
+| -------------------- | ------------------------------------------------------------------------------------------------------- |
+| `.meta(meta)`        | Optional addition meta information that a send in the geofence event.                                   |
+| `.ex(value)`         | Optional TTL in seconds                                                                                 |
+| `.commands(which[])` | Select on which command a hook should send an event. Defaults to: `['set', 'del', 'drop']`              |
+| `.detect(what[])`    | Select what events should be detected. Defaults to: `['enter', 'exit', 'crosses', 'inside', 'outside']` |
 
 ## Addition Information
 
 For more information, please refer to:
 
--   [Tile38](https://tile38.com)
+- [Tile38](https://tile38.com)
 
 ## Roadmap
 
@@ -1031,10 +1064,10 @@ Contributions are what make the open source community such an amazing place
 to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+1. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+1. Push to the Branch (`git push origin feature/AmazingFeature`)
+1. Open a Pull Request
 
 ## License
 
