@@ -67,6 +67,17 @@ class Set(Executable):
         return self
 
     def point(self, lat: float, lon: float, z: Optional[float] = None) -> Set:
+        """Define a point as input.
+
+        Args:
+            lat (float): latitude of input point
+            lon (float): longitude of input point
+            z (float): height of input point (optional)
+
+        Returns:
+            Set
+        """
+
         if z:
             self._input = ["POINT", lat, lon, z]
             return self
