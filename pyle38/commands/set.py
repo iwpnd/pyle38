@@ -105,7 +105,7 @@ class Set(Executable):
     def __unpack_fields(fields: Fields):
         command = []
         for k, v in fields.items():
-            if type(v) is dict:
+            if isinstance(v, dict):
                 command.extend([SubCommand.FIELD.value, k, json.dumps(v)])
                 continue
 
