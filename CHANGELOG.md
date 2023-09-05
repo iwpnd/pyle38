@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v0.11.1 (2023-09-05)
+
+### Fix
+
+* 🐛 update redis to v5 ([`a5290ae`](https://github.com/iwpnd/pyle38/commit/a5290aec652cf697d23cf007cb054ea9be8c31ee))
+
 ## v0.11.0 (2023-08-08)
 
 ### Feature
