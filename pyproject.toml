@@ -65,7 +65,7 @@ minor_tags = ["feat"]
 patch_tags = ["fix", "perf"]
 
 [tool.semantic_release.changelog]
-exclude_commit_patterns = ["build(deps-dev)"]
+exclude_commit_patterns = ["build(deps-dev)", "chore(deps-dev)", "chore:", "ci:"]
 
 [build-system]
 requires = ["poetry-core>=1.2.0"]
