@@ -202,7 +202,7 @@ class Client:
 
         c = await self.__get_redis()
 
-        await c.close()
+        await c.aclose()
         await c.connection_pool.disconnect()
 
         self.__redis = None
