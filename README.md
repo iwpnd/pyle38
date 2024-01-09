@@ -3,7 +3,7 @@
 <p align="center">
 <img  src=".github/img/pyle38.png" height="40%" width="40%" alt="Logo">
 <p align="center">
-<a  href="https://iwpnd.pw">iwpnd.pw</a> · <a  href="https://github.com/iwpnd/pyle38/issues">Report Bug</a>
+<a  href="https://github.com/iwpnd/pyle38/issues">Report Bug</a>
 · <a  href="https://github.com/iwpnd/pyle38/issues">Request Feature</a>
 </p>
 </p>
@@ -100,16 +100,16 @@ In [6]: print(response.dict())
 
 ### Features
 
-- fully typed using mypy and pydantic
-- lazy client
-- optional build-in leader/follower logic
-- easy to use and integrate
-- next to no external dependencies
+-   fully typed using mypy and pydantic
+-   lazy client
+-   optional build-in leader/follower logic
+-   easy to use and integrate
+-   next to no external dependencies
 
 ### Built With
 
-- [aioredis](https://pypi.org/project/aioredis/2.0.0a1/)
-- [pydantic](https://pypi.org/project/pydantic/)
+-   [aioredis](https://pypi.org/project/aioredis/2.0.0a1/)
+-   [pydantic](https://pypi.org/project/pydantic/)
 
 ## Getting Started
 
@@ -921,17 +921,17 @@ FENCE keyword to the search.
 
 Geofence events can be:
 
-- `inside` (object in specified area),
-- `outside` (object outside specified area),
-- `enter` (object enters specified area),
-- `exit` (object exits specified area),
-- `crosses` (object that was not in specified area, has enter/exit it).
+-   `inside` (object in specified area),
+-   `outside` (object outside specified area),
+-   `enter` (object enters specified area),
+-   `exit` (object exits specified area),
+-   `crosses` (object that was not in specified area, has enter/exit it).
 
 Geofence events can be send on upon commands:
 
-- `set` which sends an event when an object is `.set()`
-- `del` which sends a last event when the object that resides in the geosearch is deleted via `.del()`
-- `drop`which sends a message when the entire collection is dropped
+-   `set` which sends an event when an object is `.set()`
+-   `del` which sends a last event when the object that resides in the geosearch is deleted via `.del()`
+-   `drop`which sends a message when the entire collection is dropped
 
 #### SETHOOK
 
@@ -1051,7 +1051,7 @@ await tile38.set('fleet', 'bus')
 
 For more information, please refer to:
 
-- [Tile38](https://tile38.com)
+-   [Tile38](https://tile38.com)
 
 ## Roadmap
 
