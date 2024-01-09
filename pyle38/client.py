@@ -202,7 +202,8 @@ class Client:
 
         c = await self.__get_redis()
 
-        await c.aclose()
+        # TODO: remove ignore once types have been updated
+        await c.aclose()  # type: ignore
         await c.connection_pool.disconnect()
 
         self.__redis = None
