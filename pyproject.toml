@@ -39,19 +39,36 @@ python-semantic-release = ">=7.32.1,<9.0.0"
 ruff = ">=0.0.287,<0.1.10"
 
 [tool.semantic_release]
-version_variable = [
+version_variables = [
     "pyle38/__init__.py:__version__",
     "pyproject.toml:version"
 ]
 commit_subject = "ci: release v{version}"
 branch = "main"
-upload_to_pypi = true
 upload_to_release = true
 build_command = "pip install poetry && poetry build"
-version_source = "tag"
+
+[tool.semantic_release.commit_parser_options]
+allowed_tags = [
+    "build",
+    "chore",
+    "ci",
+    "docs",
+    "feat",
+    "fix",
+    "perf",
+    "style",
+    "refactor",
+    "test",
+]
+minor_tags = ["feat"]
+patch_tags = ["fix", "perf"]
+
+[tool.semantic_release.changelog]
+exclude_commit_patterns = ["build(deps-dev)"]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=1.2.0"]
 build-backend = "poetry.core.masonry.api"
 
 [mypy]
@@ -109,4 +126,3 @@ mypy       = "poetry run mypy --ignore-missing-imports --config-file pyproject.t
 lint       = "ruff ."
 up         = "docker-compose up"
 down       = "docker-compose down"
-publish    = "poetry run semantic-release publish"
