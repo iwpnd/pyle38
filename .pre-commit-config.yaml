@@ -18,15 +18,15 @@ repos:
       - id: isort
         name: isort (python)
   - repo: https://github.com/psf/black
-    rev: 23.12.1
+    rev: 24.1.1
     hooks:
       - id: black
   - repo: https://github.com/jorisroovers/gitlint
-    rev: v0.18.0
+    rev: v0.19.1
     hooks:
       - id: gitlint
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.1.14
+    rev: v0.1.15
     hooks:
       - id: ruff
         args: ["--ignore", "E501", "--per-file-ignores", "__init__.py:F401"]
