@@ -100,12 +100,18 @@ async def test_command_intersects_circle(tile38):
 
 @pytest.mark.asyncio
 async def test_command_intersects_where_circle(tile38):
-    await tile38.set(key, id).fields({"maxspeed": 120, "maxweight": 1000}).object(
-        feature
-    ).exec()
-    await tile38.set(key, "truck1").fields({"maxspeed": 100, "maxweight": 1000}).object(
-        feature
-    ).exec()
+    await (
+        tile38.set(key, id)
+        .fields({"maxspeed": 120, "maxweight": 1000})
+        .object(feature)
+        .exec()
+    )
+    await (
+        tile38.set(key, "truck1")
+        .fields({"maxspeed": 100, "maxweight": 1000})
+        .object(feature)
+        .exec()
+    )
 
     response = (
         await tile38.intersects(key)
@@ -130,12 +136,18 @@ async def test_command_intersects_where_circle(tile38):
 
 @pytest.mark.asyncio
 async def test_command_intersects_where_expr_circle(tile38):
-    await tile38.set(key, id).fields({"maxspeed": 120, "maxweight": 1000}).object(
-        feature
-    ).exec()
-    await tile38.set(key, "truck1").fields({"maxspeed": 100, "maxweight": 1000}).object(
-        feature
-    ).exec()
+    await (
+        tile38.set(key, id)
+        .fields({"maxspeed": 120, "maxweight": 1000})
+        .object(feature)
+        .exec()
+    )
+    await (
+        tile38.set(key, "truck1")
+        .fields({"maxspeed": 100, "maxweight": 1000})
+        .object(feature)
+        .exec()
+    )
 
     response = (
         await tile38.intersects(key)

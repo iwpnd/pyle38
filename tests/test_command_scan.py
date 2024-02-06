@@ -103,12 +103,18 @@ async def test_command_scan(tile38):
 
 @pytest.mark.asyncio
 async def test_command_scan_where(tile38):
-    await tile38.set(key, id).fields({"maxspeed": 120, "maxweight": 1000}).object(
-        feature
-    ).exec()
-    await tile38.set(key, "truck1").fields({"maxspeed": 100, "maxweight": 1000}).object(
-        feature
-    ).exec()
+    await (
+        tile38.set(key, id)
+        .fields({"maxspeed": 120, "maxweight": 1000})
+        .object(feature)
+        .exec()
+    )
+    await (
+        tile38.set(key, "truck1")
+        .fields({"maxspeed": 100, "maxweight": 1000})
+        .object(feature)
+        .exec()
+    )
 
     response = await tile38.scan(key).where("maxspeed", 120, 120).asObjects()
     assert response.ok

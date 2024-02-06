@@ -71,7 +71,6 @@ class Follower(Client):
         return JSONResponse(**(await self.client.command(Command.HEALTHZ)))
 
     async def info(self) -> InfoFollowerResponse:
-
         return InfoFollowerResponse(**(await self.client.command(Command.INFO)))
 
     def intersects(self, key: str) -> Intersects:
@@ -127,7 +126,6 @@ class Follower(Client):
         return StatsResponse(**response)
 
     async def quit(self) -> str:
-
         await self.client.quit()
 
         return "OK"

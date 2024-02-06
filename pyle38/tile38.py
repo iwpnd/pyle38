@@ -7,7 +7,6 @@ from .leader import Leader
 
 
 class Tile38(Leader):
-
     _follower: Optional[Follower] = None
 
     # TODO: get url from os.getenv

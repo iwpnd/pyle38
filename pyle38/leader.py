@@ -44,7 +44,6 @@ class Leader(Follower):
         return Fset(self.client, key, id, fields)
 
     async def info(self) -> InfoLeaderResponse:  # type: ignore
-
         return InfoLeaderResponse(**(await self.client.command(Command.INFO)))
 
     async def jset(

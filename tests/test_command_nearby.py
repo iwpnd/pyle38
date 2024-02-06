@@ -93,12 +93,18 @@ async def test_command_nearby_point(tile38):
 
 @pytest.mark.asyncio
 async def test_command_nearby_where_point(tile38):
-    await tile38.set(key, id).fields({"maxspeed": 120, "maxweight": 1000}).object(
-        feature
-    ).exec()
-    await tile38.set(key, "truck1").fields({"maxspeed": 100, "maxweight": 1000}).object(
-        feature
-    ).exec()
+    await (
+        tile38.set(key, id)
+        .fields({"maxspeed": 120, "maxweight": 1000})
+        .object(feature)
+        .exec()
+    )
+    await (
+        tile38.set(key, "truck1")
+        .fields({"maxspeed": 100, "maxweight": 1000})
+        .object(feature)
+        .exec()
+    )
 
     response = (
         await tile38.nearby(key)

@@ -9,7 +9,6 @@ from pyle38.errors import Tile38Error, Tile38IdNotFoundError, Tile38KeyNotFoundE
 
 @pytest.mark.asyncio
 async def test_client():
-
     client = Client(os.getenv("TILE38_LEADER_URI") or "redis://localhost:9851")
     response = await client.command("SET", ["fleet", "truck", "POINT", 1, 1])
     assert response["ok"]
@@ -22,7 +21,6 @@ async def test_client():
 
 @pytest.mark.asyncio
 async def test_client_exceptions():
-
     client = Client(os.getenv("TILE38_LEADER_URI") or "redis://localhost:9851")
     with pytest.raises(Tile38Error):
         await client.command("BLA")
@@ -37,7 +35,6 @@ async def test_client_exceptions():
 
 @pytest.mark.asyncio
 async def test_client_empty_uri():
-
     with pytest.raises(Tile38Error):
         client = Tile38("")
         await client.get("BLA", "BLA").asObject()
@@ -52,7 +49,6 @@ async def test_no_follower_set():
 
 @pytest.mark.asyncio
 async def test_client_quit():
-
     client = Client(os.getenv("TILE38_LEADER_URI") or "redis://localhost:9851")
     response = await client.quit()
 

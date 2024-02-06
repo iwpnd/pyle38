@@ -61,12 +61,18 @@ async def test_command_search_returns_where_stringobjects(tile38):
     string = random_string()
     pattern = string[:1] + "*"
 
-    await tile38.set(key, id).fields({"maxspeed": 120, "maxweight": 1000}).string(
-        string
-    ).exec()
-    await tile38.set(key, random_string()).fields(
-        {"maxspeed": 100, "maxweight": 1000}
-    ).string(random_string()).exec()
+    await (
+        tile38.set(key, id)
+        .fields({"maxspeed": 120, "maxweight": 1000})
+        .string(string)
+        .exec()
+    )
+    await (
+        tile38.set(key, random_string())
+        .fields({"maxspeed": 100, "maxweight": 1000})
+        .string(random_string())
+        .exec()
+    )
 
     response = (
         await tile38.search(key)
