@@ -34,7 +34,7 @@ poethepoet = ">=0.16.4,<0.25.0"
 isort = "^5.10.1"
 pytest-cov = "^4.0.0"
 mypy = ">=0.991,<1.9"
-python-semantic-release = "^8.7.0"
+python-semantic-release = ">=8.7,<10.0"
 ruff = "^0.2.0"
 
 [tool.semantic_release]
