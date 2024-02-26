@@ -21,7 +21,7 @@ include = ["LICENSE"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-pydantic = "^2.6.1"
+pydantic = "^2.6.2"
 redis = "^5.0.0"
 
 [tool.poetry.group.dev.dependencies]
