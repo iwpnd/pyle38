@@ -66,6 +66,7 @@ patch_tags = ["fix", "perf", "docs", "chore(deps)"]
 
 [tool.semantic_release.changelog]
 exclude_commit_patterns = [
+  "chore:",
   "chore\\(release\\):",
   "chore\\(deps-dev\\):",
   "build\\(deps-dev\\):",
