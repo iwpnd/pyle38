@@ -59,10 +59,9 @@ allowed_tags = [
     "style",
     "refactor",
     "test",
-    "chore\\(deps\\)",
 ]
 minor_tags = ["feat"]
-patch_tags = ["fix", "perf", "docs", "chore\\(deps\\)"]
+patch_tags = ["fix", "perf", "docs"]
 
 [tool.semantic_release.changelog]
 exclude_commit_patterns = [
