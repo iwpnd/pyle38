@@ -37,7 +37,7 @@ class Object(BaseModel, Generic[T]):
     object: T
     id: Union[str, int]
     distance: Optional[float] = None
-    fields: Optional[List[int]] = None
+    fields: Optional[List[Any]] = None
 
 
 class ObjectResponse(JSONResponse, BaseModel, Generic[T]):

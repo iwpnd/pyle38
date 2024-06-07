@@ -89,6 +89,36 @@ expected = {"id": id, "object": feature}
 
 
 @pytest.mark.asyncio
+async def test_command_intersects_with_fields(tile38):
+    # field type str
+    name = "Tom"
+    # field type float
+    weight = 111.1
+    # field type int
+    height = 190
+    # field type dict
+    info = {"height": height, "weight": weight, "name": name}
+
+    response = (
+        await tile38.set(key, id)
+        .fields({"info": info, "height": height, "weight": weight, "name": name})
+        .object(feature)
+        .exec()
+    )
+    assert response.ok
+
+    response = (
+        await tile38.intersects(key).bounds(52.24, 13.36, 52.256, 13.379).asObjects()
+    )
+    assert response.ok
+    assert response.objects[0].dict() == {
+        **expected,
+        # in lexical order
+        "fields": [height, info, name, weight],
+    }
+
+
+@pytest.mark.asyncio
 async def test_command_intersects_circle(tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
