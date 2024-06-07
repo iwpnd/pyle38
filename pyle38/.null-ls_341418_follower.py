@@ -13,7 +13,6 @@ from .responses import (
     ChansResponse,
     ConfigGetResponse,
     ConfigKeys,
-    ExistsResponse,
     HooksResponse,
     InfoFollowerResponse,
     JSONGetResponse,
@@ -35,9 +34,6 @@ class Follower(Client):
         super().__init__(url)
 
         self.client = Client(url)
-
-    async def exists(self, key: str, id: str) -> ExistsResponse:
-        return ExistsResponse(**(await self.client.command(Command.EXISTS, [key, id])))
 
     async def bounds(self, key: str) -> BoundsResponse:
         return BoundsResponse(**(await self.client.command(Command.BOUNDS, [key])))

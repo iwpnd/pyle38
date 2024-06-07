@@ -33,6 +33,10 @@ class JSONResponse(BaseModel):
     err: Optional[str] = None
 
 
+class ExistsResponse(JSONResponse, BaseModel):
+    exists: bool
+
+
 class Object(BaseModel, Generic[T]):
     object: T
     id: Union[str, int]
