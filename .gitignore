@@ -3,6 +3,8 @@
 .DS_Store
 tmp/
 .python-version
+**/.null-ls*
+.null_ls*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -95,4 +97,3 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
-s

@@ -309,6 +309,25 @@ await tile38.fset('fleet', 'truck1', { "maxSpeed": 90, "milage": 90000 })
 | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `.xx()` | `FSET` returns error if fields are set on non-existing ids. `xx()` options changes this behaviour and instead returns `0` if id does not exist. If key does not exist `FSET` still returns error |
 
+#### FEXISTS
+
+Validate if `field` exists on id.
+
+```python
+await tile38.set('fleet', 'truck1')
+  .fields({ "weight": 9000 })
+  .point(33.5123, -112.2693)
+  .exec()
+
+resp = await tile38.fexists('fleet', 'truck1', 'weight')
+print(resp.exists)
+# > True
+
+resp = await tile38.fexists('fleet', 'truck1', 'mileage')
+print(resp.exists)
+# > False
+```
+
 #### GET
 
 Get the object of an id.
@@ -339,6 +358,24 @@ await tile38.get('fleet', 'truck1:driver').asStringObject()
 | `.asHash(precision)` | get as hash                       |
 | `.asPoint()`         | get as point                      |
 | `.asStringObject()`  | get a string                      |
+
+#### EXISTS
+
+Validate if `id` in collection.
+
+```python
+await tile38.set('fleet', 'truck')
+  .point(33.5123, -112.2693)
+  .exec()
+
+resp = await tile38.exists('fleet', 'truck')
+print(resp.exists)
+# > True
+
+resp = await tile38.exists('fleet', 'bobbycar')
+print(resp.exists)
+# > False
+```
 
 #### DEL
 
