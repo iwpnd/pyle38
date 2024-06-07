@@ -22,6 +22,7 @@ class Command(str, Enum):
     DROP = "DROP"
     EXISTS = "EXISTS"
     EXPIRE = "EXPIRE"
+    FEXISTS = "FEXISTS"
     FLUSHDB = "FLUSHDB"
     FSET = "FSET"
     GC = "GC"

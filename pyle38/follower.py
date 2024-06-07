@@ -39,6 +39,11 @@ class Follower(Client):
     async def exists(self, key: str, id: str) -> ExistsResponse:
         return ExistsResponse(**(await self.client.command(Command.EXISTS, [key, id])))
 
+    async def fexists(self, key: str, id: str, field: str) -> ExistsResponse:
+        return ExistsResponse(
+            **(await self.client.command(Command.FEXISTS, [key, id, field]))
+        )
+
     async def bounds(self, key: str) -> BoundsResponse:
         return BoundsResponse(**(await self.client.command(Command.BOUNDS, [key])))
 
