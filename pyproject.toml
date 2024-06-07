@@ -21,7 +21,7 @@ include = ["LICENSE"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-pydantic = "^2.7.1"
+pydantic = "^2.7.3"
 redis = "^5.0.4"
 
 [tool.poetry.group.dev.dependencies]
@@ -61,7 +61,7 @@ allowed_tags = [
     "test",
 ]
 minor_tags = ["feat"]
-patch_tags = ["fix", "perf", "docs"]
+patch_tags = ["fix", "perf", "docs", "refactor"]
 
 [tool.semantic_release.changelog]
 exclude_commit_patterns = [
