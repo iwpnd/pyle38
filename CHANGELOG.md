@@ -2,6 +2,33 @@
 
 
 
+## v0.11.4 (2024-06-07)
+
+### Chore
+
+* chore(deps): bump python-semantic-release/python-semantic-release
+
+Bumps [python-semantic-release/python-semantic-release](https://github.com/python-semantic-release/python-semantic-release) from 9.6.0 to 9.8.0.
+- [Release notes](https://github.com/python-semantic-release/python-semantic-release/releases)
+- [Changelog](https://github.com/python-semantic-release/python-semantic-release/blob/master/CHANGELOG.md)
+- [Commits](https://github.com/python-semantic-release/python-semantic-release/compare/v9.6.0...v9.8.0)
+
+---
+updated-dependencies:
+- dependency-name: python-semantic-release/python-semantic-release
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`3578319`](https://github.com/iwpnd/pyle38/commit/357831983e50c0824fdad31ffab7807e49952551))
+
+* chore(deps): 🔗 update redis ([`7f52479`](https://github.com/iwpnd/pyle38/commit/7f524794a963b29f715fede2688db3befdbb1611))
+
+### Fix
+
+* fix: ObjectResponse with fields not compatible with Tile38 v1.30.0 ([`6272e70`](https://github.com/iwpnd/pyle38/commit/6272e70f5bb22833aa3363073d2bfb121aee1cf2))
+
+
 ## v0.11.3 (2024-05-05)
 
 ### Chore
