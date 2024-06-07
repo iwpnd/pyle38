@@ -2,7 +2,7 @@ version: "3"
 
 services:
     tile38-leader:
-        image: tile38/tile38:1.32.2
+        image: tile38/tile38:1.33.0
         container_name: tile38-leader
         command: >
             /bin/sh -c 'mkdir -p tmp/data && \
@@ -15,7 +15,7 @@ services:
             # - 4321:4321
 
     tile38-follower:
-        image: tile38/tile38:1.32.2
+        image: tile38/tile38:1.33.0
         container_name: tile38-follower
         command: >
             /bin/sh -c 'mkdir -p tmp/data && \
