@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyle38"
-version = "0.11.4"
+version = "0.12.0"
 description = "Async python client for Tile38"
 authors = ["Benjamin Ramser <iwpnd@posteo.de>"]
 license = "MIT"

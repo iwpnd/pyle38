@@ -2,6 +2,15 @@
 
 
 
+## v0.12.0 (2024-06-07)
+
+### Feature
+
+* feat: support FEXISTS command as of tile38 v1.33.0 ([`12f900d`](https://github.com/iwpnd/pyle38/commit/12f900dab4f39c49d19e87c4fd64f8a9ee887676))
+
+* feat: support EXISTS command as of tile38 v1.33.0 ([`39e0593`](https://github.com/iwpnd/pyle38/commit/39e0593fa3cddfceff30a39998146114d6e1cc4f))
+
+
 ## v0.11.4 (2024-06-07)
 
 ### Chore

@@ -1,3 +1,3 @@
-__version__ = "0.11.4"
+__version__ = "0.12.0"
 
 from .tile38 import Tile38
