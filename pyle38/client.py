@@ -89,6 +89,7 @@ class SubCommand(str, Enum):
     DESC = "DESC"
     EXT = "EXT"
     WHERE = "WHERE"
+    WHEREIN = "WHEREIN"
     SECTOR = "SECTOR"
 
 
