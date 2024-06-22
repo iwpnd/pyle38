@@ -56,6 +56,14 @@ expected = {"id": id, "object": feature}
                     "bar",
                     1,
                     1,
+                    "WHEREIN",
+                    "foo",
+                    1,
+                    1,
+                    "WHEREIN",
+                    "bar",
+                    1,
+                    1,
                     "FENCE",
                     "DETECT",
                     "enter,exit",
@@ -83,6 +91,8 @@ async def test_command_within_compile(tile38, format, precision, expected):
         .limit(10)
         .where("foo", 1, 1)
         .where("bar", 1, 1)
+        .wherein("foo", 1, [1])
+        .wherein("bar", 1, [1])
         .fence()
         .detect(["enter", "exit"])
         .commands(["del", "set"])
@@ -122,6 +132,31 @@ async def test_command_within_where_circle(tile38):
     response = (
         await tile38.within(key)
         .where("maxspeed", 100, 120)
+        .circle(52.25, 13.37, 100)
+        .asObjects()
+    )
+    assert response.ok
+    assert len(response.objects) == 2
+
+
+@pytest.mark.asyncio
+async def test_command_within_wherein_circle(tile38):
+    await tile38.set(key, id).fields({"maxspeed": 120}).object(feature).exec()
+    await tile38.set(key, "truck2").fields({"maxspeed": 100}).object(feature).exec()
+
+    response = (
+        await tile38.within(key)
+        .wherein("maxspeed", 1, [120])
+        .circle(52.25, 13.37, 100)
+        .asObjects()
+    )
+    assert response.ok
+    assert len(response.objects) == 1
+    assert response.objects[0].dict() == dict(expected, **{"fields": [120]})
+
+    response = (
+        await tile38.within(key)
+        .wherein("maxspeed", 2, [100, 120])
         .circle(52.25, 13.37, 100)
         .asObjects()
     )
