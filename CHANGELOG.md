@@ -2,6 +2,33 @@
 
 
 
+## v0.13.0 (2024-06-22)
+
+### Chore
+
+* chore(deps): update ([`af90370`](https://github.com/iwpnd/pyle38/commit/af90370c8d76415db7af2c16b48b7ca8dac87fa8))
+
+* chore(deps): update ([`3d9f7c4`](https://github.com/iwpnd/pyle38/commit/3d9f7c4e535ad4412679b358d2279c4a0409f937))
+
+### Feature
+
+* feat: add WHEREIN to SEARCH ([`e7b5c29`](https://github.com/iwpnd/pyle38/commit/e7b5c297d4f40213cdc2d1131a1416ee4644bfeb))
+
+* feat: add WHEREIN to NEARBY ([`587c629`](https://github.com/iwpnd/pyle38/commit/587c6292180a66e709983e38ccfa56fa00318b77))
+
+* feat: add WHEREIN to INTERSECTS ([`41e81dd`](https://github.com/iwpnd/pyle38/commit/41e81dd356816dc4f5f069315e756e11767aec3e))
+
+* feat: add WHEREIN to WITHIN ([`f706b80`](https://github.com/iwpnd/pyle38/commit/f706b809046f8db41bbfc35482a860945d71b065))
+
+* feat: add WHEREIN to SCAN ([`afa301e`](https://github.com/iwpnd/pyle38/commit/afa301e6cfd8fef9db04275bf1ebf4d4b6ede999))
+
+* feat: add wherein to Whereable class ([`c3ad4df`](https://github.com/iwpnd/pyle38/commit/c3ad4df2ddaa74663b0f65e0a0d57812dff83f7a))
+
+### Refactor
+
+* refactor: simplify WHEREIN command, resolve mypy issues on object searches ([`33b23e8`](https://github.com/iwpnd/pyle38/commit/33b23e8432da2a55bbde3045f12e5dd7265a6c7b))
+
+
 ## v0.12.0 (2024-06-07)
 
 ### Feature
