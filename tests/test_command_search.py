@@ -25,6 +25,7 @@ async def test_command_search_compile(tile38):
         Search(tile38.client, key)
         .match("*")
         .where("foo", 1, 1)
+        .wherein("foo", 1, [1])
         .desc()
         .cursor(0)
         .limit(10)
@@ -34,7 +35,24 @@ async def test_command_search_compile(tile38):
 
     assert received == [
         "SEARCH",
-        [key, "MATCH", "*", "DESC", "CURSOR", 0, "LIMIT", 10, "WHERE", "foo", 1, 1],
+        [
+            key,
+            "MATCH",
+            "*",
+            "DESC",
+            "CURSOR",
+            0,
+            "LIMIT",
+            10,
+            "WHERE",
+            "foo",
+            1,
+            1,
+            "WHEREIN",
+            "foo",
+            1,
+            1,
+        ],
     ]
 
 
@@ -90,6 +108,52 @@ async def test_command_search_returns_where_stringobjects(tile38):
         await tile38.search(key)
         .where("maxspeed", 100, 120)
         .where("maxweight", 1000, 1000)
+        .match(pattern)
+        .asStringObjects()
+    )
+    assert response.ok
+    assert len(response.objects) == 1
+    assert response.objects[0].dict() == dict(
+        {"id": id, "object": string}, **{"fields": [120, 1000]}
+    )
+
+
+@pytest.mark.asyncio
+async def test_command_search_returns_wherein_stringobjects(tile38):
+    key = random_string()
+    id = random_string()
+    string = random_string()
+    pattern = string[:1] + "*"
+
+    await (
+        tile38.set(key, id)
+        .fields({"maxspeed": 120, "maxweight": 1000})
+        .string(string)
+        .exec()
+    )
+    await (
+        tile38.set(key, random_string())
+        .fields({"maxspeed": 100, "maxweight": 1000})
+        .string(random_string())
+        .exec()
+    )
+
+    response = (
+        await tile38.search(key)
+        .wherein("maxspeed", 1, [120])
+        .match(pattern)
+        .asStringObjects()
+    )
+    assert response.ok
+    assert len(response.objects) == 1
+    assert response.objects[0].dict() == dict(
+        {"id": id, "object": string}, **{"fields": [120, 1000]}
+    )
+
+    response = (
+        await tile38.search(key)
+        .wherein("maxspeed", 2, [100, 120])
+        .wherein("maxweight", 1, [1000])
         .match(pattern)
         .asStringObjects()
     )

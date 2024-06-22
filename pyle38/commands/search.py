@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Literal, Optional, Sequence, Union
+from typing import Literal, Optional, Sequence, Union
 
 from ..client import Client, Command, CommandArgs
 from ..models import Options
@@ -17,7 +17,6 @@ class Search(Executable, Whereable):
     _command: Literal["SEARCH"]
     _options: Options = {}
     _output: Optional[Output] = None
-    _where: List[List[Union[str, int]]] = []
     _all: bool = False
 
     def __init__(self, client: Client, key: str) -> None:
@@ -26,6 +25,7 @@ class Search(Executable, Whereable):
         self.key(key)
         self._options = {}
         self._where = []
+        self._wherein = []
 
     def key(self, key: str) -> Search:
         self._key = key
@@ -110,6 +110,7 @@ class Search(Executable, Whereable):
                 self._key,
                 *(self.__compile_options()),
                 *(self.compile_where()),
+                *(self.compile_wherein()),
                 *(self._output if self._output else []),
             ],
         ]
