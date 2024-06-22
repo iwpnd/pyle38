@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Literal, Optional, Sequence, Union
+from typing import Literal, Optional, Sequence, Union
 
 from ..client import Client, Command, CommandArgs
 from ..models import Options
@@ -13,7 +13,7 @@ from ..responses import (
     PointsResponse,
 )
 from .executable import Compiled, Executable
-from .whereable import Whereable
+from .whereable import Where, Whereable, Wherein
 
 Format = Literal["BOUNDS", "COUNT", "HASHES", "IDS", "OBJECTS", "POINTS"]
 Output = Sequence[Union[Format, int]]
@@ -25,7 +25,8 @@ class Scan(Executable, Whereable):
     _options: Options = {}
     _output: Optional[Output] = None
     _all: bool = False
-    _where: List[List[Union[str, int]]] = []
+    _where: Where = []
+    _wherein: Wherein = []
 
     def __init__(self, client: Client, key: str) -> None:
         super().__init__(client)
@@ -33,6 +34,7 @@ class Scan(Executable, Whereable):
         self.key(key)
         self._options = {}
         self._where = []
+        self._wherein = []
 
     def key(self, key: str) -> Scan:
         self._key = key
@@ -149,6 +151,7 @@ class Scan(Executable, Whereable):
                 self._key,
                 *(self.__compile_options()),
                 *(self.compile_where()),
+                *(self.compile_wherein()),
                 *(self._output if self._output else []),
             ],
         ]

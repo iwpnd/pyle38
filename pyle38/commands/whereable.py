@@ -28,8 +28,7 @@ class Whereable:
             for i in self._where:
                 w.extend(i)
             return w
-        else:
-            return []
+        return []
 
     def compile_wherein(self) -> CommandArgs:
         """__compile_wherein.
@@ -45,8 +44,7 @@ class Whereable:
             for i in self._wherein:
                 w.extend(i)
             return w
-        else:
-            return []
+        return []
 
     def wherein(
         self: TWhereable, field: str, count: int, values: List[Union[int, str, float]]

@@ -1,6 +1,7 @@
 import pytest
 
 from pyle38.commands.scan import Scan
+from pyle38.errors import Pyle38CountMismatchError
 
 from .helper.random_data import random_string
 
@@ -61,6 +62,8 @@ async def test_command_scan_compile(tile38):
         .limit(10)
         .where("foo", 1, 1)
         .where("bar", 1, 1)
+        .wherein("foo", 1, [1])
+        .wherein("bar", 1, [1])
     )
 
     received = query.output("OBJECTS").compile()
@@ -87,6 +90,14 @@ async def test_command_scan_compile(tile38):
             "bar",
             1,
             1,
+            "WHEREIN",
+            "foo",
+            1,
+            1,
+            "WHEREIN",
+            "bar",
+            1,
+            1,
         ],
     ]
 
@@ -99,6 +110,39 @@ async def test_command_scan(tile38):
     response = await tile38.scan(key).asObjects()
     assert response.ok
     assert response.objects[0].dict() == expected
+
+
+@pytest.mark.asyncio
+async def test_command_scan_wherein(tile38):
+    await (
+        tile38.set(key, id)
+        .fields({"maxspeed": 120, "maxweight": 1000})
+        .object(feature)
+        .exec()
+    )
+    await (
+        tile38.set(key, "truck1")
+        .fields({"maxspeed": 100, "maxweight": 1000})
+        .object(feature)
+        .exec()
+    )
+
+    response = await tile38.scan(key).wherein("maxspeed", 1, [120]).asObjects()
+    assert response.ok
+    assert len(response.objects) == 1
+    assert response.objects[0].dict() == dict(expected, **{"fields": [120, 1000]})
+
+    response = (
+        await tile38.scan(key)
+        .wherein("maxspeed", 2, [100, 120])
+        .wherein("maxweight", 1, [1000])
+        .asObjects()
+    )
+    assert response.ok
+    assert len(response.objects) == 2
+
+    with pytest.raises(Pyle38CountMismatchError):
+        response = await tile38.scan(key).wherein("maxspeed", 1, [100, 120]).asObjects()
 
 
 @pytest.mark.asyncio
