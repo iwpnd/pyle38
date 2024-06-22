@@ -13,7 +13,7 @@ from ..responses import (
     PointsResponse,
 )
 from .executable import Compiled, Executable
-from .whereable import Where, Whereable, Wherein
+from .whereable import Whereable
 
 Format = Literal["BOUNDS", "COUNT", "HASHES", "IDS", "OBJECTS", "POINTS"]
 Output = Sequence[Union[Format, int]]
@@ -25,8 +25,6 @@ class Scan(Executable, Whereable):
     _options: Options = {}
     _output: Optional[Output] = None
     _all: bool = False
-    _where: Where = []
-    _wherein: Wherein = []
 
     def __init__(self, client: Client, key: str) -> None:
         super().__init__(client)
