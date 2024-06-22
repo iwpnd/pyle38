@@ -77,6 +77,7 @@ class Intersects(Executable, Whereable):
         self._options = {}
         self._hook = hook
         self._where = []
+        self._wherein = []
 
     def key(self, key: str) -> Intersects:
         """Set key to search in
@@ -513,6 +514,7 @@ class Intersects(Executable, Whereable):
                 self._key,
                 *(self.__compile_options()),
                 *(self.compile_where()),
+                *(self.compile_wherein()),
                 *(self.__compile_fence()),
                 *(self._output if self._output else []),
                 *(self._query.get()),
