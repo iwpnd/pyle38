@@ -1,3 +1,5 @@
+from typing import Any, Dict
+
 import pytest
 
 from pyle38 import Tile38
@@ -171,48 +173,25 @@ async def test_command_within_object(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
-    response = (
-        await tile38.within(key)
-        .object(
-            {
-                "type": "Polygon",
-                "coordinates": [
-                    [
-                        [13.361263275146484, 52.24630137198303],
-                        [13.379974365234373, 52.24630137198303],
-                        [13.379974365234373, 52.256705331409506],
-                        [13.361263275146484, 52.256705331409506],
-                        [13.361263275146484, 52.24630137198303],
-                    ]
-                ],
-            }
-        )
-        .asObjects()
-    )
+    polygon: Dict[str, Any] = {
+        "type": "Polygon",
+        "coordinates": [
+            [
+                [13.361263275146484, 52.24630137198303],
+                [13.379974365234373, 52.24630137198303],
+                [13.379974365234373, 52.256705331409506],
+                [13.361263275146484, 52.256705331409506],
+                [13.361263275146484, 52.24630137198303],
+            ]
+        ],
+    }
+
+    response = await tile38.within(key).object(polygon).asObjects()
 
     assert response.ok
     assert response.objects[0].dict() == expected
 
-    response = (
-        await tile38.within(key)
-        .object(
-            Polygon(
-                **{
-                    "type": "Polygon",
-                    "coordinates": [
-                        [
-                            [13.361263275146484, 52.24630137198303],
-                            [13.379974365234373, 52.24630137198303],
-                            [13.379974365234373, 52.256705331409506],
-                            [13.361263275146484, 52.256705331409506],
-                            [13.361263275146484, 52.24630137198303],
-                        ]
-                    ],
-                }
-            )
-        )
-        .asObjects()
-    )
+    response = await tile38.within(key).object(Polygon(**polygon)).asObjects()
 
     assert response.ok
     assert response.objects[0].dict() == expected
@@ -347,7 +326,7 @@ async def test_command_within_buffer_return_count(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
-    search_area = {
+    search_area: Dict[str, Any] = {
         "type": "Feature",
         "properties": {},
         "geometry": {

@@ -1,3 +1,5 @@
+from typing import Any, Dict
+
 import pytest
 
 from pyle38 import Tile38
@@ -85,7 +87,7 @@ feature = {
     "geometry": {"type": "Point", "coordinates": [13.37, 52.25]},
     "properties": {"id": id},
 }
-polygon = {
+polygon: Dict[str, Any] = {
     "type": "Polygon",
     "coordinates": [
         [
@@ -243,102 +245,42 @@ async def test_command_intersects_object(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
-    response = (
-        await tile38.intersects(key)
-        .object(
-            {
-                "type": "Polygon",
-                "coordinates": [
-                    [
-                        [13.361263275146484, 52.24630137198303],
-                        [13.379974365234373, 52.24630137198303],
-                        [13.379974365234373, 52.256705331409506],
-                        [13.361263275146484, 52.256705331409506],
-                        [13.361263275146484, 52.24630137198303],
-                    ]
-                ],
-            }
-        )
-        .asObjects()
-    )
+    polygon: Dict[str, Any] = {
+        "type": "Polygon",
+        "coordinates": [
+            [
+                [13.361263275146484, 52.24630137198303],
+                [13.379974365234373, 52.24630137198303],
+                [13.379974365234373, 52.256705331409506],
+                [13.361263275146484, 52.256705331409506],
+                [13.361263275146484, 52.24630137198303],
+            ]
+        ],
+    }
+    featurePolygon: Dict[str, Any] = {
+        "type": "Feature",
+        "properties": {},
+        "geometry": polygon,
+    }
+
+    response = await tile38.intersects(key).object(polygon).asObjects()
+
+    assert response.ok
+    assert response.objects[0].dict() == expected
+
+    response = await tile38.intersects(key).object(Polygon(**polygon)).asObjects()
 
     assert response.ok
     assert response.objects[0].dict() == expected
 
     response = (
-        await tile38.intersects(key)
-        .object(
-            Polygon(
-                **{
-                    "type": "Polygon",
-                    "coordinates": [
-                        [
-                            [13.361263275146484, 52.24630137198303],
-                            [13.379974365234373, 52.24630137198303],
-                            [13.379974365234373, 52.256705331409506],
-                            [13.361263275146484, 52.256705331409506],
-                            [13.361263275146484, 52.24630137198303],
-                        ]
-                    ],
-                }
-            )
-        )
-        .asObjects()
+        await tile38.intersects(key).object(Feature(**featurePolygon)).asObjects()
     )
 
     assert response.ok
     assert response.objects[0].dict() == expected
 
-    response = (
-        await tile38.intersects(key)
-        .object(
-            Feature(
-                **{
-                    "type": "Feature",
-                    "properties": {},
-                    "geometry": {
-                        "type": "Polygon",
-                        "coordinates": [
-                            [
-                                [13.361263275146484, 52.24630137198303],
-                                [13.379974365234373, 52.24630137198303],
-                                [13.379974365234373, 52.256705331409506],
-                                [13.361263275146484, 52.256705331409506],
-                                [13.361263275146484, 52.24630137198303],
-                            ]
-                        ],
-                    },
-                }
-            )
-        )
-        .asObjects()
-    )
-
-    assert response.ok
-    assert response.objects[0].dict() == expected
-
-    response = (
-        await tile38.intersects(key)
-        .object(
-            {
-                "type": "Feature",
-                "properties": {},
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [
-                        [
-                            [13.361263275146484, 52.24630137198303],
-                            [13.379974365234373, 52.24630137198303],
-                            [13.379974365234373, 52.256705331409506],
-                            [13.361263275146484, 52.256705331409506],
-                            [13.361263275146484, 52.24630137198303],
-                        ]
-                    ],
-                },
-            }
-        )
-        .asObjects()
-    )
+    response = await tile38.intersects(key).object(featurePolygon).asObjects()
 
     assert response.ok
     assert response.objects[0].dict() == expected
