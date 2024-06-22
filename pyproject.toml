@@ -34,8 +34,8 @@ poethepoet = "^0.26.1"
 isort = "^5.10.1"
 pytest-cov = "^5.0.0"
 mypy = "^1.10.0"
-python-semantic-release = "^9.8.1"
-ruff = "^0.4.8"
+python-semantic-release = "^9.8.3"
+ruff = "^0.4.10"
 
 [tool.semantic_release]
 version_variables = [
