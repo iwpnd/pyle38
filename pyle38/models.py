@@ -1,5 +1,5 @@
 import json
-from typing import List, Literal, Optional, Sequence, Tuple, TypedDict, Union
+from typing import Any, Dict, List, Literal, Optional, Sequence, Tuple, TypedDict, Union
 
 from pydantic import BaseModel
 
@@ -107,6 +107,7 @@ class Polygon(BaseModel):
 class Feature(BaseModel):
     type: Literal["Feature"] = "Feature"
     geometry: Polygon
+    properties: Dict[Any, Any]
 
 
 class ObjectQuery(BaseModel):

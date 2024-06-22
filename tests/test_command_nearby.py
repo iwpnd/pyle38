@@ -1,5 +1,6 @@
 import pytest
 
+from pyle38 import Tile38
 from pyle38.commands.nearby import Nearby
 
 from .helper.random_data import random_string
@@ -67,7 +68,7 @@ expected = {"id": id, "object": feature}
     ids=["OBJECTS"],
 )
 @pytest.mark.asyncio
-async def test_command_nearby_compile(tile38, format, precision, expected):
+async def test_command_nearby_compile(tile38: Tile38, format, precision, expected):
     query = (
         Nearby(tile38.client, key)
         .match("*")
@@ -78,8 +79,8 @@ async def test_command_nearby_compile(tile38, format, precision, expected):
         .limit(10)
         .where("foo", 1, 1)
         .where("bar", 1, 1)
-        .wherein("foo", 1, [1])
-        .wherein("bar", 1, [1])
+        .wherein("foo", [1])
+        .wherein("bar", [1])
         .fence()
         .detect(["enter", "exit"])
         .commands(["del", "set"])
@@ -92,7 +93,7 @@ async def test_command_nearby_compile(tile38, format, precision, expected):
 
 
 @pytest.mark.asyncio
-async def test_command_nearby_point(tile38):
+async def test_command_nearby_point(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -102,7 +103,7 @@ async def test_command_nearby_point(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_nearby_where_point(tile38):
+async def test_command_nearby_where_point(tile38: Tile38):
     await (
         tile38.set(key, id)
         .fields({"maxspeed": 120, "maxweight": 1000})
@@ -138,7 +139,7 @@ async def test_command_nearby_where_point(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_nearby_wherein_point(tile38):
+async def test_command_nearby_wherein_point(tile38: Tile38):
     await (
         tile38.set(key, id)
         .fields({"maxspeed": 120, "maxweight": 1000})
@@ -154,7 +155,7 @@ async def test_command_nearby_wherein_point(tile38):
 
     response = (
         await tile38.nearby(key)
-        .wherein("maxspeed", 1, [120])
+        .wherein("maxspeed", [120])
         .point(52.250212, 13.370871)
         .asObjects()
     )
@@ -164,8 +165,8 @@ async def test_command_nearby_wherein_point(tile38):
 
     response = (
         await tile38.nearby(key)
-        .wherein("maxspeed", 2, [100, 120])
-        .wherein("maxweight", 1, [1000])
+        .wherein("maxspeed", [100, 120])
+        .wherein("maxweight", [1000])
         .point(52.250212, 13.370871)
         .asObjects()
     )
@@ -174,7 +175,7 @@ async def test_command_nearby_wherein_point(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_nearby_point_with_radius(tile38):
+async def test_command_nearby_point_with_radius(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -184,7 +185,7 @@ async def test_command_nearby_point_with_radius(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_nearby_return_points(tile38):
+async def test_command_nearby_return_points(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -197,7 +198,7 @@ async def test_command_nearby_return_points(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_nearby_return_ids(tile38):
+async def test_command_nearby_return_ids(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -207,7 +208,7 @@ async def test_command_nearby_return_ids(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_nearby_return_count(tile38):
+async def test_command_nearby_return_count(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -217,7 +218,7 @@ async def test_command_nearby_return_count(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_nearby_return_hashes(tile38):
+async def test_command_nearby_return_hashes(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -227,7 +228,7 @@ async def test_command_nearby_return_hashes(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_nearby_return_bounds(tile38):
+async def test_command_nearby_return_bounds(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 

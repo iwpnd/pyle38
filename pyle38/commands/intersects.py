@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import List, Literal, Optional, Sequence, Union
 
 from ..client import Client, Command, CommandArgs, SubCommand
-from ..errors import Tile38Error
+from ..errors import Pyle38BadObjectInputException, Tile38Error
 from ..models import (
     BoundsQuery,
     CircleQuery,
@@ -326,18 +326,30 @@ class Intersects(Executable, Whereable):
 
         return self
 
-    def object(self, object: Union[Polygon, Feature]) -> Intersects:
+    def object(self, object: Union[Polygon, Feature, dict]) -> Intersects:
         """Define an object as input bounding area for the intersects search.
 
         Args:
-            object (Union[Polygon, Feature]): GeoJSON Feature or Polygon Geometry
+            object (Union[Polygon, Feature, Dict]): GeoJSON Feature or Polygon Geometry
 
         Returns:
             Intersects
         """
-        self._query = ObjectQuery(object=object)
+        if isinstance(object, dict) and object.get("type") == "Polygon":
+            object = Polygon(**object)
+            self._query = ObjectQuery(object=object)
+            return self
 
-        return self
+        if isinstance(object, dict) and object.get("type") == "Feature":
+            object = Feature(**object)
+            self._query = ObjectQuery(object=object)
+            return self
+
+        if isinstance(object, Polygon) or isinstance(object, Feature):
+            self._query = ObjectQuery(object=object)
+            return self
+
+        raise Pyle38BadObjectInputException()
 
     def get(self, key: str, id: str) -> Intersects:
         """Define an object in a collection as bounding area for the intersects search.

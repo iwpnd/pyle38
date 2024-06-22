@@ -1,7 +1,7 @@
 import pytest
 
+from pyle38 import Tile38
 from pyle38.commands.scan import Scan
-from pyle38.errors import Pyle38CountMismatchError
 
 from .helper.random_data import random_string
 
@@ -17,7 +17,7 @@ expected = {"id": id, "object": feature}
 
 
 @pytest.mark.asyncio
-async def test_command_scan_compile(tile38):
+async def test_command_scan_compile(tile38: Tile38):
     query = (
         Scan(tile38.client, key)
         .match("*")
@@ -62,8 +62,8 @@ async def test_command_scan_compile(tile38):
         .limit(10)
         .where("foo", 1, 1)
         .where("bar", 1, 1)
-        .wherein("foo", 1, [1])
-        .wherein("bar", 1, [1])
+        .wherein("foo", [1])
+        .wherein("bar", [1])
     )
 
     received = query.output("OBJECTS").compile()
@@ -103,7 +103,7 @@ async def test_command_scan_compile(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_scan(tile38):
+async def test_command_scan(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -113,7 +113,7 @@ async def test_command_scan(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_scan_wherein(tile38):
+async def test_command_scan_wherein(tile38: Tile38):
     await (
         tile38.set(key, id)
         .fields({"maxspeed": 120, "maxweight": 1000})
@@ -127,26 +127,23 @@ async def test_command_scan_wherein(tile38):
         .exec()
     )
 
-    response = await tile38.scan(key).wherein("maxspeed", 1, [120]).asObjects()
+    response = await tile38.scan(key).wherein("maxspeed", [120]).asObjects()
     assert response.ok
     assert len(response.objects) == 1
     assert response.objects[0].dict() == dict(expected, **{"fields": [120, 1000]})
 
     response = (
         await tile38.scan(key)
-        .wherein("maxspeed", 2, [100, 120])
-        .wherein("maxweight", 1, [1000])
+        .wherein("maxspeed", [100, 120])
+        .wherein("maxweight", [1000])
         .asObjects()
     )
     assert response.ok
     assert len(response.objects) == 2
 
-    with pytest.raises(Pyle38CountMismatchError):
-        response = await tile38.scan(key).wherein("maxspeed", 1, [100, 120]).asObjects()
-
 
 @pytest.mark.asyncio
-async def test_command_scan_where(tile38):
+async def test_command_scan_where(tile38: Tile38):
     await (
         tile38.set(key, id)
         .fields({"maxspeed": 120, "maxweight": 1000})
@@ -176,7 +173,7 @@ async def test_command_scan_where(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_scan_return_points(tile38):
+async def test_command_scan_return_points(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -189,7 +186,7 @@ async def test_command_scan_return_points(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_scan_return_ids(tile38):
+async def test_command_scan_return_ids(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -199,7 +196,7 @@ async def test_command_scan_return_ids(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_scan_return_count(tile38):
+async def test_command_scan_return_count(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -209,7 +206,7 @@ async def test_command_scan_return_count(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_scan_return_hashes(tile38):
+async def test_command_scan_return_hashes(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -219,7 +216,7 @@ async def test_command_scan_return_hashes(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_scan_return_bounds(tile38):
+async def test_command_scan_return_bounds(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 

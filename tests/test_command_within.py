@@ -1,6 +1,8 @@
 import pytest
 
+from pyle38 import Tile38
 from pyle38.commands.within import Within
+from pyle38.models import Feature, Polygon
 
 from .helper.random_data import random_string
 
@@ -80,7 +82,7 @@ expected = {"id": id, "object": feature}
     ids=["OBJECTS"],
 )
 @pytest.mark.asyncio
-async def test_command_within_compile(tile38, format, precision, expected):
+async def test_command_within_compile(tile38: Tile38, format, precision, expected):
     query = (
         Within(tile38.client, key)
         .match("*")
@@ -91,8 +93,8 @@ async def test_command_within_compile(tile38, format, precision, expected):
         .limit(10)
         .where("foo", 1, 1)
         .where("bar", 1, 1)
-        .wherein("foo", 1, [1])
-        .wherein("bar", 1, [1])
+        .wherein("foo", [1])
+        .wherein("bar", [1])
         .fence()
         .detect(["enter", "exit"])
         .commands(["del", "set"])
@@ -105,7 +107,7 @@ async def test_command_within_compile(tile38, format, precision, expected):
 
 
 @pytest.mark.asyncio
-async def test_command_within_circle(tile38):
+async def test_command_within_circle(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -115,7 +117,7 @@ async def test_command_within_circle(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_within_where_circle(tile38):
+async def test_command_within_where_circle(tile38: Tile38):
     await tile38.set(key, id).fields({"maxspeed": 120}).object(feature).exec()
     await tile38.set(key, "truck2").fields({"maxspeed": 100}).object(feature).exec()
 
@@ -140,13 +142,13 @@ async def test_command_within_where_circle(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_within_wherein_circle(tile38):
+async def test_command_within_wherein_circle(tile38: Tile38):
     await tile38.set(key, id).fields({"maxspeed": 120}).object(feature).exec()
     await tile38.set(key, "truck2").fields({"maxspeed": 100}).object(feature).exec()
 
     response = (
         await tile38.within(key)
-        .wherein("maxspeed", 1, [120])
+        .wherein("maxspeed", [120])
         .circle(52.25, 13.37, 100)
         .asObjects()
     )
@@ -156,7 +158,7 @@ async def test_command_within_wherein_circle(tile38):
 
     response = (
         await tile38.within(key)
-        .wherein("maxspeed", 2, [100, 120])
+        .wherein("maxspeed", [100, 120])
         .circle(52.25, 13.37, 100)
         .asObjects()
     )
@@ -165,7 +167,7 @@ async def test_command_within_wherein_circle(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_within_object(tile38):
+async def test_command_within_object(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -191,9 +193,33 @@ async def test_command_within_object(tile38):
     assert response.ok
     assert response.objects[0].dict() == expected
 
+    response = (
+        await tile38.within(key)
+        .object(
+            Polygon(
+                **{
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [13.361263275146484, 52.24630137198303],
+                            [13.379974365234373, 52.24630137198303],
+                            [13.379974365234373, 52.256705331409506],
+                            [13.361263275146484, 52.256705331409506],
+                            [13.361263275146484, 52.24630137198303],
+                        ]
+                    ],
+                }
+            )
+        )
+        .asObjects()
+    )
+
+    assert response.ok
+    assert response.objects[0].dict() == expected
+
 
 @pytest.mark.asyncio
-async def test_command_within_hash(tile38):
+async def test_command_within_hash(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -203,7 +229,7 @@ async def test_command_within_hash(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_within_quadkey(tile38):
+async def test_command_within_quadkey(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -213,7 +239,7 @@ async def test_command_within_quadkey(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_within_tile(tile38):
+async def test_command_within_tile(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -223,7 +249,7 @@ async def test_command_within_tile(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_within_bounds(tile38):
+async def test_command_within_bounds(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -233,7 +259,7 @@ async def test_command_within_bounds(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_within_sector(tile38):
+async def test_command_within_sector(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -245,7 +271,7 @@ async def test_command_within_sector(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_within_get(tile38):
+async def test_command_within_get(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -258,7 +284,7 @@ async def test_command_within_get(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_within_return_points(tile38):
+async def test_command_within_return_points(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -271,7 +297,7 @@ async def test_command_within_return_points(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_within_return_ids(tile38):
+async def test_command_within_return_ids(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -281,7 +307,7 @@ async def test_command_within_return_ids(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_within_return_count(tile38):
+async def test_command_within_return_count(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -291,7 +317,7 @@ async def test_command_within_return_count(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_within_return_hashes(tile38):
+async def test_command_within_return_hashes(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -301,7 +327,7 @@ async def test_command_within_return_hashes(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_within_return_bounds(tile38):
+async def test_command_within_return_bounds(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -317,7 +343,7 @@ async def test_command_within_return_bounds(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_within_buffer_return_count(tile38):
+async def test_command_within_buffer_return_count(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -343,5 +369,11 @@ async def test_command_within_buffer_return_count(tile38):
     assert response.count == 0
 
     response = await tile38.within(key).buffer(10).object(search_area).asCount()
+    assert response.ok
+    assert response.count == 1
+
+    response = (
+        await tile38.within(key).buffer(10).object(Feature(**search_area)).asCount()
+    )
     assert response.ok
     assert response.count == 1

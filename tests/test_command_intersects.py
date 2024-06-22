@@ -1,12 +1,15 @@
 import pytest
 
+from pyle38 import Tile38
 from pyle38.commands.intersects import Intersects
+from pyle38.errors import Pyle38BadObjectInputException
+from pyle38.models import Feature, Polygon
 
 from .helper.random_data import random_string
 
 
 @pytest.mark.asyncio
-async def test_command_intersects_compile(tile38):
+async def test_command_intersects_compile(tile38: Tile38):
     key = random_string()
 
     expected = [
@@ -62,8 +65,8 @@ async def test_command_intersects_compile(tile38):
         .limit(10)
         .where("foo", 1, 1)
         .where_expr("bar == 1")
-        .wherein("foo", 1, [1])
-        .wherein("bar", 1, [1])
+        .wherein("foo", [1])
+        .wherein("bar", [1])
         .fence()
         .detect(["enter", "exit"])
         .commands(["del", "set"])
@@ -99,7 +102,7 @@ expected = {"id": id, "object": feature}
 
 
 @pytest.mark.asyncio
-async def test_command_intersects_with_fields(tile38):
+async def test_command_intersects_with_fields(tile38: Tile38):
     # field type str
     name = "Tom"
     # field type float
@@ -129,7 +132,7 @@ async def test_command_intersects_with_fields(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_intersects_circle(tile38):
+async def test_command_intersects_circle(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -139,7 +142,7 @@ async def test_command_intersects_circle(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_intersects_where_circle(tile38):
+async def test_command_intersects_where_circle(tile38: Tile38):
     await (
         tile38.set(key, id)
         .fields({"maxspeed": 120, "maxweight": 1000})
@@ -175,7 +178,7 @@ async def test_command_intersects_where_circle(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_intersects_wherein_circle(tile38):
+async def test_command_intersects_wherein_circle(tile38: Tile38):
     await (
         tile38.set(key, id)
         .fields({"maxspeed": 120, "maxweight": 1000})
@@ -191,7 +194,7 @@ async def test_command_intersects_wherein_circle(tile38):
 
     response = (
         await tile38.intersects(key)
-        .wherein("maxspeed", 1, [120])
+        .wherein("maxspeed", [120])
         .circle(52.25, 13.37, 100)
         .asObjects()
     )
@@ -201,8 +204,8 @@ async def test_command_intersects_wherein_circle(tile38):
 
     response = (
         await tile38.intersects(key)
-        .wherein("maxspeed", 2, [100, 120])
-        .wherein("maxweight", 1, [1000])
+        .wherein("maxspeed", [100, 120])
+        .wherein("maxweight", [1000])
         .circle(52.25, 13.37, 100)
         .asObjects()
     )
@@ -211,7 +214,7 @@ async def test_command_intersects_wherein_circle(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_intersects_where_expr_circle(tile38):
+async def test_command_intersects_where_expr_circle(tile38: Tile38):
     await (
         tile38.set(key, id)
         .fields({"maxspeed": 120, "maxweight": 1000})
@@ -236,7 +239,7 @@ async def test_command_intersects_where_expr_circle(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_intersects_object(tile38):
+async def test_command_intersects_object(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -262,9 +265,99 @@ async def test_command_intersects_object(tile38):
     assert response.ok
     assert response.objects[0].dict() == expected
 
+    response = (
+        await tile38.intersects(key)
+        .object(
+            Polygon(
+                **{
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [13.361263275146484, 52.24630137198303],
+                            [13.379974365234373, 52.24630137198303],
+                            [13.379974365234373, 52.256705331409506],
+                            [13.361263275146484, 52.256705331409506],
+                            [13.361263275146484, 52.24630137198303],
+                        ]
+                    ],
+                }
+            )
+        )
+        .asObjects()
+    )
+
+    assert response.ok
+    assert response.objects[0].dict() == expected
+
+    response = (
+        await tile38.intersects(key)
+        .object(
+            Feature(
+                **{
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [
+                            [
+                                [13.361263275146484, 52.24630137198303],
+                                [13.379974365234373, 52.24630137198303],
+                                [13.379974365234373, 52.256705331409506],
+                                [13.361263275146484, 52.256705331409506],
+                                [13.361263275146484, 52.24630137198303],
+                            ]
+                        ],
+                    },
+                }
+            )
+        )
+        .asObjects()
+    )
+
+    assert response.ok
+    assert response.objects[0].dict() == expected
+
+    response = (
+        await tile38.intersects(key)
+        .object(
+            {
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [13.361263275146484, 52.24630137198303],
+                            [13.379974365234373, 52.24630137198303],
+                            [13.379974365234373, 52.256705331409506],
+                            [13.361263275146484, 52.256705331409506],
+                            [13.361263275146484, 52.24630137198303],
+                        ]
+                    ],
+                },
+            }
+        )
+        .asObjects()
+    )
+
+    assert response.ok
+    assert response.objects[0].dict() == expected
+
+    with pytest.raises(Pyle38BadObjectInputException):
+        response = (
+            await tile38.intersects(key)
+            .object(
+                {
+                    "type": "Point",
+                    "coordinates": [1, 1],
+                }
+            )
+            .asObjects()
+        )
+
 
 @pytest.mark.asyncio
-async def test_command_intersects_hash(tile38):
+async def test_command_intersects_hash(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -274,7 +367,7 @@ async def test_command_intersects_hash(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_intersects_quadkey(tile38):
+async def test_command_intersects_quadkey(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -284,7 +377,7 @@ async def test_command_intersects_quadkey(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_intersects_tile(tile38):
+async def test_command_intersects_tile(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -294,7 +387,7 @@ async def test_command_intersects_tile(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_intersects_sector(tile38):
+async def test_command_intersects_sector(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -308,7 +401,7 @@ async def test_command_intersects_sector(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_intersects_bounds(tile38):
+async def test_command_intersects_bounds(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -320,7 +413,7 @@ async def test_command_intersects_bounds(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_intersects_object_with_intersection(tile38):
+async def test_command_intersects_object_with_intersection(tile38: Tile38):
     key = random_string()
     id = random_string()
 
@@ -347,7 +440,7 @@ async def test_command_intersects_object_with_intersection(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_intersects_get(tile38):
+async def test_command_intersects_get(tile38: Tile38):
     key = random_string()
     id = random_string()
     id2 = random_string()
@@ -378,7 +471,7 @@ async def test_command_intersects_get(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_intersects_return_points(tile38):
+async def test_command_intersects_return_points(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -391,7 +484,7 @@ async def test_command_intersects_return_points(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_intersects_return_ids(tile38):
+async def test_command_intersects_return_ids(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -401,7 +494,7 @@ async def test_command_intersects_return_ids(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_intersects_return_count(tile38):
+async def test_command_intersects_return_count(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -411,7 +504,7 @@ async def test_command_intersects_return_count(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_intersects_return_hashes(tile38):
+async def test_command_intersects_return_hashes(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -421,7 +514,7 @@ async def test_command_intersects_return_hashes(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_intersects_return_bounds(tile38):
+async def test_command_intersects_return_bounds(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 
@@ -437,7 +530,7 @@ async def test_command_intersects_return_bounds(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_intersects_buffer_return_count(tile38):
+async def test_command_intersects_buffer_return_count(tile38: Tile38):
     response = await tile38.set(key, id).object(feature).exec()
     assert response.ok
 

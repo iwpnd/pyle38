@@ -1,7 +1,5 @@
 from typing import List, TypeVar, Union
 
-from pyle38.errors import Pyle38CountMismatchError
-
 from ..client import CommandArgs, SubCommand
 
 TWhereable = TypeVar("TWhereable", bound="Whereable")
@@ -47,22 +45,18 @@ class Whereable:
         return []
 
     def wherein(
-        self: TWhereable, field: str, count: int, values: List[Union[int, str, float]]
+        self: TWhereable, field: str, values: List[Union[int, str, float]]
     ) -> TWhereable:
         """Filter the search by fields values containing input values
 
         Args:
             field (str): field name
-            count (int): number of values
             values (list): values to lookup in field values
 
         Returns:
             TWhereable
         """
-        if count != len(values):
-            raise Pyle38CountMismatchError(count, len(values))
-
-        self._wherein.append([SubCommand.WHEREIN, field, count, *values])
+        self._wherein.append([SubCommand.WHEREIN, field, len(values), *values])
 
         return self
 

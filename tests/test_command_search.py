@@ -1,5 +1,6 @@
 import pytest
 
+from pyle38 import Tile38
 from pyle38.commands.search import Search
 
 from .helper.random_data import random_string
@@ -25,7 +26,7 @@ async def test_command_search_compile(tile38):
         Search(tile38.client, key)
         .match("*")
         .where("foo", 1, 1)
-        .wherein("foo", 1, [1])
+        .wherein("foo", [1])
         .desc()
         .cursor(0)
         .limit(10)
@@ -57,7 +58,7 @@ async def test_command_search_compile(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_search_returns_stringobjects(tile38):
+async def test_command_search_returns_stringobjects(tile38: Tile38):
     key = random_string()
     id = random_string()
     string = random_string()
@@ -73,7 +74,7 @@ async def test_command_search_returns_stringobjects(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_search_returns_where_stringobjects(tile38):
+async def test_command_search_returns_where_stringobjects(tile38: Tile38):
     key = random_string()
     id = random_string()
     string = random_string()
@@ -119,7 +120,7 @@ async def test_command_search_returns_where_stringobjects(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_search_returns_wherein_stringobjects(tile38):
+async def test_command_search_returns_wherein_stringobjects(tile38: Tile38):
     key = random_string()
     id = random_string()
     string = random_string()
@@ -140,7 +141,7 @@ async def test_command_search_returns_wherein_stringobjects(tile38):
 
     response = (
         await tile38.search(key)
-        .wherein("maxspeed", 1, [120])
+        .wherein("maxspeed", [120])
         .match(pattern)
         .asStringObjects()
     )
@@ -152,8 +153,8 @@ async def test_command_search_returns_wherein_stringobjects(tile38):
 
     response = (
         await tile38.search(key)
-        .wherein("maxspeed", 2, [100, 120])
-        .wherein("maxweight", 1, [1000])
+        .wherein("maxspeed", [100, 120])
+        .wherein("maxweight", [1000])
         .match(pattern)
         .asStringObjects()
     )
@@ -165,7 +166,7 @@ async def test_command_search_returns_wherein_stringobjects(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_search_returns_ids(tile38):
+async def test_command_search_returns_ids(tile38: Tile38):
     key = random_string()
     id = random_string()
     string = random_string()
@@ -180,7 +181,7 @@ async def test_command_search_returns_ids(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_search_returns_count(tile38):
+async def test_command_search_returns_count(tile38: Tile38):
     key = random_string()
     id = random_string()
     string = random_string()
