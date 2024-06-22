@@ -570,6 +570,7 @@ await tile38.within('fleet').get('warehouses', 'Berlin').asCount();
 | `.match(pattern)`                         | Match can be used to filtered objects considered in the search with a glob pattern. `.match('truck*')` e.g. will only consider ids that start with `truck` within your key. |
 | `.sparse(value)`                          | **caution** seems bugged since Tile38 1.22.6. Accepts values between 1 and 8. Can be used to distribute the results of a search evenly across the requested area.           |
 | `.where(fieldname, min value, max value)` | filter output by fieldname and values.                                                                                                                                      |
+| `.wherein(fieldname, values)`             | filter output by fieldname and values. Returns if field value in list of values.                                                                                            |
 | `.where_expr(expr)`                       | filter output with [filter-expression](https://tile38.com/topics/filter-expressions).                                                                                       |
 | `.buffer(value)`                          | Apply a buffer around area formats to increase the search area by x meters                                                                                                  |
 
@@ -637,6 +638,7 @@ await tile38.intersects('warehouses').hash('u33d').where("maxweight", 1000, 1000
 | `.match(pattern)`                         | Match can be used to filtered objects considered in the search with a glob pattern. `.match('warehouse*')` e.g. will only consider ids that start with `warehouse` within your key. |
 | `.sparse(value)`                          | **caution** seems bugged since Tile38 1.22.6. Accepts values between 1 and 8. Can be used to distribute the results of a search evenly across the requested area.                   |
 | `.where(fieldname, min value, max value)` | filter output by fieldname and values.                                                                                                                                              |
+| `.wherein(fieldname, values)`             | filter output by fieldname and values. Returns if field value in list of values.                                                                                                    |
 | `.where_expr(expr)`                       | filter output with [filter-expression](https://tile38.com/topics/filter-expressions).                                                                                               |
 | `.buffer(value)`                          | Apply a buffer around area formats to increase the search area by x meters                                                                                                          |
 
@@ -699,6 +701,7 @@ await tile38.nearby('fleet').point(33.5124, -112.2694, 10).asCount
 | `.match(pattern)`                         | Match can be used to filtered objects considered in the search with a glob pattern. `.match('warehouse*')` e.g. will only consider ids that start with `warehouse` within your key. |
 | `.sparse(value)`                          | **caution** seems bugged since Tile38 1.22.6. Accepts values between 1 and 8. Can be used to distribute the results of a search evenly across the requested area.                   |
 | `.where(fieldname, min value, max value)` | filter output by fieldname and values.                                                                                                                                              |
+| `.wherein(fieldname, values)`             | filter output by fieldname and values. Returns if field value in list of values.                                                                                                    |
 | `.where_expr(expr)`                       | filter output with [filter-expression](https://tile38.com/topics/filter-expressions).                                                                                               |
 
 **Outputs**
@@ -746,6 +749,7 @@ await tile38.scan('fleet').where("maxspeed", 100, 120).asCount()
 | `.nofields()`                             | if not set and one of the objects in the key has fields attached, fields will be returned. Use this to suppress this behavior and don't return fields.                              |
 | `.match(pattern)`                         | Match can be used to filtered objects considered in the search with a glob pattern. `.match('warehouse*')` e.g. will only consider ids that start with `warehouse` within your key. |
 | `.where(fieldname, min value, max value)` | filter output by fieldname and values.                                                                                                                                              |
+| `.wherein(fieldname, values)`             | filter output by fieldname and values. Returns if field value in list of values.                                                                                                    |
 | `.where_expr(expr)`                       | filter output with [filter-expression](https://tile38.com/topics/filter-expressions).                                                                                               |
 
 **Outputs**
@@ -792,6 +796,7 @@ await tile38.search('fleet').match('J*').asStringObjects()
 | `.nofields()`                             | if not set and one of the objects in the key has fields attached, fields will be returned. Use this to suppress this behavior and don't return fields.                                      |
 | `.match(pattern)`                         | Match can be used to filtered objects considered in the search with a glob pattern. `.match('J*')` e.g. will only consider string values objects that have a string value starting with `J` |
 | `.where(fieldname, min value, max value)` | filter output by fieldname and values.                                                                                                                                                      |
+| `.wherein(fieldname, values)`             | filter output by fieldname and values. Returns if field value in list of values.                                                                                                            |
 | `.where_expr(expr)`                       | filter output with [filter-expression](https://tile38.com/topics/filter-expressions).                                                                                                       |
 
 **Outputs**
