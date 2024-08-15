@@ -26,16 +26,16 @@ redis = "^5.0.7"
 
 [tool.poetry.group.dev.dependencies]
 types-redis = "^4.6.0.20240425"
-pytest = "^8.2.2"
-pre-commit = "^3.7.1"
-pytest-asyncio = "^0.23.7"
+pytest = "^8.3.2"
+pre-commit = "^3.8.0"
+pytest-asyncio = "^0.23.8"
 gitlint = "^0.19.0"
 poethepoet = "^0.27.0"
 isort = "^5.10.1"
 pytest-cov = "^5.0.0"
-mypy = "^1.10.1"
-python-semantic-release = "^9.8.3"
-ruff = "^0.5.0"
+mypy = "^1.11.1"
+python-semantic-release = "^9.8.6"
+ruff = "^0.5.7"
 
 [tool.semantic_release]
 version_variables = [
