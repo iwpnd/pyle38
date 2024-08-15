@@ -82,7 +82,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: start tile38 leader and follower
-        run: docker-compose up -d
+        run: docker compose up -d
       - name: Install poetry
         uses: snok/install-poetry@v1.3
         with:
@@ -102,7 +102,7 @@ jobs:
           source .venv/bin/activate
           poetry run poe test .
       - name: stop tile38 leader and follower
-        run: docker-compose down
+        run: docker compose down
   release:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
