@@ -22,7 +22,7 @@ include = ["LICENSE"]
 [tool.poetry.dependencies]
 python = "^3.10"
 pydantic = "^2.8.2"
-redis = "^5.0.7"
+redis = "^5.0.8"
 
 [tool.poetry.group.dev.dependencies]
 types-redis = "^4.6.0.20240903"
