@@ -53,3 +53,18 @@ async def test_client_quit():
     response = await client.quit()
 
     assert response == "OK"
+
+
+@pytest.mark.asyncio
+async def test_client_handles_disconnection():
+    client = Client(os.getenv("TILE38_LEADER_URI") or "redis://localhost:9851")
+
+    response = await client.command("SET", ["fleet", "truck", "POINT", 1, 1])
+    assert response["ok"]
+
+    await client._Client__redis.aclose()
+
+    response = await client.command("SET", ["fleet", "truck", "POINT", 1, 1])
+    assert response["ok"]
+
+    await client.quit()
