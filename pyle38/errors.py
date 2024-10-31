@@ -2,6 +2,10 @@ class Tile38Error(Exception):
     pass
 
 
+class Tile38ParseError(Tile38Error):
+    pass
+
+
 class Tile38IdNotFoundError(Exception):
     pass
 

@@ -5,6 +5,7 @@ from redis.typing import EncodableT
 
 from .errors import (
     Tile38Error,
+    Tile38ParseError,
     Tile38IdNotFoundError,
     Tile38KeyNotFoundError,
     Tile38NotCaughtUpError,
@@ -18,12 +19,12 @@ def parse_response(
     ] = None,
 ) -> Dict[str, Union[float, str, int, list, dict]]:
     if not isinstance(response, str) or isinstance(response, bytes):
-        raise Tile38Error("invalid response")
+        raise Tile38ParseError("invalid response")
 
     try:
         obj = json.loads(response)
     except Exception as e:
-        raise Tile38Error(e)
+        raise Tile38ParseError(e)
 
     msg = "unknown"
 
