@@ -210,5 +210,6 @@ class Client:
         await c.connection_pool.disconnect()
 
         self.__redis = None
+        self.__format = Format.RESP.value
 
         return "OK"
