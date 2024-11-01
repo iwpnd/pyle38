@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.13.3 (2024-11-01)
+
+### Refactoring
+
+* refactor: ♻️ set Tile38 output to JSON on_connect
+
+instead of maintaining a `__format` state that
+needs to be validated and updated on every state
+of the connection.
+
+Co-authored-by: Alex Ward  <alxwrd@googlemail.com> ([`5491580`](https://github.com/iwpnd/pyle38/commit/5491580d7ea134f75f0ec851ca76ccc8d1e4337b))
+
+
 ## v0.13.2 (2024-11-01)
 
 ### Bug Fixes
