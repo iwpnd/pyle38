@@ -119,38 +119,16 @@ NO_RESPONSE_CALLBACKS_FOR = [
 
 class Client:
     __redis = None
-    __format: str = Format.RESP.value
 
     def __init__(self, url: str) -> None:
         self.url = url
         self.__redis = None
-        self.__format = Format.RESP.value
-
-    async def force_json(self) -> None:
-        """Force the OUTPUT to JSON
-
-        When a new connection is established
-        the on_connect callback makes sure to reset the
-        OUTPUT to RESP.
-        This method makes sure to enforce the OUTPUT to
-        JSON on any consecutive command using the connection.
-        """
-        if self.__format == Format.JSON.value:
-            return
-
-        await self.__execute_and_read_response(
-            Command.OUTPUT.value, [Format.JSON.value]
-        )
-        self.__format = Format.JSON.value
 
     async def __on_connect(self, connection: redis.Connection):
-        """On connect callback to set OUTPUT to RESP
-
-        That way we can keep track of the OUTPUT set
-        for the connection.
-        """
+        """On connect callback to set OUTPUT to JSON"""
         await connection.on_connect()
-        self.__format = Format.RESP.value
+        await connection.send_command(Command.OUTPUT, Format.JSON)
+        await connection.read_response()
 
     async def __delete_response_callbacks(self):
         """Delete response callbacks in redis-py
@@ -194,7 +172,6 @@ class Client:
         return await r.execute_command(command, *command_args)
 
     async def command(self, command: str, command_args: CommandArgs = []) -> Dict:
-        await self.force_json()
         response = await self.__execute_and_read_response(command, command_args)
 
         return parse_response(response)
@@ -210,6 +187,5 @@ class Client:
         await c.connection_pool.disconnect()
 
         self.__redis = None
-        self.__format = Format.RESP.value
 
         return "OK"
