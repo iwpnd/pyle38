@@ -1,6 +1,15 @@
 # CHANGELOG
 
 
+## v0.13.2 (2024-11-01)
+
+### Bug Fixes
+
+* fix: 🐛 reset format on .quit() to allow re-connect on same instance
+
+Co-authored-by: Alex Ward  <alxwrd@googlemail.com> ([`fe5986b`](https://github.com/iwpnd/pyle38/commit/fe5986b8ff8894e3bb4d5509fb38b6b014370ce2))
+
+
 ## v0.13.1 (2024-11-01)
 
 ### Bug Fixes
