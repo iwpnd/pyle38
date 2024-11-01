@@ -150,7 +150,7 @@ class Client:
         for the connection.
         """
         await connection.on_connect()
-        self.format = Format.RESP.value
+        self.__format = Format.RESP.value
 
     async def __delete_response_callbacks(self):
         """Delete response callbacks in redis-py
