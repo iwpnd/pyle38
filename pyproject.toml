@@ -109,6 +109,7 @@ target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F"]
+extend-select = ["I"]
 ignore = ["E501"]
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"

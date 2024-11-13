@@ -1,9 +1,10 @@
 from enum import Enum
-from typing import Dict, Sequence, Union
+from typing import Callable, Dict, List, Sequence, Union
 
 import redis.asyncio as redis
 from redis.asyncio.connection import parse_url
 
+from .client_options import ClientOptions
 from .parse_response import parse_response
 
 TILE38_DEFAULT_HOST = "localhost"
@@ -119,10 +120,28 @@ NO_RESPONSE_CALLBACKS_FOR = [
 
 class Client:
     __redis = None
+    __client_options: ClientOptions = {}
 
-    def __init__(self, url: str) -> None:
+    def __init__(
+        self,
+        url: str,
+        *opts: Callable[..., ClientOptions],
+    ) -> None:
         self.url = url
         self.__redis = None
+
+        options: ClientOptions = {}
+        default_options: List = []
+        default_options.extend(opts)
+
+        for option in default_options:
+            options = option(options)
+
+        self.__client_options = options
+
+    def client_options(self) -> ClientOptions:
+        """Get ClientOptions"""
+        return self.__client_options
 
     async def __on_connect(self, connection: redis.Connection):
         """On connect callback to set OUTPUT to JSON"""
@@ -157,6 +176,7 @@ class Client:
                 single_connection_client=True,
                 decode_responses=True,
                 redis_connect_func=self.__on_connect,
+                **self.__client_options,
             )
 
             self.__redis = r
