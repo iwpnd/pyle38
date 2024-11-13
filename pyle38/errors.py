@@ -1,3 +1,10 @@
+from redis.exceptions import ConnectionError, RedisError, TimeoutError
+
+Pyle38Error = RedisError
+Pyle38ConnectionError = ConnectionError
+Pyle38TimeoutError = TimeoutError
+
+
 class Tile38Error(Exception):
     pass
 

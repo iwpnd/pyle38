@@ -1,6 +1,9 @@
 from typing import List, Literal, Optional, Union
 
+from typing_extensions import Callable
+
 from .client import Client, Command, SubCommand
+from .client_options import ClientOptions
 from .commands.get import Get
 from .commands.intersects import Intersects
 from .commands.nearby import Nearby
@@ -26,15 +29,14 @@ from .responses import (
 )
 
 
-class Follower(Client):
+class Follower:
     client: Client
 
-    def __init__(self, url: str) -> None:
+    def __init__(self, url: str, *opts: Callable[..., ClientOptions]) -> None:
         if not url:
             raise Tile38Error("No Tile38 follower uri set")
-        super().__init__(url)
 
-        self.client = Client(url)
+        self.client = Client(url, *opts)
 
     async def exists(self, key: str, id: str) -> ExistsResponse:
         return ExistsResponse(**(await self.client.command(Command.EXISTS, [key, id])))
