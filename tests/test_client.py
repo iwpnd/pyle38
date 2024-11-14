@@ -18,13 +18,14 @@ from pyle38.errors import (
 
 @pytest.mark.asyncio
 async def test_client_options():
+    url = os.getenv("TILE38_LEADER_URI") or "redis://localhost:9851"
     client_options = [
         WithRetryExponentialBackoff(10),
         WithRetryOnError(Pyle38TimeoutError, Pyle38ConnectionError),
     ]
-    client = Client(
-        os.getenv("TILE38_LEADER_URI") or "redis://localhost:9851", client_options
-    )
+    client = Client(url, client_options)
+
+    assert client.url == url
 
     opts = client.client_options()
     assert opts["retry"]
