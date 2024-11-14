@@ -119,41 +119,70 @@ NO_RESPONSE_CALLBACKS_FOR = [
 
 
 class Client:
+    """
+    A class to manage the connection and communication with a Tile38 instance using Redis.
+
+    Attributes:
+        url (str): The connection URL for the Tile38 instance.
+        __redis (Optional[redis.Redis]): A Redis connection object (initialized as None).
+        __client_options (ClientOptions): Configuration options for the Redis client.
+    """
+
     __redis = None
     __client_options: ClientOptions = {}
 
     def __init__(
-        self,
-        url: str,
-        *opts: Callable[..., ClientOptions],
+        self, url: str, options: List[Callable[..., ClientOptions]] = []
     ) -> None:
+        """Initialize the Client.
+
+        Args:
+            url (str): The URL for connecting to the Tile38 server.
+            options (List[Callable[..., ClientOptions]], optional): A list of callables that modify client options.
+
+        Returns:
+            None
+        """
         self.url = url
         self.__redis = None
 
-        options: ClientOptions = {}
         default_options: List = []
-        default_options.extend(opts)
+        default_options.extend(options)
 
         for option in default_options:
-            options = option(options)
-
-        self.__client_options = options
+            self.__client_options = option(self.__client_options)
 
     def client_options(self) -> ClientOptions:
-        """Get ClientOptions"""
+        """Get the current ClientOptions.
+
+        Returns:
+            ClientOptions: The current configuration options for the client.
+        """
         return self.__client_options
 
     async def __on_connect(self, connection: redis.Connection):
-        """On connect callback to set OUTPUT to JSON"""
+        """Callback executed upon connection to Redis.
+
+        Sets the OUTPUT format to JSON.
+
+        Args:
+            connection (redis.Connection): The Redis connection instance.
+
+        Returns:
+            None
+        """
         await connection.on_connect()
         await connection.send_command(Command.OUTPUT, Format.JSON)
         await connection.read_response()
 
     async def __delete_response_callbacks(self):
-        """Delete response callbacks in redis-py
+        """Delete unnecessary response callbacks in redis-py.
 
-        redis-py has default callbacks for certain commands
-        that are not necessary and cause issues using it with Tile38
+        This removes default callbacks for certain commands that cause issues with Tile38.
+        These commands are specified in NO_RESPONSE_CALLBACKS_FOR.
+
+        Returns:
+            None
         """
         r = await self.__get_redis()
         for command in NO_RESPONSE_CALLBACKS_FOR:
@@ -163,7 +192,14 @@ class Client:
                 continue
 
     async def __get_redis(self) -> redis.Redis:
-        """Redis connection singleton"""
+        """Establish or retrieve the Redis connection.
+
+        This method acts as a singleton for the Redis connection, ensuring that only one connection
+        is maintained. It sets up the connection with specified host, port, and client options.
+
+        Returns:
+            redis.Redis: The Redis connection instance.
+        """
         if not self.__redis:
             url_components = parse_url(self.url)
             host: str = url_components.get("host") or TILE38_DEFAULT_HOST
@@ -181,6 +217,7 @@ class Client:
 
             self.__redis = r
 
+            # Remove unnecessary response callbacks specific to Tile38
             await self.__delete_response_callbacks()
 
         return self.__redis
@@ -188,15 +225,39 @@ class Client:
     async def __execute_and_read_response(
         self, command: str, command_args: CommandArgs = []
     ):
+        """Execute a command and read its response from Redis.
+
+        Args:
+            command (str): The command to execute.
+            command_args (CommandArgs, optional): Arguments for the command.
+
+        Returns:
+            Any: The response from the Redis server.
+        """
         r = await self.__get_redis()
         return await r.execute_command(command, *command_args)
 
     async def command(self, command: str, command_args: CommandArgs = []) -> Dict:
-        response = await self.__execute_and_read_response(command, command_args)
+        """Send a command to Tile38 and parse the response.
 
+        Args:
+            command (str): The command to execute on the Tile38 server.
+            command_args (CommandArgs, optional): Arguments for the command.
+
+        Returns:
+            Dict: The parsed response from the server.
+        """
+        response = await self.__execute_and_read_response(command, command_args)
         return parse_response(response)
 
     async def quit(self) -> str:
+        """Terminate the Redis connection.
+
+        Closes the connection to the Tile38 instance and resets the Redis client.
+
+        Returns:
+            str: A confirmation message ("OK") upon successful termination.
+        """
         if not self.__redis:
             return "OK"
 
