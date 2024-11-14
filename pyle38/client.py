@@ -153,6 +153,15 @@ class Client:
         for option in default_options:
             self.__client_options = option(self.__client_options)
 
+    @property
+    def url(self) -> str:
+        """The client url
+
+        Returns:
+            str: returns the clients url
+        """
+        return self.__url
+
     def client_options(self) -> ClientOptions:
         """Get the current ClientOptions.
 
