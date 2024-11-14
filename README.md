@@ -173,6 +173,26 @@ send to the follower, by adding `.follower()` to your command chaining.
 await tile38.follower().get('fleet', 'truck1').asObject()
 ```
 
+### Client Connection Configuration
+
+Pyle38 allows to add (a handful) of custom client connection
+settings to be modified.
+
+```python
+from pyle38 import Tile38
+from pyle38.client_config import WithRetryExponentialBackoff, WithRetryOnError
+from pyle38.errors import Pyle38TimeoutError, Pyle38ConnectionError
+tile38 = Tile38(
+    url='redis://localhost:9851',
+    options=[
+        # for 10 retries
+        WithRetryExponentialBackoff(10),
+        # retries the following errors
+        WithRetryOnError(Pyle38ConnectionError, Pyle38TimeoutError),
+    ]
+)
+```
+
 ### Pagination
 
 Tile38 has hidden limits set for the amount of objects that can be returned
