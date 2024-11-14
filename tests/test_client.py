@@ -23,7 +23,7 @@ async def test_client_options():
         WithRetryOnError(Pyle38TimeoutError, Pyle38ConnectionError),
     ]
     client = Client(
-        os.getenv("TILE38_LEADER_URI") or "redis://localhost:9851", *client_options
+        os.getenv("TILE38_LEADER_URI") or "redis://localhost:9851", client_options
     )
 
     opts = client.client_options()
