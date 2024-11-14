@@ -130,6 +130,7 @@ class Client:
 
     __redis = None
     __client_options: ClientOptions = {}
+    __url = ""
 
     def __init__(
         self, url: str, options: List[Callable[..., ClientOptions]] = []
@@ -143,7 +144,7 @@ class Client:
         Returns:
             None
         """
-        self.url = url
+        self.__url = url
         self.__redis = None
 
         default_options: List = []
@@ -201,7 +202,7 @@ class Client:
             redis.Redis: The Redis connection instance.
         """
         if not self.__redis:
-            url_components = parse_url(self.url)
+            url_components = parse_url(self.__url)
             host: str = url_components.get("host") or TILE38_DEFAULT_HOST
             port: int = url_components.get("port") or TILE38_DEFAULT_PORT
 
