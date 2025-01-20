@@ -117,7 +117,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      # This action uses Python Semantic Release v8
       - name: Python Semantic Release
         id: release
         uses: python-semantic-release/python-semantic-release@v9.15.2
