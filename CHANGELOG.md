@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.14.2 (2025-01-20)
+
+### Performance Improvements
+
+- ⚡️ bump pydantic
+  ([`c25dd59`](https://github.com/iwpnd/pyle38/commit/c25dd592dbcc395ec3aa4b261c897cdaebc685f9))
+
+
 ## v0.14.1 (2025-01-09)
 
 ### Chores
