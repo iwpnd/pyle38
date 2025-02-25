@@ -128,7 +128,7 @@ class Client:
         __client_options (ClientOptions): Configuration options for the Redis client.
     """
 
-    __redis: Redis = None
+    __redis = None
     __client_options: ClientOptions = {}
     __url = ""
 
