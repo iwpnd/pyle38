@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Callable, Dict, List, Sequence, Union
 
-import redis.asyncio as redis
+from redis.asyncio import Connection, Redis
 from redis.asyncio.connection import parse_url
 
 from .client_options import ClientOptions
@@ -128,7 +128,7 @@ class Client:
         __client_options (ClientOptions): Configuration options for the Redis client.
     """
 
-    __redis = None
+    __redis: Redis = None
     __client_options: ClientOptions = {}
     __url = ""
 
@@ -170,7 +170,7 @@ class Client:
         """
         return self.__client_options
 
-    async def __on_connect(self, connection: redis.Connection):
+    async def __on_connect(self, connection: Connection):
         """Callback executed upon connection to Redis.
 
         Sets the OUTPUT format to JSON.
@@ -201,7 +201,7 @@ class Client:
             except KeyError:
                 continue
 
-    async def __get_redis(self) -> redis.Redis:
+    async def __get_redis(self) -> Redis:
         """Establish or retrieve the Redis connection.
 
         This method acts as a singleton for the Redis connection, ensuring that only one connection
@@ -215,7 +215,7 @@ class Client:
             host: str = url_components.get("host") or TILE38_DEFAULT_HOST
             port: int = url_components.get("port") or TILE38_DEFAULT_PORT
 
-            r: redis.Redis = redis.Redis(
+            r: Redis = Redis(
                 host=host,
                 port=port,
                 encoding="utf-8",
