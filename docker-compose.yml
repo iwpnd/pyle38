@@ -1,26 +1,22 @@
 services:
   tile38-leader:
-    image: tile38/tile38:1.34.0
+    image: tile38/tile38:1.34.1
     container_name: tile38-leader
     command: >
-      /bin/sh -c 'mkdir -p tmp/data && \
-
-
+      /bin/sh -c 'mkdir -p tmp/data && \ #magic___^_^___line
                   echo "{\"logconfig\":{\"level\":\"debug\",\"encoding\":\"json\",\"outputPaths\":[\"stdout\"],\"errorOutputPaths\":[\"stderr\"],\"encoderConfig\": {\"messageKey\":\"message\",\"levelKey\":\"level\",\"levelEncoder\":\"lowercase\", \"timeKey\":\"timestamp\",\"timeEncoder\":\"ISO8601\"}}}"> tmp/data/config
                   tile38-server -d tmp/data -vv -p 9851 -l json'
     ports:
-      - 9851:9851
-      # if metrics-addr is set
-      # - 4321:4321
+    - 9851:9851
+    # if metrics-addr is set
+    # - 4321:4321
   tile38-follower:
-    image: tile38/tile38:1.34.0
+    image: tile38/tile38:1.34.1
     container_name: tile38-follower
     command: >
       /bin/sh -c 'mkdir -p tmp/data && \
 
-
-
                   echo "{\"follow_host\":\"tile38-leader\",\"follow_port\":9851,\"logconfig\":{\"level\":\"debug\",\"encoding\":\"json\",\"outputPaths\":[\"stdout\"],\"errorOutputPaths\":[\"stderr\"],\"encoderConfig\":{\"messageKey\":\"message\",\"levelKey\":\"level\",\"levelEncoder\":\"lowercase\",\"timeKey\":\"timestamp\",\"timeEncoder\":\"ISO8601\"}}}" > tmp/data/config
                   tile38-server -d tmp/data -vv -p 9852 -l json'
     ports:
-      - 9852:9852
+    - 9852:9852
