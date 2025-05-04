@@ -1,3 +1,4 @@
+import abc
 from typing import Any
 
 from ..client import Client, Command, CommandArgs
@@ -5,7 +6,7 @@ from ..client import Client, Command, CommandArgs
 Compiled = tuple[Command, CommandArgs]
 
 
-class Executable:
+class Executable(abc.ABC):
     client: Client
 
     def __init__(self, client: Client) -> None:

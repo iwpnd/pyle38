@@ -1,3 +1,4 @@
+import abc
 from typing import TypeVar
 
 from ..client import CommandArgs, SubCommand
@@ -8,7 +9,7 @@ Where = list[list[str | int]]
 Wherein = list[list[str | int | float]]
 
 
-class Whereable:
+class Whereable(abc.ABC):
     _where: Where
     _wherein: Wherein
 

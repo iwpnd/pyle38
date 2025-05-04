@@ -18,7 +18,7 @@ check:
 .PHONY: test
 test:
 	@echo "run tests"
-	@uv run python -m pytest --asyncio-mode=auto --cov --cov-config=pyproject.toml --cov-report=xml -vv -s
+	@uv run python -m pytest --cov --cov-config=pyproject.toml --cov-report=xml -vv -s
 
 .PHONY: build
 build: clean-build

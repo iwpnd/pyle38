@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Literal
 
-from ..client import Client, Command, CommandArgs
+from ..client import Client, Command, CommandArg, CommandArgs
 from ..models import Options
 from ..responses import (
     BoundsNeSwResponses,
@@ -122,7 +122,7 @@ class Scan(Executable, Whereable):
         return PointsResponse(**(await self.exec()))
 
     def __compile_options(self) -> CommandArgs:
-        commands = []
+        commands: list[CommandArg] = []
 
         # raises mypy: TypedDict key must be string literal
         # open PR: https://github.com/python/mypy/issues/7867
