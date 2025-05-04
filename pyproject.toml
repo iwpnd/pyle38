@@ -148,7 +148,7 @@ version_variables = [
     "src/pyle38/__init__.py:__version__",
     "pyproject.toml:version"
 ]
-commit_message = "ci: release v{}"
+commit_message = "release: 🚀 v{version}"
 branch = "main"
 upload_to_release = true
 build_command = "pip install uv && uv build"
@@ -167,7 +167,7 @@ allowed_tags = [
     "test",
 ]
 minor_tags = ["feat"]
-patch_tags = ["fix", "perf", "docs"]
+patch_tags = ["fix", "perf", "docs", "refactor"]
 
 [tool.semantic_release.changelog]
 exclude_commit_patterns = [
