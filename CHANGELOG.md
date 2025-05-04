@@ -1,6 +1,45 @@
 # CHANGELOG
 
 
+## v0.15.0 (2025-05-04)
+
+### Build System
+
+- 📦️ bump actions
+  ([`9c6e91e`](https://github.com/iwpnd/pyle38/commit/9c6e91ed8bd0f602b86987a6dff5246058665032))
+
+- 📦️ fix smr commit message template
+  ([`eedc0d2`](https://github.com/iwpnd/pyle38/commit/eedc0d2f3eaacc8371e94656c7b159d60b4e5cd7))
+
+- 📦️ move to uv
+  ([`4002514`](https://github.com/iwpnd/pyle38/commit/40025140c7624d1fc0a6488ad128e18e3da058a6))
+
+### Chores
+
+- 🔧 bump tile38 dev environment
+  ([`a0bc937`](https://github.com/iwpnd/pyle38/commit/a0bc937a3724548c8408cc3effd4efef22bef06a))
+
+- 🔧 cleanups
+  ([`7b9a092`](https://github.com/iwpnd/pyle38/commit/7b9a092b900d88eb7879804d8b2a27f4a95ff36a))
+
+- 🔧 clear comment
+  ([`63e4b91`](https://github.com/iwpnd/pyle38/commit/63e4b91751ba39fb92b2b025092ccaac05bd4a47))
+
+- 🔧 fix mypy error
+  ([`0dd5de3`](https://github.com/iwpnd/pyle38/commit/0dd5de3e36a00e05b0bb00b91f6ecc0c956d5977))
+
+- 🔧 targeted imports
+  ([`dc3c4cb`](https://github.com/iwpnd/pyle38/commit/dc3c4cbb8524b42767e3c76fd56c235137daea99))
+
+### Features
+
+- ✨ to force minor
+  ([`0ea78de`](https://github.com/iwpnd/pyle38/commit/0ea78def8e1ee8d5d37a0759c8da43a1b33997d5))
+
+to be more strict with shadowed argument naming, I remove most of the id arguments and format
+  argument, and min/max arguments in favour of names that do not intersect with python buildins.
+
+
 ## v0.14.2 (2025-01-20)
 
 ### Performance Improvements
@@ -30,6 +69,15 @@
   ([`5af6900`](https://github.com/iwpnd/pyle38/commit/5af69008390fcfb3740b01285020a3e8e8e3c598))
 
 ### Chores
+
+- 🔧 remove flake8 config
+  ([`a94a106`](https://github.com/iwpnd/pyle38/commit/a94a106dfe9099bd88c18d6583e0a76b2ed8fcbd))
+
+- 🔧 remove isort config
+  ([`6c93e50`](https://github.com/iwpnd/pyle38/commit/6c93e503f753b9fd2b9c76909d5749e5cc43622f))
+
+- 🔧 remove isort precommit hook
+  ([`e202891`](https://github.com/iwpnd/pyle38/commit/e202891947889000a1b2ec0a486161db7cc26bdd))
 
 - **deps**: 🔗 update redis
   ([`6b3ebbd`](https://github.com/iwpnd/pyle38/commit/6b3ebbde0a2b8556fbf78619fd4a99064dc22ac1))
@@ -97,6 +145,21 @@ Co-authored-by: Alex Ward <alxwrd@googlemail.com>
 
 ### Chores
 
+- Pre-commit autoupdate
+  ([`81343ee`](https://github.com/iwpnd/pyle38/commit/81343ee94809031f2ca77a24dcb0d25e79b081fa))
+
+- Update docker-compose
+  ([`4fa20e4`](https://github.com/iwpnd/pyle38/commit/4fa20e4bdbf34053901436daa364e85214317cc1))
+
+- Update pydantic
+  ([`d1b07e5`](https://github.com/iwpnd/pyle38/commit/d1b07e5b9920007aac29a429c191896bd174ea6e))
+
+- 🔧 bump tile38 to v1.33.1
+  ([`31ae840`](https://github.com/iwpnd/pyle38/commit/31ae84046b60bbfa9a1bcbadb7b9581ac08e0483))
+
+- 🔧 fix ruff lint command
+  ([`b09dc17`](https://github.com/iwpnd/pyle38/commit/b09dc178a328b37a024cd00b7c0b9ecb85c8a18e))
+
 - **deps**: Bump pydantic
   ([`7e14731`](https://github.com/iwpnd/pyle38/commit/7e147317cb943fe0ba2ff42dc20d2b33f53d1644))
 
@@ -114,9 +177,7 @@ Bumps
 --- updated-dependencies: - dependency-name: python-semantic-release/python-semantic-release
   dependency-type: direct:production
 
-update-type: version-update:semver-minor
-
-...
+update-type: version-update:semver-minor ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -134,9 +195,7 @@ Bumps
 --- updated-dependencies: - dependency-name: python-semantic-release/python-semantic-release
   dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -154,9 +213,7 @@ Bumps
 --- updated-dependencies: - dependency-name: python-semantic-release/python-semantic-release
   dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -172,9 +229,7 @@ Bumps [snok/install-poetry](https://github.com/snok/install-poetry) from 1.3 to 
 
 --- updated-dependencies: - dependency-name: snok/install-poetry dependency-type: direct:production
 
-update-type: version-update:semver-minor
-
-...
+update-type: version-update:semver-minor ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -191,6 +246,18 @@ Signed-off-by: dependabot[bot] <support@github.com>
 ## v0.13.0 (2024-06-22)
 
 ### Chores
+
+- Bump pydantic
+  ([`7cccdbc`](https://github.com/iwpnd/pyle38/commit/7cccdbc8eeae826e25295507ab4c5be6962c246c))
+
+- No need to add class attribute
+  ([`d9f3453`](https://github.com/iwpnd/pyle38/commit/d9f3453dcdf03bfe10d0e779af8ecf2147424003))
+
+- Pre-commit autoupdate
+  ([`fca653a`](https://github.com/iwpnd/pyle38/commit/fca653aa51a10687e708db3fc66f9cc8a1839103))
+
+- Resolve mypy complaints
+  ([`799bf24`](https://github.com/iwpnd/pyle38/commit/799bf2444d1f467f683b1fdeb6bab8d02a23775d))
 
 - **deps**: Update
   ([`af90370`](https://github.com/iwpnd/pyle38/commit/af90370c8d76415db7af2c16b48b7ca8dac87fa8))
@@ -254,6 +321,9 @@ Signed-off-by: dependabot[bot] <support@github.com>
 
 ### Chores
 
+- Bump tile38 to v1.33.0
+  ([`c729c22`](https://github.com/iwpnd/pyle38/commit/c729c22264fec73e9a1fd150cae7beb9cd4ce2ee))
+
 - **deps**: Bump python-semantic-release/python-semantic-release
   ([`3578319`](https://github.com/iwpnd/pyle38/commit/357831983e50c0824fdad31ffab7807e49952551))
 
@@ -268,9 +338,7 @@ Bumps
 --- updated-dependencies: - dependency-name: python-semantic-release/python-semantic-release
   dependency-type: direct:production
 
-update-type: version-update:semver-minor
-
-...
+update-type: version-update:semver-minor ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -287,6 +355,33 @@ Signed-off-by: dependabot[bot] <support@github.com>
 
 ### Chores
 
+- Bump patch if core deps are updated
+  ([`6e6459c`](https://github.com/iwpnd/pyle38/commit/6e6459c8e35716c591aa082866082b8259600a11))
+
+- Dont add chore and ci commits to changelog
+  ([`9c7ce78`](https://github.com/iwpnd/pyle38/commit/9c7ce78a8a2eb0416c802969898183c075f985d2))
+
+- Editorconfig
+  ([`8bb8037`](https://github.com/iwpnd/pyle38/commit/8bb80378aa53b491540556845e498c89f3c4e995))
+
+- Escape parenthesis qq
+  ([`739f302`](https://github.com/iwpnd/pyle38/commit/739f30250b351cbaa21ad81ed14943e7e21668d9))
+
+- Ignore chore from changelog
+  ([`ab7c624`](https://github.com/iwpnd/pyle38/commit/ab7c6247f24f789cdf92febde99d2b8239e4ec2a))
+
+- Remove chore(deps) from patch_tags
+  ([`bffcfb0`](https://github.com/iwpnd/pyle38/commit/bffcfb08d7f302b2a97ccd6b45e1b16e86811ee9))
+
+- 🔧 drop black in favour of ruff format
+  ([`5037e25`](https://github.com/iwpnd/pyle38/commit/5037e25258e3f5635298db45ab07c23260afe760))
+
+- 🔧 exclude_commit_pattern fix [skip ci]
+  ([`fbce243`](https://github.com/iwpnd/pyle38/commit/fbce24310431ca81ec3d15f6a7bd47a86e3e1223))
+
+- 🔧 run ruff-format on pre-commit
+  ([`8a51625`](https://github.com/iwpnd/pyle38/commit/8a516256e3bf8d19de47aa4acb32a171a744e8f2))
+
 - **deps**: Bump actions/cache from 4.0.0 to 4.0.1
   ([`ff3161e`](https://github.com/iwpnd/pyle38/commit/ff3161e74c3344dd92d49e94f2e42acf589d457f))
 
@@ -297,9 +392,7 @@ Bumps [actions/cache](https://github.com/actions/cache) from 4.0.0 to 4.0.1. - [
 
 --- updated-dependencies: - dependency-name: actions/cache dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -317,9 +410,7 @@ Bumps
 --- updated-dependencies: - dependency-name: python-semantic-release/python-semantic-release
   dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -348,6 +439,30 @@ Signed-off-by: dependabot[bot] <support@github.com>
 
 ### Chores
 
+- Change email
+  ([`aa1a4bc`](https://github.com/iwpnd/pyle38/commit/aa1a4bc4c1d693d90b865b6378930e2d13cec73b))
+
+- Drop old website
+  ([`feaa39a`](https://github.com/iwpnd/pyle38/commit/feaa39ad3d92cc735242f11da60161733e9d1b28))
+
+- Ignore mypy error on aclose until types updated
+  ([`c99fa4a`](https://github.com/iwpnd/pyle38/commit/c99fa4a64443dd55d421f9761c47aa0348ef910c))
+
+- Pre-commit autoupdate
+  ([`2a5008e`](https://github.com/iwpnd/pyle38/commit/2a5008e062491ea8dc02c0b18d7142d21e050cb3))
+
+- Update dependencies
+  ([`df34edb`](https://github.com/iwpnd/pyle38/commit/df34edb45b945c34101e4b590b172487e7d0aa4c))
+
+- Update semantic release config
+  ([`35bc5f3`](https://github.com/iwpnd/pyle38/commit/35bc5f3be02601da1ed72c1fbfa5432b0cfab3e9))
+
+- 🔧 release v0.11.1
+  ([`aaf3925`](https://github.com/iwpnd/pyle38/commit/aaf39256fdb8efb249c3cdc7c8b99c71c73ef7ef))
+
+- 🔧 update pre-commit deps
+  ([`6e601e6`](https://github.com/iwpnd/pyle38/commit/6e601e6c84bfd6fa37c65f5e46b5fb5ea3032cb2))
+
 - **deps**: Bump actions/cache from 3.3.1 to 3.3.2
   ([`d9a2ad5`](https://github.com/iwpnd/pyle38/commit/d9a2ad5eef781b09c9a6ae7cbdb9b9a835c5f811))
 
@@ -358,9 +473,7 @@ Bumps [actions/cache](https://github.com/actions/cache) from 3.3.1 to 3.3.2. - [
 
 --- updated-dependencies: - dependency-name: actions/cache dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -374,9 +487,7 @@ Bumps [actions/checkout](https://github.com/actions/checkout) from 3 to 4. - [Re
 
 --- updated-dependencies: - dependency-name: actions/checkout dependency-type: direct:production
 
-update-type: version-update:semver-major
-
-...
+update-type: version-update:semver-major ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -390,9 +501,7 @@ Bumps [pydantic](https://github.com/pydantic/pydantic) from 2.3.0 to 2.4.0. - [R
 
 --- updated-dependencies: - dependency-name: pydantic dependency-type: direct:production
 
-update-type: version-update:semver-minor
-
-...
+update-type: version-update:semver-minor ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -406,9 +515,7 @@ Bumps [pydantic](https://github.com/pydantic/pydantic) from 2.4.0 to 2.4.1. - [R
 
 --- updated-dependencies: - dependency-name: pydantic dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -422,9 +529,7 @@ Bumps [pydantic](https://github.com/pydantic/pydantic) from 2.4.1 to 2.4.2. - [R
 
 --- updated-dependencies: - dependency-name: pydantic dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -438,9 +543,7 @@ Bumps [pydantic](https://github.com/pydantic/pydantic) from 2.4.2 to 2.5.0. - [R
 
 --- updated-dependencies: - dependency-name: pydantic dependency-type: direct:production
 
-update-type: version-update:semver-minor
-
-...
+update-type: version-update:semver-minor ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -454,9 +557,7 @@ Bumps [pydantic](https://github.com/pydantic/pydantic) from 2.5.0 to 2.5.1. - [R
 
 --- updated-dependencies: - dependency-name: pydantic dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -470,9 +571,7 @@ Bumps [pydantic](https://github.com/pydantic/pydantic) from 2.5.1 to 2.5.2. - [R
 
 --- updated-dependencies: - dependency-name: pydantic dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -486,9 +585,7 @@ Bumps [redis](https://github.com/redis/redis-py) from 5.0.0 to 5.0.1. - [Release
 
 --- updated-dependencies: - dependency-name: redis dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -502,6 +599,15 @@ Signed-off-by: dependabot[bot] <support@github.com>
 
 ### Chores
 
+- 🔧 release v0.11.0
+  ([`1f63535`](https://github.com/iwpnd/pyle38/commit/1f6353577c30d194f25e6aaaed53653d8f5c51cf))
+
+- 🔧 update pre-commit hooks
+  ([`6c8cbe6`](https://github.com/iwpnd/pyle38/commit/6c8cbe6211272e9a9e71ea39050019613e43e670))
+
+- 🔧 upgrade ruff
+  ([`a4f5067`](https://github.com/iwpnd/pyle38/commit/a4f50677d4f5d5ac9a35ec4647e5a4c36d07bdd0))
+
 - **deps**: Bump pydantic from 2.1.1 to 2.2.0
   ([`6a710fe`](https://github.com/iwpnd/pyle38/commit/6a710fe54e8d800c2e70383d4490ffa0e5a3d9d2))
 
@@ -512,9 +618,7 @@ Bumps [pydantic](https://github.com/pydantic/pydantic) from 2.1.1 to 2.2.0. - [R
 
 --- updated-dependencies: - dependency-name: pydantic dependency-type: direct:production
 
-update-type: version-update:semver-minor
-
-...
+update-type: version-update:semver-minor ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -528,9 +632,7 @@ Bumps [pydantic](https://github.com/pydantic/pydantic) from 2.2.0 to 2.3.0. - [R
 
 --- updated-dependencies: - dependency-name: pydantic dependency-type: direct:production
 
-update-type: version-update:semver-minor
-
-...
+update-type: version-update:semver-minor ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -549,9 +651,7 @@ Bumps [pydantic](https://github.com/pydantic/pydantic) from 2.0.3 to 2.1.1. - [R
 
 --- updated-dependencies: - dependency-name: pydantic dependency-type: direct:production
 
-update-type: version-update:semver-minor
-
-...
+update-type: version-update:semver-minor ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -586,6 +686,18 @@ start adding some docstrings closes #310
 
 ### Chores
 
+- 🔧 bump
+  ([`c1bcbc8`](https://github.com/iwpnd/pyle38/commit/c1bcbc8b0ccbe189067f9adec97f18c78f6baf75))
+
+- 🔧 bump pre-commit hooks
+  ([`925838b`](https://github.com/iwpnd/pyle38/commit/925838b17f4fa6ef1cca4cbb12f5880c8ae509e1))
+
+- 🔧 bump redis to v4.6.0
+  ([`3842470`](https://github.com/iwpnd/pyle38/commit/3842470c8e1de57094eb94c078f3c95a29b23839))
+
+- 🔧 bump tile38 version
+  ([`a8dcdab`](https://github.com/iwpnd/pyle38/commit/a8dcdab065b24f5ccc484ac3648c8fcf34d1274d))
+
 - **deps**: Bump actions/cache from 3.2.6 to 3.3.1
   ([`4a2f11f`](https://github.com/iwpnd/pyle38/commit/4a2f11f7eb0b193ce4bcd802230fed0b17fa678e))
 
@@ -596,9 +708,7 @@ Bumps [actions/cache](https://github.com/actions/cache) from 3.2.6 to 3.3.1. - [
 
 --- updated-dependencies: - dependency-name: actions/cache dependency-type: direct:production
 
-update-type: version-update:semver-minor
-
-...
+update-type: version-update:semver-minor ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -613,9 +723,7 @@ Bumps [codecov/codecov-action](https://github.com/codecov/codecov-action) from 3
 --- updated-dependencies: - dependency-name: codecov/codecov-action dependency-type:
   direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -630,9 +738,7 @@ Bumps [codecov/codecov-action](https://github.com/codecov/codecov-action) from 3
 --- updated-dependencies: - dependency-name: codecov/codecov-action dependency-type:
   direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -646,9 +752,7 @@ Bumps [pydantic](https://github.com/pydantic/pydantic) from 1.10.6 to 1.10.7. - 
 
 --- updated-dependencies: - dependency-name: pydantic dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -662,9 +766,7 @@ Bumps [pydantic](https://github.com/pydantic/pydantic) from 1.10.7 to 1.10.8. - 
 
 --- updated-dependencies: - dependency-name: pydantic dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -678,9 +780,7 @@ Bumps [pydantic](https://github.com/pydantic/pydantic) from 1.10.8 to 1.10.9. - 
 
 --- updated-dependencies: - dependency-name: pydantic dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -694,9 +794,7 @@ Bumps [redis](https://github.com/redis/redis-py) from 4.5.3 to 4.5.4. - [Release
 
 --- updated-dependencies: - dependency-name: redis dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -710,9 +808,7 @@ Bumps [redis](https://github.com/redis/redis-py) from 4.5.4 to 4.5.5. - [Release
 
 --- updated-dependencies: - dependency-name: redis dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -736,6 +832,12 @@ closes #266
 
 ### Chores
 
+- 🔧 critical redis update
+  ([`ac6e0c8`](https://github.com/iwpnd/pyle38/commit/ac6e0c8fa43870f4a316068b9f1fd223cd463f18))
+
+- 🔧 release 0.9.0
+  ([`8ac702a`](https://github.com/iwpnd/pyle38/commit/8ac702a42e6c30f37589003e8a09e3f0dd5dc124))
+
 - **deps**: Bump pydantic from 1.10.5 to 1.10.6
   ([`76d85a4`](https://github.com/iwpnd/pyle38/commit/76d85a4eb0837ea6a138ef3c87d318f592b91ee2))
 
@@ -746,9 +848,7 @@ Bumps [pydantic](https://github.com/pydantic/pydantic) from 1.10.5 to 1.10.6. - 
 
 --- updated-dependencies: - dependency-name: pydantic dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -762,9 +862,7 @@ Bumps [redis](https://github.com/redis/redis-py) from 4.5.1 to 4.5.2. - [Release
 
 --- updated-dependencies: - dependency-name: redis dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -784,6 +882,12 @@ to avoid issues here, Pyle38 will now use utilize Redis.execute_command instead 
 
 ### Chores
 
+- 🔧 lockfile maintenance
+  ([`dbe60f9`](https://github.com/iwpnd/pyle38/commit/dbe60f91ee896d9b349954c14f8b2092f8acef9c))
+
+- 🔧 release v0.8.1
+  ([`be67cf2`](https://github.com/iwpnd/pyle38/commit/be67cf29e8323ae2bc16cb897425c6f93dff9013))
+
 - **deps**: Bump actions/cache from 3.2.2 to 3.2.4
   ([`0823d40`](https://github.com/iwpnd/pyle38/commit/0823d40194a74c9671234d3cc4a85923914f5e04))
 
@@ -794,9 +898,7 @@ Bumps [actions/cache](https://github.com/actions/cache) from 3.2.2 to 3.2.4. - [
 
 --- updated-dependencies: - dependency-name: actions/cache dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -810,9 +912,7 @@ Bumps [actions/cache](https://github.com/actions/cache) from 3.2.4 to 3.2.6. - [
 
 --- updated-dependencies: - dependency-name: actions/cache dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -826,9 +926,7 @@ Bumps [pydantic](https://github.com/pydantic/pydantic) from 1.10.4 to 1.10.5. - 
 
 --- updated-dependencies: - dependency-name: pydantic dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -842,9 +940,7 @@ Bumps [redis](https://github.com/redis/redis-py) from 4.4.2 to 4.5.1. - [Release
 
 --- updated-dependencies: - dependency-name: redis dependency-type: direct:production
 
-update-type: version-update:semver-minor
-
-...
+update-type: version-update:semver-minor ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -863,6 +959,27 @@ Signed-off-by: dependabot[bot] <support@github.com>
 
 ### Chores
 
+- 🔧 bump tile38 in docker-compose
+  ([`f24ee74`](https://github.com/iwpnd/pyle38/commit/f24ee742e9df97533537b8b5e455713a7a917204))
+
+- 🔧 bump version to v0.8.0
+  ([`a3d9474`](https://github.com/iwpnd/pyle38/commit/a3d9474240ccb00a60d2939b6a792276b4032023))
+
+- 🔧 drop duplicated ruff config
+  ([`337165a`](https://github.com/iwpnd/pyle38/commit/337165a918e817b6ff5624c5d94fdf9377df7d21))
+
+- 🔧 fix pyproject
+  ([`851c649`](https://github.com/iwpnd/pyle38/commit/851c649ad61cac101b8426ed8d8b70cb28f388bc))
+
+- 🔧 lockfile maintenance
+  ([`8b8442f`](https://github.com/iwpnd/pyle38/commit/8b8442f2a36f10eec1911bc25471fa7dedbc62e4))
+
+- 🔧 move ruff config to pyproject
+  ([`d8e4d84`](https://github.com/iwpnd/pyle38/commit/d8e4d84b8599905aba8396aa255b1001e87287ac))
+
+- 🔧 update ruff, fix per-file-ignore
+  ([`bab78c9`](https://github.com/iwpnd/pyle38/commit/bab78c988807c9580088a7424b42adf52b8979a0))
+
 - **deps**: Bump actions/cache from 3.0.11 to 3.2.2
   ([`4d46ad4`](https://github.com/iwpnd/pyle38/commit/4d46ad4f7c31630fc8b3a6119dee1574678b8c3b))
 
@@ -873,9 +990,7 @@ Bumps [actions/cache](https://github.com/actions/cache) from 3.0.11 to 3.2.2. - 
 
 --- updated-dependencies: - dependency-name: actions/cache dependency-type: direct:production
 
-update-type: version-update:semver-minor
-
-...
+update-type: version-update:semver-minor ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -889,9 +1004,7 @@ Bumps [pydantic](https://github.com/pydantic/pydantic) from 1.10.2 to 1.10.4. - 
 
 --- updated-dependencies: - dependency-name: pydantic dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -905,9 +1018,7 @@ Bumps [redis](https://github.com/redis/redis-py) from 4.4.0 to 4.4.1. - [Release
 
 --- updated-dependencies: - dependency-name: redis dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -921,9 +1032,7 @@ Bumps [redis](https://github.com/redis/redis-py) from 4.4.1 to 4.4.2. - [Release
 
 --- updated-dependencies: - dependency-name: redis dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -940,6 +1049,72 @@ Signed-off-by: dependabot[bot] <support@github.com>
 
 ### Chores
 
+- 🔧 add ruff to poe lint command
+  ([`eabd6c3`](https://github.com/iwpnd/pyle38/commit/eabd6c3a23d0a53ca532c2e5334a067a036441f2))
+
+- 🔧 add Tile38PathNotFoundError
+  ([`63b12f4`](https://github.com/iwpnd/pyle38/commit/63b12f4ff88782f21f404b86abc150aa7d267a37))
+
+- 🔧 bump python to 3.10.0
+  ([`09f186b`](https://github.com/iwpnd/pyle38/commit/09f186bc61a9f3708ba53e497447585a78f9fcb5))
+
+- 🔧 bump tile38 image
+  ([`98a5bd2`](https://github.com/iwpnd/pyle38/commit/98a5bd2f5f41ce6886ebfabd045781b973747cc3))
+
+- 🔧 bump tile38 in docker-compose
+  ([`52c8426`](https://github.com/iwpnd/pyle38/commit/52c84266d8e6652db19b9ef4341daa481715bde1))
+
+- 🔧 bump tile38 to 1.30.0
+  ([`2b65569`](https://github.com/iwpnd/pyle38/commit/2b65569ccdd3d014247dc914bc369675d29854a6))
+
+- 🔧 bump tile38 to 1.30.1
+  ([`eda0a73`](https://github.com/iwpnd/pyle38/commit/eda0a737feffb976f98a02c728a5bf14abe329e2))
+
+- 🔧 bump to 0.7.0
+  ([`c276ee1`](https://github.com/iwpnd/pyle38/commit/c276ee1e3ca60aa38bbff3e759fee16f8fd074b3))
+
+- 🔧 drop flake8 in favour of ruff
+  ([`b181abc`](https://github.com/iwpnd/pyle38/commit/b181abccfd2e19f1ba94273d5a4a807837e442f2))
+
+- 🔧 Fields as dict[str, Any]
+  ([`247bc92`](https://github.com/iwpnd/pyle38/commit/247bc92edc12ffa9ec099317166cbe3b9b5cba1f))
+
+- 🔧 fix random test data
+  ([`85aa778`](https://github.com/iwpnd/pyle38/commit/85aa7787d52465632c8b5bc0326868ad8ef1b34d))
+
+- 🔧 fix ruff ignore
+  ([`69c8065`](https://github.com/iwpnd/pyle38/commit/69c806566665a6c4ba6e8406982dd17c4d56bf03))
+
+- 🔧 fix ruff pre commit hooks
+  ([`b4b7b04`](https://github.com/iwpnd/pyle38/commit/b4b7b040df9b15baf44e9c8163e97aa90da1c83f))
+
+- 🔧 lockfile maintenance
+  ([`54ef493`](https://github.com/iwpnd/pyle38/commit/54ef493ba5710dfd9ccae298fd323d674b9bd315))
+
+- 🔧 poetry.lock maintenance
+  ([`c06a473`](https://github.com/iwpnd/pyle38/commit/c06a4739d726fa0fc5c72376d0c6d6ab963cc9b6))
+
+- 🔧 revert to tile38 1.29.1
+  ([`8277f10`](https://github.com/iwpnd/pyle38/commit/8277f10de836038ac22127a4cdbb887bb465446e))
+
+- 🔧 update dependencies
+  ([`becedc2`](https://github.com/iwpnd/pyle38/commit/becedc24b0fee30c71d5daf9125ec4895146f21f))
+
+- 🔧 update github actions
+  ([`4cc0964`](https://github.com/iwpnd/pyle38/commit/4cc0964442c6cc5719b80b936c50f56bf0fb37a7))
+
+- 🔧 update pre-commit
+  ([`32ea9aa`](https://github.com/iwpnd/pyle38/commit/32ea9aa925a51345eac0cf4af5619ff2202335f7))
+
+- 🔧 update pre-commit
+  ([`78a4e7c`](https://github.com/iwpnd/pyle38/commit/78a4e7c803919ab7b48264ba9bbd4234688ed5c0))
+
+- 🔧 update pre-commit hooks
+  ([`a8669b1`](https://github.com/iwpnd/pyle38/commit/a8669b170958acd0c147b2282e265d3576de955b))
+
+- 🔧 updates
+  ([`0c180b8`](https://github.com/iwpnd/pyle38/commit/0c180b8ccf11ad89c35f9bb8bd71ff90939851df))
+
 - **deps**: Bump actions/cache from 3.0.8 to 3.0.9
   ([`ce5d95b`](https://github.com/iwpnd/pyle38/commit/ce5d95bf57eca493e0f02ea07b605c4e6f80867b))
 
@@ -950,9 +1125,7 @@ Bumps [actions/cache](https://github.com/actions/cache) from 3.0.8 to 3.0.9. - [
 
 --- updated-dependencies: - dependency-name: actions/cache dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -966,9 +1139,7 @@ Bumps [actions/cache](https://github.com/actions/cache) from 3.0.9 to 3.0.11. - 
 
 --- updated-dependencies: - dependency-name: actions/cache dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -983,9 +1154,7 @@ Bumps [codecov/codecov-action](https://github.com/codecov/codecov-action) from 3
 --- updated-dependencies: - dependency-name: codecov/codecov-action dependency-type:
   direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -999,9 +1168,7 @@ Bumps [redis](https://github.com/redis/redis-py) from 4.3.4 to 4.3.5. - [Release
 
 --- updated-dependencies: - dependency-name: redis dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1015,9 +1182,7 @@ Bumps [redis](https://github.com/redis/redis-py) from 4.3.5 to 4.4.0. - [Release
 
 --- updated-dependencies: - dependency-name: redis dependency-type: direct:production
 
-update-type: version-update:semver-minor
-
-...
+update-type: version-update:semver-minor ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1064,6 +1229,15 @@ Signed-off-by: dependabot[bot] <support@github.com>
 
 ### Chores
 
+- 🔧 bump tile38 image to v1.29.0
+  ([`04d73ec`](https://github.com/iwpnd/pyle38/commit/04d73eccd18edc9922abfdcd92c759e088a2f675))
+
+- 🔧 fix semantic release version source
+  ([`b155ab1`](https://github.com/iwpnd/pyle38/commit/b155ab15e701dcec0e89136b8efa06ba9795f9df))
+
+- 🔧 update pydantic
+  ([`a0d7afb`](https://github.com/iwpnd/pyle38/commit/a0d7afbf3e029a7031c55fb232adc9da2a91bb0f))
+
 - **deps**: Bump actions/cache from 2.1.7 to 3.0.1
   ([`e2785dc`](https://github.com/iwpnd/pyle38/commit/e2785dcd9be241ff00a49c314c5a3848b024cfb2))
 
@@ -1074,9 +1248,7 @@ Bumps [actions/cache](https://github.com/actions/cache) from 2.1.7 to 3.0.1. - [
 
 --- updated-dependencies: - dependency-name: actions/cache dependency-type: direct:production
 
-update-type: version-update:semver-major
-
-...
+update-type: version-update:semver-major ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1090,9 +1262,7 @@ Bumps [actions/cache](https://github.com/actions/cache) from 3.0.1 to 3.0.2. - [
 
 --- updated-dependencies: - dependency-name: actions/cache dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1106,9 +1276,7 @@ Bumps [actions/cache](https://github.com/actions/cache) from 3.0.2 to 3.0.3. - [
 
 --- updated-dependencies: - dependency-name: actions/cache dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1122,9 +1290,7 @@ Bumps [actions/cache](https://github.com/actions/cache) from 3.0.3 to 3.0.4. - [
 
 --- updated-dependencies: - dependency-name: actions/cache dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1138,9 +1304,7 @@ Bumps [actions/cache](https://github.com/actions/cache) from 3.0.4 to 3.0.5. - [
 
 --- updated-dependencies: - dependency-name: actions/cache dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1154,9 +1318,7 @@ Bumps [actions/cache](https://github.com/actions/cache) from 3.0.5 to 3.0.8. - [
 
 --- updated-dependencies: - dependency-name: actions/cache dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1170,9 +1332,7 @@ Bumps [actions/checkout](https://github.com/actions/checkout) from 2 to 3. - [Re
 
 --- updated-dependencies: - dependency-name: actions/checkout dependency-type: direct:production
 
-update-type: version-update:semver-major
-
-...
+update-type: version-update:semver-major ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1185,9 +1345,7 @@ Bumps [actions/setup-python](https://github.com/actions/setup-python) from 2 to 
 
 --- updated-dependencies: - dependency-name: actions/setup-python dependency-type: direct:production
 
-update-type: version-update:semver-major
-
-...
+update-type: version-update:semver-major ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1200,9 +1358,7 @@ Bumps [actions/setup-python](https://github.com/actions/setup-python) from 3 to 
 
 --- updated-dependencies: - dependency-name: actions/setup-python dependency-type: direct:production
 
-update-type: version-update:semver-major
-
-...
+update-type: version-update:semver-major ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1217,9 +1373,7 @@ Bumps [codecov/codecov-action](https://github.com/codecov/codecov-action) from 2
 --- updated-dependencies: - dependency-name: codecov/codecov-action dependency-type:
   direct:production
 
-update-type: version-update:semver-major
-
-...
+update-type: version-update:semver-major ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1233,9 +1387,7 @@ Bumps [github/codeql-action](https://github.com/github/codeql-action) from 1 to 
 
 --- updated-dependencies: - dependency-name: github/codeql-action dependency-type: direct:production
 
-update-type: version-update:semver-major
-
-...
+update-type: version-update:semver-major ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1249,9 +1401,7 @@ Bumps [pydantic](https://github.com/samuelcolvin/pydantic) from 1.9.0 to 1.9.1. 
 
 --- updated-dependencies: - dependency-name: pydantic dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1265,9 +1415,7 @@ Bumps [pydantic](https://github.com/samuelcolvin/pydantic) from 1.9.1 to 1.9.2. 
 
 --- updated-dependencies: - dependency-name: pydantic dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1281,9 +1429,7 @@ Bumps [pydantic](https://github.com/pydantic/pydantic) from 1.9.2 to 1.10.1. - [
 
 --- updated-dependencies: - dependency-name: pydantic dependency-type: direct:production
 
-update-type: version-update:semver-minor
-
-...
+update-type: version-update:semver-minor ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1310,6 +1456,11 @@ chore: 🔧 lock file maintenance
 - 🐛 generic types and defaults
   ([`45fcd5d`](https://github.com/iwpnd/pyle38/commit/45fcd5d6574242943d35ad5712403bbe1e70c81c))
 
+### Chores
+
+- 🔧 bump tile38 to v1.27.1
+  ([`e6686cb`](https://github.com/iwpnd/pyle38/commit/e6686cb18d38d45570359f2b348ae250a480792c))
+
 ### Documentation
 
 - 📚️ new logo
@@ -1320,6 +1471,15 @@ chore: 🔧 lock file maintenance
 
 ### Chores
 
+- 🔧 update aioredis
+  ([`438bbb3`](https://github.com/iwpnd/pyle38/commit/438bbb35bb72dc9b93cb92e20ef16c44f24f1aec))
+
+- 🔧 update aioredis, fix: mypy warnings
+  ([`1b87c9d`](https://github.com/iwpnd/pyle38/commit/1b87c9d9f22685949101f0db56b2212c4e806819))
+
+- 🔧 update tile38 and use json logging
+  ([`4a84d14`](https://github.com/iwpnd/pyle38/commit/4a84d148ba6b4e245ffe864a4211c390ab9a6ee9))
+
 - **deps**: Bump actions/cache from 2.1.6 to 2.1.7
   ([`01acdaf`](https://github.com/iwpnd/pyle38/commit/01acdaf7e7d2c11d79a251616703d2cca818c74f))
 
@@ -1329,9 +1489,7 @@ Bumps [actions/cache](https://github.com/actions/cache) from 2.1.6 to 2.1.7. - [
 
 --- updated-dependencies: - dependency-name: actions/cache dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1345,9 +1503,7 @@ Bumps [pydantic](https://github.com/samuelcolvin/pydantic) from 1.8.2 to 1.9.0. 
 
 --- updated-dependencies: - dependency-name: pydantic dependency-type: direct:production
 
-update-type: version-update:semver-minor
-
-...
+update-type: version-update:semver-minor ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1360,9 +1516,7 @@ Bumps [snok/install-poetry](https://github.com/snok/install-poetry) from 1.2 to 
 
 --- updated-dependencies: - dependency-name: snok/install-poetry dependency-type: direct:production
 
-update-type: version-update:semver-minor
-
-...
+update-type: version-update:semver-minor ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1393,6 +1547,14 @@ Signed-off-by: dependabot[bot] <support@github.com>
 - 🐛 utilize generic model object
   ([`1f95d2c`](https://github.com/iwpnd/pyle38/commit/1f95d2c6d9adb06871749468991c9f38c5d5d6eb))
 
+### Chores
+
+- 🔧 add .coveragerc
+  ([`b9de7ae`](https://github.com/iwpnd/pyle38/commit/b9de7ae5aefbe949d849ed1d6d324e0cb157859c))
+
+- 🔧 bump coverage
+  ([`c6626d3`](https://github.com/iwpnd/pyle38/commit/c6626d36b1d0d6a7334626279d7fe11003ef99b6))
+
 ### Documentation
 
 - 📚️ update docs
@@ -1402,6 +1564,15 @@ Signed-off-by: dependabot[bot] <support@github.com>
 ## v0.5.0 (2021-10-04)
 
 ### Chores
+
+- 🔧 add sector subcommand and query
+  ([`83d705e`](https://github.com/iwpnd/pyle38/commit/83d705ee56fe3df54d2ec59892f769db48c2dbb3))
+
+- 🔧 lock file maintenance
+  ([`d5fd4d1`](https://github.com/iwpnd/pyle38/commit/d5fd4d151db436a2e60acf638a4271693d7aafd3))
+
+- 🔧 update tile38 image to v1.26.1
+  ([`e2cf1b4`](https://github.com/iwpnd/pyle38/commit/e2cf1b41165babc79bbdaf9a7d327aeabe6345a0))
 
 - **deps**: Bump codecov/codecov-action from 2.0.3 to 2.1.0
   ([`1988a36`](https://github.com/iwpnd/pyle38/commit/1988a36bf2da6d587cdd2ff3cd36ec6db51013b6))
@@ -1414,9 +1585,7 @@ Bumps [codecov/codecov-action](https://github.com/codecov/codecov-action) from 2
 --- updated-dependencies: - dependency-name: codecov/codecov-action dependency-type:
   direct:production
 
-update-type: version-update:semver-minor
-
-...
+update-type: version-update:semver-minor ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1429,9 +1598,7 @@ Bumps [snok/install-poetry](https://github.com/snok/install-poetry) from 1.1.8 t
 
 --- updated-dependencies: - dependency-name: snok/install-poetry dependency-type: direct:production
 
-update-type: version-update:semver-minor
-
-...
+update-type: version-update:semver-minor ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1450,6 +1617,21 @@ Signed-off-by: dependabot[bot] <support@github.com>
 
 ### Chores
 
+- 🔧 add metrics endpoint to tile38
+  ([`aaefbe6`](https://github.com/iwpnd/pyle38/commit/aaefbe6e5cd889f692d980a6a30a22bee73bea94))
+
+- 🔧 bump deps
+  ([`e0aebbf`](https://github.com/iwpnd/pyle38/commit/e0aebbf2a304693e20a702247d7269453ef3a9c6))
+
+- 🔧 lock file maintenance
+  ([`af1b0b1`](https://github.com/iwpnd/pyle38/commit/af1b0b17064466da59e70f5479b837e926f962f8))
+
+- 🔧 update changelog
+  ([`23c1077`](https://github.com/iwpnd/pyle38/commit/23c107770c4590ec64dcc5d481fbcbbdab95a418))
+
+- 🔧 upgrade to tile38 1.25.3
+  ([`d76fbab`](https://github.com/iwpnd/pyle38/commit/d76fbabc1c70f28589b922b3b53d2f615af1a870))
+
 - **deps**: Bump codecov/codecov-action from 1 to 2.0.2
   ([`52848ac`](https://github.com/iwpnd/pyle38/commit/52848acf0e8b579463b6a107b44bb4c9a46132c5))
 
@@ -1461,9 +1643,7 @@ Bumps [codecov/codecov-action](https://github.com/codecov/codecov-action) from 1
 --- updated-dependencies: - dependency-name: codecov/codecov-action dependency-type:
   direct:production
 
-update-type: version-update:semver-major
-
-...
+update-type: version-update:semver-major ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1478,9 +1658,7 @@ Bumps [codecov/codecov-action](https://github.com/codecov/codecov-action) from 2
 --- updated-dependencies: - dependency-name: codecov/codecov-action dependency-type:
   direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1493,9 +1671,7 @@ Bumps [snok/install-poetry](https://github.com/snok/install-poetry) from 1.1.6 t
 
 --- updated-dependencies: - dependency-name: snok/install-poetry dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1508,9 +1684,7 @@ Bumps [snok/install-poetry](https://github.com/snok/install-poetry) from 1.1.7 t
 
 --- updated-dependencies: - dependency-name: snok/install-poetry dependency-type: direct:production
 
-update-type: version-update:semver-patch
-
-...
+update-type: version-update:semver-patch ...
 
 Signed-off-by: dependabot[bot] <support@github.com>
 
@@ -1559,6 +1733,14 @@ Signed-off-by: dependabot[bot] <support@github.com>
 
 ## v0.3.2 (2021-07-31)
 
+### Chores
+
+- 🔧 bump aioredis to 2.0.0
+  ([`bfa48af`](https://github.com/iwpnd/pyle38/commit/bfa48afe7329849ae9010de71f163c6bacb2ed6f))
+
+- 🔧 bump tile38 to 1.25.1
+  ([`90d0316`](https://github.com/iwpnd/pyle38/commit/90d031685e3cc1f790e967c454eb4c853e59f220))
+
 
 ## v0.3.1 (2021-07-25)
 
@@ -1566,6 +1748,11 @@ Signed-off-by: dependabot[bot] <support@github.com>
 
 - 🐛 redis from url is sync
   ([`7842e76`](https://github.com/iwpnd/pyle38/commit/7842e76a9bd870709030a4d5779d22d4faa18f0d))
+
+### Chores
+
+- 🔧 update aioredis
+  ([`d5fe7bb`](https://github.com/iwpnd/pyle38/commit/d5fe7bbeec2797419329f5fb070b7532083a1726))
 
 ### Documentation
 
@@ -1585,6 +1772,11 @@ Signed-off-by: dependabot[bot] <support@github.com>
 - 🐛 incompatible return types on subclass follower
   ([`600e59f`](https://github.com/iwpnd/pyle38/commit/600e59f915c39d59a57c5d17570e29a5c24d7807))
 
+### Chores
+
+- 🔧 update mypy 0.910
+  ([`d7daad5`](https://github.com/iwpnd/pyle38/commit/d7daad58d43516318bab827629fb1323e7b9c408))
+
 ### Features
 
 - ✨ add INFO command
@@ -1602,6 +1794,21 @@ Signed-off-by: dependabot[bot] <support@github.com>
 ## v0.2.0 (2021-06-12)
 
 ### Chores
+
+- 🔧 bump tile38 image
+  ([`853d895`](https://github.com/iwpnd/pyle38/commit/853d8952e747b82363e2d4b3b1ef44da5e2c973f))
+
+- 🔧 bump tile38 to 1.24.3
+  ([`7d3c8a1`](https://github.com/iwpnd/pyle38/commit/7d3c8a1776021215e2004ed9383e34b3c8bf24da))
+
+- 🔧 bump version to v0.2.0
+  ([`d477c7d`](https://github.com/iwpnd/pyle38/commit/d477c7d411055efbf27194caa0be60d2146f65bc))
+
+- 🔧 lockfile maintenance
+  ([`bc93d3b`](https://github.com/iwpnd/pyle38/commit/bc93d3be308a92dc12248f056be7165ea0c6d9c1))
+
+- 🔧 update dev dependencies, fix mypy ignore-missing-imports
+  ([`a901490`](https://github.com/iwpnd/pyle38/commit/a901490a757da49926c05c46567b345044d9fbd9))
 
 - **deps**: Bump actions/cache from 2.1.5 to 2.1.6
   ([`71d452c`](https://github.com/iwpnd/pyle38/commit/71d452c61b0686b270712695122c195cb14574b9))
@@ -1714,6 +1921,48 @@ Signed-off-by: dependabot[bot] <support@github.com>
   ([`1ea2954`](https://github.com/iwpnd/pyle38/commit/1ea295459540b0d049a70b7f81bf945fb408de95))
 
 ### Chores
+
+- Add dependabot config with a weekly schedule
+  ([`e2e0b34`](https://github.com/iwpnd/pyle38/commit/e2e0b34c0b85e58676ad89e957be05f98e47ccce))
+
+- Add flake8 and action to poe
+  ([`7ea031a`](https://github.com/iwpnd/pyle38/commit/7ea031a784789c2fabb6211b4c0901018bb371c1))
+
+- Add infra
+  ([`1e3a8db`](https://github.com/iwpnd/pyle38/commit/1e3a8dbf076587fa5de2e87e7246381510c66ba3))
+
+- Add isort, editorconfig, sort inputs
+  ([`5495d2d`](https://github.com/iwpnd/pyle38/commit/5495d2dacf941526e6c5570d307401930f7c2df8))
+
+- Add isort, editorconfig, sort inputs
+  ([`5779a0f`](https://github.com/iwpnd/pyle38/commit/5779a0fee47add2245b34dc9835345bff6719d99))
+
+- Add issue template [skip ci]
+  ([`ffa88df`](https://github.com/iwpnd/pyle38/commit/ffa88df2f4a315ecac83d913c17c8509bcb51a2f))
+
+- Add mypy to pre-commit
+  ([`815c0be`](https://github.com/iwpnd/pyle38/commit/815c0be2d1fd3e0f155cbc8b69a07b9b83a32edc))
+
+- Add name to auto-close workflow [skip ci]
+  ([`5d60d85`](https://github.com/iwpnd/pyle38/commit/5d60d85d00f1d546677f7c1aefc16633225e5d92))
+
+- Auto close issues if not following template
+  ([`1d827b6`](https://github.com/iwpnd/pyle38/commit/1d827b67c67f560016482694f7e12d248d677c2d))
+
+- Bump tile38 version to 1.23.0
+  ([`adff282`](https://github.com/iwpnd/pyle38/commit/adff282fa54e5adec02e6393978c36794f12e55d))
+
+- Raise coverage
+  ([`8b7f5b2`](https://github.com/iwpnd/pyle38/commit/8b7f5b2e21a501a3453c2145955c1316735af8d9))
+
+- Run action on p3.8 to save workflow time. remove auto-closer
+  ([`821945b`](https://github.com/iwpnd/pyle38/commit/821945b3f72c4a792602a7f2c1be3954fb27f952))
+
+- Use aioredis 2.0.0a and python 3.8.2
+  ([`a652367`](https://github.com/iwpnd/pyle38/commit/a6523676e5ce18d3ce3787ad04fd82835b7bba93))
+
+- Use lon instead of lng for longitude, some housekeeping
+  ([`f8051f3`](https://github.com/iwpnd/pyle38/commit/f8051f3997df8308ac223a19de6af0c92026ef4a))
 
 - **deps**: Bump actions/cache from v2 to v2.1.4
   ([`88a92b7`](https://github.com/iwpnd/pyle38/commit/88a92b7bbe3eb09db7360d4a3b7f560044f36394))
