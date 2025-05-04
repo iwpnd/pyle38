@@ -1,8 +1,10 @@
 import pytest
 
+from pyle38 import Tile38
+
 
 @pytest.mark.asyncio
-async def test_command_stats(tile38):
+async def test_command_stats(tile38: Tile38) -> None:
     response = await tile38.stats(["fleet"])
     assert response.ok
     assert response.stats == []
@@ -12,4 +14,4 @@ async def test_command_stats(tile38):
 
     response = await tile38.stats(["fleet", "zones"])
     assert response.ok
-    assert len(response.stats) == 2
+    assert response.stats and len(response.stats) == 2

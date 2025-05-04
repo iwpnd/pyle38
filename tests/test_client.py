@@ -9,6 +9,8 @@ from pyle38.client import (
 from pyle38.client_options import WithRetryExponentialBackoff, WithRetryOnError
 from pyle38.errors import (
     Pyle38ConnectionError,
+    Pyle38NoFollowerSetError,
+    Pyle38NoLeaderSetError,
     Pyle38TimeoutError,
     Tile38Error,
     Tile38IdNotFoundError,
@@ -17,7 +19,7 @@ from pyle38.errors import (
 
 
 @pytest.mark.asyncio
-async def test_client_options():
+async def test_client_options() -> None:
     url = os.getenv("TILE38_LEADER_URI") or "redis://localhost:9851"
     client_options = [
         WithRetryExponentialBackoff(10),
@@ -28,11 +30,11 @@ async def test_client_options():
     assert client.url == url
 
     opts = client.client_options()
-    assert opts["retry"]
-    assert type(opts["retry_on_error"]) is list
-    assert opts["retry_on_error"] == [Pyle38TimeoutError, Pyle38ConnectionError]
+    assert opts["retry"]  # pyright: ignore[reportTypedDictNotRequiredAccess]
+    assert type(opts["retry_on_error"]) is list  # pyright: ignore[reportTypedDictNotRequiredAccess]
+    assert opts["retry_on_error"] == [Pyle38TimeoutError, Pyle38ConnectionError]  # pyright: ignore[reportTypedDictNotRequiredAccess]
 
-    response = await client.command("SET", ["fleet", "truck", "POINT", 1, 1])
+    response = await client.command("SET", ["fleet", "truck", "POINT", 1, 1])  # type: ignore[arg-type]
     assert response["ok"]
 
     response = await client.command("GET", ["fleet", "truck"])
@@ -42,9 +44,9 @@ async def test_client_options():
 
 
 @pytest.mark.asyncio
-async def test_client():
+async def test_client() -> None:
     client = Client(os.getenv("TILE38_LEADER_URI") or "redis://localhost:9851")
-    response = await client.command("SET", ["fleet", "truck", "POINT", 1, 1])
+    response = await client.command("SET", ["fleet", "truck", "POINT", 1, 1])  # type: ignore[arg-type]
     assert response["ok"]
 
     response = await client.command("GET", ["fleet", "truck"])
@@ -54,7 +56,7 @@ async def test_client():
 
 
 @pytest.mark.asyncio
-async def test_client_exceptions():
+async def test_client_exceptions() -> None:
     client = Client(os.getenv("TILE38_LEADER_URI") or "redis://localhost:9851")
     with pytest.raises(Tile38Error):
         await client.command("BLA")
@@ -68,21 +70,21 @@ async def test_client_exceptions():
 
 
 @pytest.mark.asyncio
-async def test_client_empty_uri():
-    with pytest.raises(Tile38Error):
+async def test_client_empty_uri() -> None:
+    with pytest.raises(Pyle38NoLeaderSetError):
         client = Tile38("")
         await client.get("BLA", "BLA").asObject()
 
 
 @pytest.mark.asyncio
-async def test_no_follower_set():
-    with pytest.raises(Tile38Error):
+async def test_no_follower_set() -> None:
+    with pytest.raises(Pyle38NoFollowerSetError):
         client = Tile38(os.getenv("TILE38_LEADER_URI") or "redis://localhost:9851")
         await client.follower().get("BLA", "BLA").asObject()
 
 
 @pytest.mark.asyncio
-async def test_client_quit():
+async def test_client_quit() -> None:
     client = Client(os.getenv("TILE38_LEADER_URI") or "redis://localhost:9851")
     response = await client.quit()
 
@@ -90,17 +92,17 @@ async def test_client_quit():
 
 
 @pytest.mark.asyncio
-async def test_client_handles_disconnection():
+async def test_client_handles_disconnection() -> None:
     client = Client(os.getenv("TILE38_LEADER_URI") or "redis://localhost:9851")
 
-    response = await client.command("SET", ["fleet", "truck", "POINT", 1, 1])
+    response = await client.command("SET", ["fleet", "truck", "POINT", 1, 1])  # type: ignore[arg-type]
     assert response["ok"]
 
-    response = await client.quit()
-    assert response == "OK"
+    quit_response = await client.quit()
+    assert quit_response == "OK"
 
-    response = await client.command("SET", ["fleet", "truck", "POINT", 1, 1])
+    response = await client.command("SET", ["fleet", "truck", "POINT", 1, 1])  # type: ignore[arg-type]
     assert response["ok"]
 
-    response = await client.quit()
-    assert response == "OK"
+    quit_response = await client.quit()
+    assert quit_response == "OK"

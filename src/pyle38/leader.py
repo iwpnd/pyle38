@@ -1,6 +1,6 @@
-from typing import Literal, Optional, Union
+from typing import Literal
 
-from .client import Command
+from .client import Command, CommandArg
 from .commands.fset import Fset
 from .commands.set import Set
 from .commands.setchan import SetChan
@@ -24,7 +24,7 @@ class Leader(Follower):
         client (Client): An instance of the Client class for connecting to Tile38.
     """
 
-    async def delete(self, key: str, id: str) -> JSONResponse:
+    async def delete(self, key: str, oid: str) -> JSONResponse:
         """Delete an object from a collection.
 
         Tile38 Command:
@@ -37,7 +37,7 @@ class Leader(Follower):
         Returns:
             JSONResponse: Confirmation of deletion.
         """
-        return JSONResponse(**(await self.client.command(Command.DEL, [key, id])))
+        return JSONResponse(**(await self.client.command(Command.DEL, [key, oid])))
 
     async def delchan(self, name: str) -> JSONResponse:
         """Delete a channel.
@@ -81,7 +81,7 @@ class Leader(Follower):
         """
         return JSONResponse(**(await self.client.command(Command.DROP, [key])))
 
-    async def expire(self, key: str, id: str, seconds: int) -> JSONResponse:
+    async def expire(self, key: str, oid: str, seconds: int) -> JSONResponse:
         """Set an expiration time for an object.
 
         Tile38 Command:
@@ -98,8 +98,8 @@ class Leader(Follower):
         # TODO: fix mypy
         # for reasons unknown [key, id, seconds] has type List[object]
         # and fails mypy validation
-        p = [key, id, seconds]
-        response = await self.client.command(Command.EXPIRE, p)  # type: ignore
+        p: list[CommandArg] = [key, oid, seconds]
+        response = await self.client.command(Command.EXPIRE, p)
 
         return JSONResponse(**response)
 
@@ -114,7 +114,7 @@ class Leader(Follower):
         """
         return JSONResponse(**(await self.client.command(Command.FLUSHDB)))
 
-    def fset(self, key: str, id: str, fields: Fields) -> Fset:
+    def fset(self, key: str, oid: str, fields: Fields) -> Fset:
         """Set fields on an existing object.
 
         Tile38 Command:
@@ -128,8 +128,9 @@ class Leader(Follower):
         Returns:
             Fset: An object to perform field set operations.
         """
-        return Fset(self.client, key, id, fields)
+        return Fset(self.client, key, oid, fields)
 
+    # TODO: how can I override supertype Follower here correctly?
     async def info(self) -> InfoLeaderResponse:  # type: ignore
         """Get detailed server information specific to the leader.
 
@@ -144,10 +145,10 @@ class Leader(Follower):
     async def jset(
         self,
         key: str,
-        id: Union[str, int],
+        oid: str | int,
         path: str,
         value: str,
-        mode: Optional[Literal["RAW", "STR"]] = None,
+        mode: Literal["RAW", "STR"] | None = None,
     ) -> JSONResponse:
         """Set a JSON value in an object.
 
@@ -167,12 +168,12 @@ class Leader(Follower):
         return JSONResponse(
             **(
                 await self.client.command(
-                    Command.JSET, [key, id, path, value, *([mode] if mode else [])]
+                    Command.JSET, [key, oid, path, value, *([mode] if mode else [])]
                 )
             )
         )
 
-    async def jdel(self, key: str, id: str, path: str) -> JSONResponse:
+    async def jdel(self, key: str, oid: str, path: str) -> JSONResponse:
         """Delete a JSON value from an object.
 
         Tile38 Command:
@@ -187,7 +188,7 @@ class Leader(Follower):
             JSONResponse: Confirmation of JSON value deletion.
         """
         return JSONResponse(
-            **(await self.client.command(Command.JDEL, [key, id, path]))
+            **(await self.client.command(Command.JDEL, [key, oid, path]))
         )
 
     async def pdel(self, key: str, pattern: str) -> JSONResponse:
@@ -233,7 +234,7 @@ class Leader(Follower):
         """
         return JSONResponse(**(await self.client.command(Command.PDELHOOK, [pattern])))
 
-    async def persist(self, key: str, id: str) -> JSONResponse:
+    async def persist(self, key: str, oid: str) -> JSONResponse:
         """Remove expiration from an object.
 
         Tile38 Command:
@@ -246,9 +247,9 @@ class Leader(Follower):
         Returns:
             JSONResponse: Confirmation of persistence.
         """
-        return JSONResponse(**(await self.client.command(Command.PERSIST, [key, id])))
+        return JSONResponse(**(await self.client.command(Command.PERSIST, [key, oid])))
 
-    async def readonly(self, value=True) -> JSONResponse:
+    async def readonly(self, value: bool = True) -> JSONResponse:
         """Set the server to readonly mode.
 
         Tile38 Command:
@@ -264,7 +265,7 @@ class Leader(Follower):
             **(await self.client.command(Command.READONLY, ["yes" if value else "no"]))
         )
 
-    async def rename(self, key: str, newkey: str, nx=False) -> JSONResponse:
+    async def rename(self, key: str, newkey: str, nx: bool = False) -> JSONResponse:
         """Rename a collection key.
 
         Tile38 Command:
@@ -282,7 +283,7 @@ class Leader(Follower):
         command = Command.RENAMENX if nx else Command.RENAME
         return JSONResponse(**(await self.client.command(command, [key, newkey])))
 
-    def set(self, key: str, id: str) -> Set:
+    def set(self, key: str, oid: str) -> Set:
         """Set an object in a collection.
 
         Tile38 Command:
@@ -295,8 +296,9 @@ class Leader(Follower):
         Returns:
             Set: An object to perform set operations.
         """
-        return Set(self.client, key, id)
+        return Set(self.client, key, oid)
 
+    # TODO: how can I override supertype Follower here correctly?
     async def server(self) -> ServerStatsResponseLeader:  # type: ignore
         """Get server stats specific to the leader.
 
@@ -337,7 +339,7 @@ class Leader(Follower):
         """
         return SetChan(self.client, name)
 
-    async def ttl(self, key: str, id: str) -> TTLResponse:
+    async def ttl(self, key: str, oid: str) -> TTLResponse:
         """Get the time-to-live (TTL) of an object.
 
         Tile38 Command:
@@ -350,4 +352,4 @@ class Leader(Follower):
         Returns:
             TTLResponse: The TTL in seconds.
         """
-        return TTLResponse(**(await self.client.command(Command.TTL, [key, id])))
+        return TTLResponse(**(await self.client.command(Command.TTL, [key, oid])))

@@ -1,22 +1,21 @@
 import pytest
 
-from .helper.random_data import random_string
+from pyle38 import Tile38
 
-key = random_string()
-id = random_string()
+from .helper.random_data import random_string
 
 
 @pytest.mark.asyncio
-async def test_command_fexists(tile38):
+async def test_command_fexists(tile38: Tile38) -> None:
     key = random_string()
-    id = random_string()
+    oid = random_string()
     field = random_string()
     value = random_string()
 
-    await tile38.set(key, id).fields({field: value}).point(1, 1).exec()
+    await tile38.set(key, oid).fields({field: value}).point(1, 1).exec()
 
-    received = await tile38.fexists(key, id, field)
+    received = await tile38.fexists(key, oid, field)
     assert received.exists
 
-    received = await tile38.fexists(key, id, "does_not_exist")
+    received = await tile38.fexists(key, oid, "does_not_exist")
     assert not received.exists

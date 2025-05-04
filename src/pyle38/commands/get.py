@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-from typing import Literal, Optional, Sequence, Union
+from collections.abc import Sequence
+from typing import Literal
 
 from ..client import Client, Command, SubCommand
 from ..responses import BoundsNeSwResponse, HashResponse, ObjectResponse, PointResponse
 from .executable import Compiled, Executable
 
-Output = Union[Sequence[Union[Literal["HASH", "OBJECT", "POINT", "BOUNDS"], int]]]
+Output = Sequence[Literal["HASH", "OBJECT", "POINT", "BOUNDS"] | int]
 
 Formats = Literal["BOUNDS", "HASH", "OBJECT", "POINT"]
 
@@ -14,21 +15,21 @@ Formats = Literal["BOUNDS", "HASH", "OBJECT", "POINT"]
 class Get(Executable):
     _key: str
     _id: str
-    _withfields: Optional[Literal["WITHFIELDS"]] = None
-    _output: Optional[Output] = None
+    _withfields: Literal["WITHFIELDS"] | None = None
+    _output: Output | None = None
 
-    def __init__(self, client: Client, key: str, id: str) -> None:
+    def __init__(self, client: Client, key: str, oid: str) -> None:
         super().__init__(client)
 
-        self.key(key).id(id)
+        self.key(key).id(oid)
 
     def key(self, key: str) -> Get:
         self._key = key
 
         return self
 
-    def id(self, id: str) -> Get:
-        self._id = id
+    def id(self, oid: str) -> Get:
+        self._id = oid
 
         return self
 
@@ -38,15 +39,13 @@ class Get(Executable):
 
         return self
 
-    def output(self, format: Formats, precision: Optional[int] = None) -> Get:
-        if format == "OBJECT":
+    def output(self, fmt: Formats, precision: int | None = None) -> Get:
+        if fmt == "OBJECT":
             self._output = None
-        elif format == "HASH" and precision:
-            self._output = [format, precision]
-        elif format == "BOUNDS":
-            self._output = [format]
-        elif format == "POINT":
-            self._output = [format]
+        elif fmt == "HASH" and precision:
+            self._output = [fmt, precision]
+        elif fmt == "BOUNDS" or fmt == "POINT":
+            self._output = [fmt]
 
         return self
 
@@ -84,4 +83,4 @@ class Get(Executable):
                 *([SubCommand.WITHFIELDS.value] if self._withfields else []),
                 *(self._output if self._output else []),
             ],
-        ]
+        ]  # type: ignore

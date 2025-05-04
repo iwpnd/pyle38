@@ -1,11 +1,14 @@
 import os
-from typing import Callable, List, Optional
+from collections.abc import Callable
 
 from pyle38.client_options import ClientOptions
 
-from .errors import Tile38Error
+from .errors import Pyle38NoFollowerSetError, Pyle38NoLeaderSetError
 from .follower import Follower
 from .leader import Leader
+
+TILE38_LEADER_URI: str | None = os.getenv("TILE38_LEADER_URI")
+TILE38_FOLLOWER_URI: str | None = os.getenv("TILE38_FOLLOWER_URI")
 
 
 class Tile38(Leader):
@@ -16,14 +19,14 @@ class Tile38(Leader):
         __follower (Optional[Follower]): A private attribute holding the follower instance if a follower URL is provided.
     """
 
-    __follower: Optional[Follower] = None
+    __follower: Follower | None = None
 
     def __init__(
         self,
-        url=os.getenv("TILE38_LEADER_URI"),
-        follower_url=os.getenv("TILE38_FOLLOWER_URI"),
-        options: List[Callable[..., ClientOptions]] = [],
-    ):
+        url: str | None = TILE38_LEADER_URI,
+        follower_url: str | None = TILE38_FOLLOWER_URI,
+        options: list[Callable[..., ClientOptions]] = [],
+    ) -> None:
         """Initialize the Tile38 leader and optional follower.
 
         Args:
@@ -41,7 +44,7 @@ class Tile38(Leader):
             None
         """
         if not url:
-            raise Tile38Error("No Tile38 url set")
+            raise Pyle38NoLeaderSetError
 
         super().__init__(url, options)
 
@@ -58,7 +61,7 @@ class Tile38(Leader):
             Follower: The follower instance.
         """
         if not self.__follower:
-            raise Tile38Error("No follower")
+            raise Pyle38NoFollowerSetError
 
         return self.__follower
 

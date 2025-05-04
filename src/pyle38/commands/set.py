@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import json
-from typing import Literal, Optional, Sequence, Union
+from collections.abc import Sequence
+from typing import Any, Literal
 
 from ..client import Client, Command, SubCommand
 from ..responses import Fields, JSONResponse
@@ -11,21 +12,20 @@ from .executable import Compiled, Executable
 class Set(Executable):
     _key: str
     _id: str
-    _ex: Optional[int] = None
-    _nx_or_xx: Optional[Literal["NX", "XX"]] = None
-    _fields: Optional[Fields] = {}
-    _input: Optional[
+    _ex: int | None = None
+    _nx_or_xx: Literal["NX", "XX"] | None = None
+    _fields: Fields | None
+    _input: (
         Sequence[
-            Union[
-                Literal["POINT", "OBJECT", "BOUNDS", "HASH", "STRING"], str, float, int
-            ]
+            Literal["POINT", "OBJECT", "BOUNDS", "HASH", "STRING"] | str | float | int
         ]
-    ]
+        | None
+    )
 
-    def __init__(self, client: Client, key: str, id: str) -> None:
+    def __init__(self, client: Client, key: str, oid: str) -> None:
         super().__init__(client)
 
-        self.key(key).id(id)
+        self.key(key).id(oid)
         self._fields = {}
 
     def key(self, value: str) -> Set:
@@ -38,7 +38,7 @@ class Set(Executable):
 
         return self
 
-    def fields(self, fields: Fields):
+    def fields(self, fields: Fields) -> Set:
         self._fields = fields
 
         return self
@@ -66,7 +66,7 @@ class Set(Executable):
 
         return self
 
-    def point(self, lat: float, lon: float, z: Optional[float] = None) -> Set:
+    def point(self, lat: float, lon: float, z: float | None = None) -> Set:
         """Define a point as input.
 
         Args:
@@ -86,7 +86,9 @@ class Set(Executable):
 
         return self
 
-    def bounds(self, min_lat: float, min_lon: float, max_lat: float, max_lon) -> Set:
+    def bounds(
+        self, min_lat: float, min_lon: float, max_lat: float, max_lon: float
+    ) -> Set:
         self._input = ["BOUNDS", min_lat, min_lon, max_lat, max_lon]
 
         return self
@@ -102,7 +104,7 @@ class Set(Executable):
         return self
 
     @staticmethod
-    def __unpack_fields(fields: Fields):
+    def __unpack_fields(fields: Fields) -> list[Any]:
         command = []
         for k, v in fields.items():
             if isinstance(v, dict):
@@ -124,7 +126,7 @@ class Set(Executable):
                 *([self._nx_or_xx] if self._nx_or_xx else []),
                 *(self._input if self._input else []),
             ],
-        ]
+        ]  # type: ignore
 
     async def exec(self) -> JSONResponse:  # type: ignore
         return JSONResponse(**(await self.client.command(*self.compile())))

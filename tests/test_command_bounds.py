@@ -1,14 +1,16 @@
 import pytest
 
+from pyle38 import Tile38
+
 from .helper.random_data import random_string
 
 
 @pytest.mark.asyncio
-async def test_command_bounds(tile38):
+async def test_command_bounds(tile38: Tile38) -> None:
     key = random_string()
-    id = random_string()
+    oid = random_string()
 
-    response = await tile38.set(key, id).point(1, 1).exec()
+    response = await tile38.set(key, oid).point(1, 1).exec()
     assert response.ok
 
     expected = {

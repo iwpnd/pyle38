@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from typing import Literal, Optional
+from typing import Any, Literal
 
 from ..client import Client, Command
 from ..responses import Fields, JSONResponse
@@ -22,14 +22,14 @@ class Fset(Executable):
 
     _key: str
     _id: str
-    _xx: Optional[Literal["XX"]] = None
-    _fields: Fields = {}
+    _xx: Literal["XX"] | None = None
+    _fields: Fields
 
-    def __init__(self, client: Client, key: str, id: str, fields: Fields) -> None:
+    def __init__(self, client: Client, key: str, oid: str, fields: Fields) -> None:
         super().__init__(client)
 
         self._fields = {}
-        self.key(key).id(id).fields(fields)
+        self.key(key).id(oid).fields(fields)
 
     def key(self, key: str) -> Fset:
         """Set key of id to add fields to
@@ -44,7 +44,7 @@ class Fset(Executable):
 
         return self
 
-    def id(self, id: str) -> Fset:
+    def id(self, oid: str) -> Fset:
         """Set id to add fields to
 
         Args:
@@ -53,7 +53,7 @@ class Fset(Executable):
         Returns:
             Self
         """
-        self._id = id
+        self._id = oid
 
         return self
 
@@ -86,16 +86,8 @@ class Fset(Executable):
 
         return self
 
-    # @staticmethod
-    # def __unpack_fields(fields: Fields):
-    #     command = []
-    #     for k, v in fields.items():
-    #         command.extend([k, v])
-    #
-    #     return command
-
     @staticmethod
-    def __unpack_fields(fields: Fields):
+    def __unpack_fields(fields: Fields) -> list[Any]:
         command = []
         for k, v in fields.items():
             if isinstance(v, dict):
@@ -115,7 +107,7 @@ class Fset(Executable):
                 *([self._xx] if self._xx else []),
                 *(Fset.__unpack_fields(self._fields) if self._fields else []),
             ],
-        ]
+        ]  # type: ignore
 
     async def exec(self) -> JSONResponse:  # type: ignore
         return JSONResponse(**(await self.client.command(*self.compile())))

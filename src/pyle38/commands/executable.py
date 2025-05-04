@@ -1,9 +1,8 @@
-from typing import Any, Dict, Literal
+from typing import Any
 
 from ..client import Client, Command, CommandArgs
 
-# TODO: fix invalid parameter of Literal
-Compiled = Literal[Command, CommandArgs]  # type: ignore
+Compiled = tuple[Command, CommandArgs]
 
 
 class Executable:
@@ -15,5 +14,5 @@ class Executable:
     def compile(self) -> Compiled:
         raise NotImplementedError("Not implemented")
 
-    async def exec(self) -> Dict[Any, Any]:
+    async def exec(self) -> dict[Any, Any]:
         return await self.client.command(*self.compile())

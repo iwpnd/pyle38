@@ -1,60 +1,63 @@
 import pytest
 
-from pyle38.commands.get import Get
+from pyle38 import Tile38
+from pyle38.commands.executable import Compiled
+from pyle38.commands.get import Formats, Get
 
 from .helper.random_data import random_point_feature, random_string
 
 key = random_string()
-id = random_string()
-object = random_point_feature("Point")
+oid = random_string()
+obj = random_point_feature()
 
 
 @pytest.mark.parametrize(
-    "format, precision, expected",
+    "fmt, precision, expected",
     [
-        ("POINT", None, ["GET", [key, id, "WITHFIELDS", "POINT"]]),
-        ("BOUNDS", None, ["GET", [key, id, "WITHFIELDS", "BOUNDS"]]),
-        ("OBJECT", None, ["GET", [key, id, "WITHFIELDS"]]),
-        ("HASH", 5, ["GET", [key, id, "WITHFIELDS", "HASH", 5]]),
+        ("POINT", None, ["GET", [key, oid, "WITHFIELDS", "POINT"]]),
+        ("BOUNDS", None, ["GET", [key, oid, "WITHFIELDS", "BOUNDS"]]),
+        ("OBJECT", None, ["GET", [key, oid, "WITHFIELDS"]]),
+        ("HASH", 5, ["GET", [key, oid, "WITHFIELDS", "HASH", 5]]),
     ],
     ids=["point", "bounds", "object", "hash"],
 )
 @pytest.mark.asyncio
-async def test_command_get_compile(format, precision, expected, tile38):
-    query = Get(tile38.client, key, id).withfields()
-    received = query.output(format, precision).compile()
+async def test_command_get_compile(
+    fmt: Formats, precision: int | None, expected: Compiled, tile38: Tile38
+) -> None:
+    query = Get(tile38.client, key, oid).withfields()
+    received = query.output(fmt, precision).compile()
     assert expected == received
 
 
 @pytest.mark.asyncio
-async def test_command_get_query(tile38):
+async def test_command_get_query(tile38: Tile38) -> None:
     key = random_string()
-    id = random_string()
-    object = {
+    oid = random_string()
+    obj = {
         "type": "Feature",
         "geometry": {"type": "Point", "coordinates": [1, 1]},
         "properties": {},
     }
 
-    await tile38.set(key, id).object(object).exec()
-    await tile38.set(key, f"{id}:driver").string("John").exec()
+    await tile38.set(key, oid).object(obj).exec()
+    await tile38.set(key, f"{oid}:driver").string("John").exec()
 
-    received = await tile38.get(key, id).asObject()
-    assert object == received.object
+    obj_response = await tile38.get(key, oid).asObject()
+    assert obj == obj_response.object
 
     expected_point = {"lat": 1, "lon": 1}
-    received = await tile38.get(key, id).asPoint()
-    assert received.point.dict() == expected_point
+    point_response = await tile38.get(key, oid).asPoint()
+    assert point_response.point.dict() == expected_point
 
     expected_bounds = {"ne": {"lat": 1, "lon": 1}, "sw": {"lat": 1, "lon": 1}}
-    received = await tile38.get(key, id).asBounds()
-    assert received.bounds.dict() == expected_bounds
+    bounds_response = await tile38.get(key, oid).asBounds()
+    assert bounds_response.bounds.dict() == expected_bounds
 
     expected_hash = "s00twy0"
-    received = await tile38.get(key, id).asHash(7)
-    assert expected_hash == received.hash
-    assert received.hash == expected_hash
+    hash_response = await tile38.get(key, oid).asHash(7)
+    assert expected_hash == hash_response.hash
 
     expected_string = "John"
-    received = await tile38.get(key, f"{id}:driver").asStringObject()
-    assert received.object == expected_string
+    str_obj_response = await tile38.get(key, f"{oid}:driver").asStringObject()
+    assert str_obj_response.object == expected_string

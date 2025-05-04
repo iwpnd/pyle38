@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from typing import List, Literal, Optional, Sequence, Union
+from collections.abc import Sequence
+from typing import Literal
 
 from ..client import Client, Command, CommandArgs, SubCommand
-from ..errors import Tile38Error
+from ..errors import Pyle38NoHookToActivateError
 from ..models import Options, PointQuery
 from ..responses import (
     BoundsNeSwResponses,
@@ -21,7 +22,7 @@ from .executable import Compiled, Executable
 from .whereable import Whereable
 
 Format = Literal["BOUNDS", "COUNT", "HASHES", "IDS", "OBJECTS", "POINTS"]
-Output = Sequence[Union[Format, int]]
+Output = Sequence[Format | int]
 
 
 class Nearby(Executable, Whereable):
@@ -30,15 +31,17 @@ class Nearby(Executable, Whereable):
     _key: str
     _command: Literal["NEARBY"]
     _hook = None
-    _options: Options = {}
+    _options: Options
     _query: PointQuery
-    _output: Optional[Output] = None
+    _output: Output | None = None
     _all: bool = False
     _fence: bool = False
-    _detect: Optional[List[FenceDetect]] = []
-    _commands: Optional[List[FenceCommand]] = []
+    _detect: list[FenceDetect] | None
+    _commands: list[FenceCommand] | None
 
-    def __init__(self, client: Client, key: str, hook=None) -> None:
+    def __init__(
+        self, client: Client, key: str, hook: Executable | None = None
+    ) -> None:
         """__init__.
 
         Args:
@@ -55,8 +58,10 @@ class Nearby(Executable, Whereable):
         self.key(key)
         self._options = {}
         self._hook = hook
+        self._detect = []
         self._where = []
         self._wherein = []
+        self._commands = []
 
     def key(self, key: str) -> Nearby:
         """Set key to search in
@@ -99,7 +104,7 @@ class Nearby(Executable, Whereable):
 
         return self
 
-    def detect(self, what: List[FenceDetect]) -> Nearby:
+    def detect(self, what: list[FenceDetect]) -> Nearby:
         """Option to filter the type of events in a geo fence.
 
         Args:
@@ -113,7 +118,7 @@ class Nearby(Executable, Whereable):
 
         return self
 
-    def commands(self, which: Optional[List[FenceCommand]] = []) -> Nearby:
+    def commands(self, which: list[FenceCommand] | None = []) -> Nearby:
         """Option to filter what commands should be triggering a geo fence event.
 
         Args:
@@ -197,7 +202,7 @@ class Nearby(Executable, Whereable):
 
         return self
 
-    def point(self, lat: float, lon: float, radius: Optional[float] = None) -> Nearby:
+    def point(self, lat: float, lon: float, radius: float | None = None) -> Nearby:
         """Define a point as input bounding area for the nearby search.
 
         Args:
@@ -212,7 +217,7 @@ class Nearby(Executable, Whereable):
 
         return self
 
-    def output(self, format: Format, precision: Optional[int] = None) -> Nearby:
+    def output(self, fmt: Format, precision: int | None = None) -> Nearby:
         """Define an output format for query results.
 
         Args:
@@ -223,18 +228,12 @@ class Nearby(Executable, Whereable):
         Returns:
             Nearby
         """
-        if format == "OBJECTS":
+        if fmt == "OBJECTS":
             self._output = None
-        elif format == "HASHES" and precision:
-            self._output = [format, precision]
-        elif format == "BOUNDS":
-            self._output = [format]
-        elif format == "COUNT":
-            self._output = [format]
-        elif format == "IDS":
-            self._output = [format]
-        elif format == "POINTS":
-            self._output = [format]
+        elif fmt == "HASHES" and precision:
+            self._output = [fmt, precision]
+        elif fmt == "BOUNDS" or fmt == "COUNT" or fmt == "IDS" or fmt == "POINTS":
+            self._output = [fmt]
 
         return self
 
@@ -323,12 +322,10 @@ class Nearby(Executable, Whereable):
 
         # raises mypy: TypedDict key must be string literal
         # open PR: https://github.com/python/mypy/issues/7867
-        for k in self._options.keys():
+        for k in self._options:
             if isinstance(self._options[k], bool):  # type: ignore
                 commands.append(k.upper())
-            elif self._options[k]:  # type: ignore
-                commands.extend([k.upper(), self._options[k]])  # type: ignore
-            elif self._options[k] == 0:  # type: ignore
+            elif self._options[k] or self._options[k] == 0:  # type: ignore
                 commands.extend([k.upper(), self._options[k]])  # type: ignore
 
         return commands
@@ -382,11 +379,11 @@ class Nearby(Executable, Whereable):
 
         if self._hook:
             command, args = self._hook.compile()
-            return [command, [*(args), *(flatten(compiled))]]
+            return [command, [*(args), *(flatten(compiled))]]  # type: ignore
 
-        return compiled
+        return compiled  # type: ignore
 
-    async def activate(self) -> JSONResponse:  # type: ignore
+    async def activate(self) -> JSONResponse:
         """Activate is used in SetHook to activate a geo-fenced search.
 
         Args:
@@ -397,4 +394,4 @@ class Nearby(Executable, Whereable):
         if self._hook:
             return JSONResponse(**(await self.client.command(*self.compile())))
         else:
-            raise Tile38Error("No hook to activate")
+            raise Pyle38NoHookToActivateError

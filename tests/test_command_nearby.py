@@ -1,27 +1,27 @@
 import pytest
 
 from pyle38 import Tile38
-from pyle38.commands.nearby import Nearby
+from pyle38.commands.executable import Compiled
+from pyle38.commands.nearby import Format, Nearby
 
 from .helper.random_data import random_string
 
 key = random_string()
-id = random_string()
+oid = random_string()
 feature = {
     "type": "Feature",
     "geometry": {"type": "Point", "coordinates": [13.37, 52.25]},
-    "properties": {"id": id},
+    "properties": {"id": oid},
 }
 
-expected = {"id": id, "object": feature}
+expected = {"id": oid, "object": feature}
 
 
 @pytest.mark.parametrize(
-    "format, precision, expected",
+    "fmt, expected",
     [
         (
             "OBJECTS",
-            None,
             [
                 "NEARBY",
                 [
@@ -68,7 +68,9 @@ expected = {"id": id, "object": feature}
     ids=["OBJECTS"],
 )
 @pytest.mark.asyncio
-async def test_command_nearby_compile(tile38: Tile38, format, precision, expected):
+async def test_command_nearby_compile(
+    tile38: Tile38, fmt: Format, expected: Compiled
+) -> None:
     query = (
         Nearby(tile38.client, key)
         .match("*")
@@ -87,14 +89,14 @@ async def test_command_nearby_compile(tile38: Tile38, format, precision, expecte
         .point(1, 1, 100)
     )
 
-    received = query.output(format, precision).compile()
+    received = query.output(fmt).compile()
 
     assert expected == received
 
 
 @pytest.mark.asyncio
-async def test_command_nearby_point(tile38: Tile38):
-    response = await tile38.set(key, id).object(feature).exec()
+async def test_command_nearby_point(tile38: Tile38) -> None:
+    response = await tile38.set(key, oid).object(feature).exec()
     assert response.ok
 
     response = await tile38.nearby(key).point(52.250212, 13.370871).asObjects()
@@ -103,9 +105,9 @@ async def test_command_nearby_point(tile38: Tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_nearby_where_point(tile38: Tile38):
+async def test_command_nearby_where_point(tile38: Tile38) -> None:
     await (
-        tile38.set(key, id)
+        tile38.set(key, oid)
         .fields({"maxspeed": 120, "maxweight": 1000})
         .object(feature)
         .exec()
@@ -139,9 +141,9 @@ async def test_command_nearby_where_point(tile38: Tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_nearby_wherein_point(tile38: Tile38):
+async def test_command_nearby_wherein_point(tile38: Tile38) -> None:
     await (
-        tile38.set(key, id)
+        tile38.set(key, oid)
         .fields({"maxspeed": 120, "maxweight": 1000})
         .object(feature)
         .exec()
@@ -175,8 +177,8 @@ async def test_command_nearby_wherein_point(tile38: Tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_nearby_point_with_radius(tile38: Tile38):
-    response = await tile38.set(key, id).object(feature).exec()
+async def test_command_nearby_point_with_radius(tile38: Tile38) -> None:
+    response = await tile38.set(key, oid).object(feature).exec()
     assert response.ok
 
     response = await tile38.nearby(key).point(52.250212, 13.370871, 10).asObjects()
@@ -185,31 +187,31 @@ async def test_command_nearby_point_with_radius(tile38: Tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_nearby_return_points(tile38: Tile38):
-    response = await tile38.set(key, id).object(feature).exec()
+async def test_command_nearby_return_points(tile38: Tile38) -> None:
+    response = await tile38.set(key, oid).object(feature).exec()
     assert response.ok
 
     response = await tile38.nearby(key).point(52.250212, 13.370871).asPoints()
     assert response.ok
     assert response.points[0].dict() == {
-        "id": id,
+        "id": oid,
         "point": {"lat": 52.25, "lon": 13.37},
     }
 
 
 @pytest.mark.asyncio
-async def test_command_nearby_return_ids(tile38: Tile38):
-    response = await tile38.set(key, id).object(feature).exec()
+async def test_command_nearby_return_ids(tile38: Tile38) -> None:
+    response = await tile38.set(key, oid).object(feature).exec()
     assert response.ok
 
     response = await tile38.nearby(key).point(52.250212, 13.370871).asIds()
     assert response.ok
-    assert response.ids == [id]
+    assert response.ids == [oid]
 
 
 @pytest.mark.asyncio
-async def test_command_nearby_return_count(tile38: Tile38):
-    response = await tile38.set(key, id).object(feature).exec()
+async def test_command_nearby_return_count(tile38: Tile38) -> None:
+    response = await tile38.set(key, oid).object(feature).exec()
     assert response.ok
 
     response = await tile38.nearby(key).point(52.250212, 13.370871).asCount()
@@ -218,24 +220,24 @@ async def test_command_nearby_return_count(tile38: Tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_nearby_return_hashes(tile38: Tile38):
-    response = await tile38.set(key, id).object(feature).exec()
+async def test_command_nearby_return_hashes(tile38: Tile38) -> None:
+    response = await tile38.set(key, oid).object(feature).exec()
     assert response.ok
 
     response = await tile38.nearby(key).point(52.250212, 13.370871).asHashes(5)
     assert response.ok
-    assert response.hashes[0].dict() == {"id": id, "hash": "u3390"}
+    assert response.hashes[0].dict() == {"id": oid, "hash": "u3390"}
 
 
 @pytest.mark.asyncio
-async def test_command_nearby_return_bounds(tile38: Tile38):
-    response = await tile38.set(key, id).object(feature).exec()
+async def test_command_nearby_return_bounds(tile38: Tile38) -> None:
+    response = await tile38.set(key, oid).object(feature).exec()
     assert response.ok
 
     response = await tile38.nearby(key).point(52.250212, 13.370871).asBounds()
     assert response.ok
     assert response.bounds[0].dict() == {
-        "id": id,
+        "id": oid,
         "bounds": {
             "ne": {"lat": 52.25, "lon": 13.37},
             "sw": {"lat": 52.25, "lon": 13.37},

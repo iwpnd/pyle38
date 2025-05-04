@@ -1,5 +1,4 @@
 import json
-from typing import Dict, List, Optional, Union
 
 from redis.typing import EncodableT
 
@@ -13,17 +12,22 @@ from .errors import (
 
 
 def parse_response(
-    response: Optional[
-        Union[bytes, memoryview, str, int, float, List[EncodableT], None]
-    ] = None,
-) -> Dict[str, Union[float, str, int, list, dict]]:
+    response: bytes
+    | memoryview
+    | str
+    | int
+    | float
+    | list[EncodableT]
+    | None
+    | None = None,
+) -> dict[str, float | str | int | list | dict]:
     if not isinstance(response, str) or isinstance(response, bytes):
-        raise Tile38Error("invalid response")
+        raise Tile38Error("invalid response")  # noqa: TRY003
 
     try:
         obj = json.loads(response)
     except Exception as e:
-        raise Tile38Error(e)
+        raise Tile38Error(e) from e
 
     msg = "unknown"
 
@@ -44,4 +48,4 @@ def parse_response(
 
         raise Tile38Error(msg)
 
-    return obj
+    return obj  # type:ignore[no-any-return]

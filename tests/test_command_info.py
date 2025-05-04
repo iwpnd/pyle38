@@ -1,12 +1,14 @@
 import pytest
 
+from pyle38 import Tile38
+
 
 @pytest.mark.asyncio
-async def test_command_info(tile38_with_follower):
+async def test_command_info(tile38_with_follower: Tile38) -> None:
     tile38 = tile38_with_follower
 
-    response = await tile38.info()
-    assert response.ok
+    leaderResponse = await tile38.info()
+    assert leaderResponse.ok
 
-    response = await tile38.follower().info()
-    assert response.ok
+    followerResponse = await tile38.follower().info()
+    assert followerResponse.ok
