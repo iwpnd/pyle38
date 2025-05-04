@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Literal, Optional
+from typing import Any, Literal
 
 from ..client import Client, Command, SubCommand
 from ..commands.intersects import Intersects
@@ -12,9 +12,9 @@ from .executable import Compiled, Executable
 
 class SetHook(Executable):
     _command: Literal["SETHOOK"] = "SETHOOK"
-    _endpoint: Optional[str] = None
-    _meta: Optional[Meta] = {}
-    _ex: Optional[int] = None
+    _endpoint: str | None
+    _meta: Meta | None
+    _ex: int | None
 
     def __init__(self, client: Client, name: str, endpoint: str) -> None:
         super().__init__(client)
@@ -22,8 +22,9 @@ class SetHook(Executable):
         self.name(name)
         self.endpoint(endpoint)
         self._meta = {}
+        self._ex = None
 
-    def name(self, name) -> SetHook:
+    def name(self, name: str) -> SetHook:
         self._name = name
 
         return self
@@ -53,7 +54,7 @@ class SetHook(Executable):
         return Intersects(self.client, key, self).fence()
 
     @staticmethod
-    def __unpack_meta(meta: Meta):
+    def __unpack_meta(meta: Meta) -> list[Any]:
         command = []
         for k, v in meta.items():
             command.extend([SubCommand.META.value, k, v])
@@ -69,4 +70,4 @@ class SetHook(Executable):
                 *(SetHook.__unpack_meta(self._meta) if self._meta else []),
                 *([SubCommand.EX.value, self._ex] if self._ex else []),
             ],
-        ]
+        ]  # type: ignore

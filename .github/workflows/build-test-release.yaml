@@ -1,108 +1,54 @@
-name: CI
+name: main
+
 on:
   push:
-    branches: [main]
+    branches:
+    - main
   pull_request:
-    branches: [main]
-  workflow_dispatch:
+    types: [opened, synchronize, reopened, ready_for_review]
+
 jobs:
-  lint:
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.10"]
-        poetry-version: [1.2]
-        os: [ubuntu-22.04]
-    runs-on: ${{ matrix.os }}
+  quality:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install poetry
-        uses: snok/install-poetry@v1.4
-        with:
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-      - name: Load cached venv
-        id: cached-poetry-dependencies
-        uses: actions/cache@v4.2.0
-        with:
-          path: .venv
-          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}-${{ matrix.python-version }}
-      - name: Install dependencies
-        run: poetry install
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      - name: lint
-        run: |
-          source .venv/bin/activate
-          poetry run poe lint
-  mypy:
+    - name: Check out
+      uses: actions/checkout@v4
+
+    - uses: actions/cache@v4
+      with:
+        path: ~/.cache/pre-commit
+        key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+
+    - name: Set up the environment
+      uses: ./.github/actions/setup-python-env
+
+    - name: Run checks
+      run: make check
+
+  tests-and-type-check:
+    runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
       matrix:
-        python-version: ["3.10"]
-        poetry-version: [1.2]
-        os: [ubuntu-22.04]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install poetry
-        uses: snok/install-poetry@v1.4
-        with:
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-      - name: Load cached venv
-        id: cached-poetry-dependencies
-        uses: actions/cache@v4.2.0
-        with:
-          path: .venv
-          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}-${{ matrix.python-version }}
-      - name: Install dependencies
-        run: poetry install
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      - name: Mypy
-        run: |
-          source .venv/bin/activate
-          poetry run poe mypy .
-  test:
-    strategy:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
       fail-fast: false
-      matrix:
-        python-version: ["3.10"]
-        poetry-version: [1.2]
-        os: [ubuntu-22.04]
-    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: start tile38 leader and follower
-        run: docker compose up -d
-      - name: Install poetry
-        uses: snok/install-poetry@v1.4
-        with:
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-      - name: Load cached venv
-        id: cached-poetry-dependencies
-        uses: actions/cache@v4.2.0
-        with:
-          path: .venv
-          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}-${{ matrix.python-version }}
-      - name: Install dependencies
-        run: poetry install
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      - name: Test
-        run: |
-          source .venv/bin/activate
-          poetry run poe test .
-      - name: stop tile38 leader and follower
-        run: docker compose down
+    - name: Check out
+      uses: actions/checkout@v4
+
+    - name: Set up the environment
+      uses: ./.github/actions/setup-python-env
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Run tests
+      run: uv run python -m pytest tests --cov --cov-config=pyproject.toml --cov-report=xml
+
+    - name: Check typing
+      run: uv run mypy
+
   release:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
@@ -112,23 +58,34 @@ jobs:
     permissions:
       id-token: write
       contents: write
-    needs: [lint, mypy, test]
+    needs: [quality, tests-and-type-check]
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Python Semantic Release
-        id: release
-        uses: python-semantic-release/python-semantic-release@v9.16.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Publish package distributions to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        # NOTE: DO NOT wrap the conditional in ${{ }} as it will always evaluate to true.
-        # See https://github.com/actions/runner/issues/1173
-        if: steps.release.outputs.released == 'true'
-      - name: Publish package distributions to GitHub Releases
-        uses: python-semantic-release/upload-to-gh-release@main
-        if: steps.release.outputs.released == 'true'
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - uses: actions/cache@v4
+      with:
+        path: ~/.cache/pre-commit
+        key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+
+    - name: Set up the environment
+      uses: ./.github/actions/setup-python-env
+
+    - name: Python Semantic Release
+      id: release
+      uses: python-semantic-release/python-semantic-release@v9.21.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Publish package distributions to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      # NOTE: DO NOT wrap the conditional in ${{ }} as it will always evaluate to true.
+      # See https://github.com/actions/runner/issues/1173
+      if: steps.release.outputs.released == 'true'
+
+    - name: Publish package distributions to GitHub Releases
+      uses: python-semantic-release/upload-to-gh-release@main
+      if: steps.release.outputs.released == 'true'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,50 +1,155 @@
-[tool.poetry]
+[project]
 name = "pyle38"
 version = "0.14.2"
-description = "Async python client for Tile38"
-authors = ["Benjamin Ramser <iwpnd@posteo.de>"]
-license = "MIT"
+description = "python client for Tile38"
+authors = [{ name = "Benjamin Ramser", email = "iwpnd@posteo.de" }]
 readme = "README.md"
-homepage = "https://github.com/iwpnd/pyle38"
-repository = "https://github.com/iwpnd/pyle38"
+license = "MIT"
+requires-python = ">=3.10,<4.0"
 keywords = ["tile38", "async", "client"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Environment :: Console",
-    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Database :: Front-Ends",
     "Topic :: Scientific/Engineering :: GIS",
     "Topic :: Software Development :: Libraries :: Python Modules",
-    "License :: OSI Approved :: MIT License",
-    "Typing :: Typed"]
-include = ["LICENSE"]
+    "Typing :: Typed",
+]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-pydantic = "^2.10.5"
-redis = "^5.2.1"
+dependencies = [
+  "pydantic>=2.10.5",
+  "redis>=5.2.1",
+]
 
-[tool.poetry.group.dev.dependencies]
-types-redis = "^4.6.0.20240903"
-pytest = "^8.3.4"
-pre-commit = "^4.0.1"
-pytest-asyncio = "^0.25.2"
-gitlint = "^0.19.0"
-poethepoet = "^0.32.1"
-pytest-cov = "^6.0.0"
-mypy = "^1.14.1"
-python-semantic-release = "^9.16.1"
-ruff = "^0.9.2"
+[dependency-groups]
+dev = [
+  "types-redis>=4.6.0.20241004",
+  "pytest-asyncio>=0.25.2",
+  "pytest>=7.2.0",
+  "pre-commit>=2.20.0",
+  "tox-uv>=1.11.3",
+  "deptry>=0.22.0",
+  "mypy>=0.991",
+  "pytest-cov>=4.0.0",
+  "ruff>=0.9.2",
+  "gitlint>=0.19.1",
+  "python-semantic-release>=9.21.0",
+]
+
+[project.urls]
+Homepage = "https://iwpnd.github.io/pyle38"
+Repository = "https://github.com/iwpnd/pyle38"
+Documentation = "https://iwpnd.github.io/pyle38"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.deptry]
+ignore = ["DEP003", "DEP004"]
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+files = ["src", "tests"]
+disallow_untyped_defs = true
+disallow_any_unimported = false
+no_implicit_optional = true
+check_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+show_error_codes = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 88
+fix = true
+
+[tool.ruff.format]
+preview = true
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint]
+select = [
+    # flake8-2020
+    "YTT",
+    # flake8-bandit
+    "S",
+    # flake8-bugbear
+    "B",
+    # flake8-builtins
+    "A",
+    # flake8-comprehensions
+    "C4",
+    # flake8-debugger
+    "T10",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+    # mccabe
+    "C90",
+    # pycodestyle
+    "E", "W",
+    # pyflakes
+    "F",
+    # pygrep-hooks
+    "PGH",
+    # pyupgrade
+    "UP",
+    # ruff
+    "RUF",
+    # tryceratops
+    "TRY",
+]
+ignore = [
+    # LineTooLong
+    "E501",
+    # DoNotAssignLambda
+    "E731",
+    # mutable datastructes as defaults
+    "B006",
+    # specific rule codes when ignoring type issues
+    "PGH003",
+]
+fixable = ["ALL"]
+
+[tool.basedpyright]
+reportUnknownParameterType = false
+reportCallInDefaultInitializer = false
+typeCheckingMode = "standard"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
+"__init__.py" = ["F401", "F403"]
+
+[tool.coverage.report]
+skip_empty = true
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
 
 [tool.semantic_release]
 version_variables = [
-    "pyle38/__init__.py:__version__",
+    "src/pyle38/__init__.py:__version__",
     "pyproject.toml:version"
 ]
-commit_subject = "ci: release v{version}"
+commit_message = "ci: release v{}"
 branch = "main"
 upload_to_release = true
-build_command = "pip install poetry && poetry build"
+build_command = "pip install uv && uv build"
 
 [tool.semantic_release.commit_parser_options]
 allowed_tags = [
@@ -60,78 +165,13 @@ allowed_tags = [
     "test",
 ]
 minor_tags = ["feat"]
-patch_tags = ["fix", "perf", "docs", "refactor"]
+patch_tags = ["fix", "perf", "docs"]
 
 [tool.semantic_release.changelog]
 exclude_commit_patterns = [
-  "chore:",
   "chore\\(release\\):",
   "chore\\(deps-dev\\):",
   "build\\(deps-dev\\):",
   "build\\(deps\\):",
   "ci:",
-  "docs:",
 ]
-
-
-[build-system]
-requires = ["poetry-core>=1.2.0"]
-build-backend = "poetry.core.masonry.api"
-
-[mypy]
-python_version = 3.10
-ignore_missing_imports = true
-
-[tool.ruff]
-exclude = [
-    ".bzr",
-    ".direnv",
-    ".eggs",
-    ".git",
-    ".hg",
-    ".mypy_cache",
-    ".nox",
-    ".pants.d",
-    ".ruff_cache",
-    ".svn",
-    ".tox",
-    ".venv",
-    "__pypackages__",
-    "_build",
-    "buck-out",
-    "build",
-    "dist",
-    "node_modules",
-    "venv",
-]
-line-length = 88
-target-version = "py310"
-
-[tool.ruff.lint]
-select = ["E", "F"]
-extend-select = ["I"]
-ignore = ["E501"]
-# Allow unused variables when underscore-prefixed.
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-
-[tool.ruff.lint.mccabe]
-# Unlike Flake8, default to a complexity level of 10.
-max-complexity = 10
-
-[tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401"]
-
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
-skip-magic-trailing-comma = false
-line-ending = "auto"
-
-[tool.poe.tasks]
-test       = "poetry run pytest -vv --asyncio-mode=auto -s tests/"
-test-cov   = "poetry run pytest -vv --asyncio-mode=auto -s --cov=pyle38 tests/ --cov-report xml:/home/runner/coverage.xml"
-test-single = "poetry run pytest -vv --asyncio-mode=auto -s"
-mypy       = "poetry run mypy --ignore-missing-imports --config-file pyproject.toml"
-lint       = "ruff check ."
-up         = "docker-compose up"
-down       = "docker-compose down"

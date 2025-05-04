@@ -1,4 +1,4 @@
-from typing import Any, Dict, Generic, List, Literal, Optional, TypeVar, Union
+from typing import Any, ClassVar, Generic, Literal, TypeVar
 
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic import ConfigDict
@@ -8,14 +8,14 @@ S = TypeVar("S", bound=str)
 
 
 class BaseModel(PydanticBaseModel):
-    def dict(self, exclude_unset=True, **kwargs):
-        return super().model_dump(exclude_unset=exclude_unset, **kwargs)
+    def dict(self, exclude_unset: bool = True, **kwargs: Any) -> dict[str, Any]:
+        return super().model_dump(exclude_unset=exclude_unset, **kwargs)  # type: ignore[no-any-return,unused-ignore]
 
 
 class LatLon(BaseModel):
     lat: float
     lon: float
-    z: Optional[float] = None
+    z: float | None = None
 
 
 class NeSw(BaseModel):
@@ -23,41 +23,43 @@ class NeSw(BaseModel):
     sw: LatLon
 
 
-Fields = Dict[str, Any]
-Meta = Dict[str, str]
+Fields = dict[str, Any]  # pyright: ignore[reportExplicitAny]
+Meta = dict[str, str]
+
+
+class WithFieldsArray:
+    fields: list[Any] | None = None  # pyright: ignore[reportExplicitAny]
 
 
 class JSONResponse(BaseModel):
     ok: bool
     elapsed: str
-    err: Optional[str] = None
+    err: str | None = None
 
 
 class ExistsResponse(JSONResponse, BaseModel):
     exists: bool
 
 
-class Object(BaseModel, Generic[T]):
+class Object(BaseModel, WithFieldsArray, Generic[T]):
     object: T
-    id: Union[str, int]
-    distance: Optional[float] = None
-    fields: Optional[List[Any]] = None
+    id: str | int
+    distance: float | None = None
 
 
 class ObjectResponse(JSONResponse, BaseModel, Generic[T]):
     object: T
-    fields: Optional[Fields] = None
+    fields: Fields | None = None
 
 
-class ObjectsResponse(JSONResponse, BaseModel, Generic[T]):
-    objects: List[Object[T]] = []
+class ObjectsResponse(JSONResponse, BaseModel, WithFieldsArray, Generic[T]):
+    objects: list[Object[T]] = []
     count: int
     cursor: int
-    fields: Optional[List[str]] = None
 
 
 class IdsResponse(JSONResponse):
-    ids: List[str]
+    ids: list[str]
     count: int
     cursor: int
 
@@ -69,67 +71,61 @@ class CountResponse(JSONResponse):
 
 class PointResponse(JSONResponse):
     point: LatLon
-    fields: Optional[Fields] = None
+    fields: Fields | None = None
 
 
-class Point(BaseModel):
+class Point(BaseModel, WithFieldsArray):
     point: LatLon
-    id: Union[str, int]
-    distance: Optional[int] = None
-    fields: Optional[List[Any]] = None
+    id: str | int
+    distance: int | None = None
 
 
-class PointsResponse(JSONResponse):
-    points: List[Point] = []
+class PointsResponse(JSONResponse, WithFieldsArray):
+    points: list[Point] = []
     count: int
     cursor: int
-    fields: Optional[List[str]] = None
 
 
-class Hash(BaseModel):
+class Hash(BaseModel, WithFieldsArray):
     hash: str
-    id: Union[str, int]
-    distance: Optional[float] = None
-    fields: Optional[List[Any]] = None
+    id: str | int
+    distance: float | None = None
 
 
 class HashResponse(JSONResponse):
     hash: str
-    fields: Optional[Fields] = None
+    fields: Fields | None = None
 
 
-class HashesResponse(JSONResponse):
-    hashes: List[Hash]
+class HashesResponse(JSONResponse, WithFieldsArray):
+    hashes: list[Hash]
     count: int
     cursor: int
-    fields: Optional[List[str]] = None
 
 
-class Bounds(BaseModel):
+class Bounds(BaseModel, WithFieldsArray):
     bounds: NeSw
-    id: Union[str, int]
-    distance: Optional[float] = None
-    fields: Optional[List[Any]] = None
+    id: str | int
+    distance: float | None = None
 
 
 class BoundsNeSwResponse(JSONResponse):
     bounds: NeSw
-    fields: Optional[Fields] = None
+    fields: Fields | None = None
 
 
-class BoundsNeSwResponses(JSONResponse):
-    bounds: List[Bounds]
+class BoundsNeSwResponses(JSONResponse, WithFieldsArray):
+    bounds: list[Bounds]
     count: int
     cursor: int
-    fields: Optional[List[str]] = None
 
 
-Position = List[float]
+Position = list[float]
 
 
 class Polygon(BaseModel):
     type: Literal["Polygon"] = "Polygon"
-    coordinates: List[List[Position]]
+    coordinates: list[list[Position]]
 
 
 class BoundsResponse(JSONResponse):
@@ -137,7 +133,7 @@ class BoundsResponse(JSONResponse):
 
 
 class KeysResponse(JSONResponse):
-    keys: List[str]
+    keys: list[str]
 
 
 class TTLResponse(JSONResponse):
@@ -146,34 +142,34 @@ class TTLResponse(JSONResponse):
 
 
 class Stats(BaseModel):
-    in_memory_size: Union[int, float]
-    num_objects: Union[int, float]
-    num_points: Union[int, float]
-    num_strings: Union[int, float]
+    in_memory_size: int | float
+    num_objects: int | float
+    num_points: int | float
+    num_strings: int | float
 
 
 class StatsResponse(JSONResponse):
-    stats: Optional[List[Stats]] = []
+    stats: list[Stats] | None = []
 
 
 class ServerStatsLeader(BaseModel):
-    aof_size: Union[int, float]
-    avg_item_size: Union[int, float]
-    cpus: Union[int, float]
-    heap_released: Union[int, float]
-    heap_size: Union[int, float]
+    aof_size: int | float
+    avg_item_size: int | float
+    cpus: int | float
+    heap_released: int | float
+    heap_size: int | float
     http_transport: bool
     id: str
-    in_memory_size: Union[int, float]
-    max_heap_size: Union[int, float]
-    mem_alloc: Union[int, float]
+    in_memory_size: int | float
+    max_heap_size: int | float
+    mem_alloc: int | float
     num_collections: int
     num_hooks: int
     num_objects: int
     num_points: int
     num_strings: int
     pid: int
-    pointer_size: Union[int, float]
+    pointer_size: int | float
     read_only: bool
     threads: int
     version: str
@@ -264,34 +260,34 @@ ConfigKeys = Literal[
 
 
 class ConfigGetResponse(JSONResponse):
-    properties: Dict[ConfigKeys, str]
+    properties: dict[ConfigKeys, str]
 
 
 class JSONGetResponse(JSONResponse):
-    value: Optional[Union[int, float, str]] = "{}"
+    value: int | float | str | None = "{}"
 
 
 class Hooks(BaseModel):
     name: str
-    endpoints: List[str]
+    endpoints: list[str]
     key: str
-    meta: Dict
-    command: List[str]
+    meta: dict[str, Any]  # pyright: ignore[reportExplicitAny]
+    command: list[str]
 
 
 class HooksResponse(JSONResponse):
-    hooks: List[Hooks]
+    hooks: list[Hooks]
 
 
 class Chans(BaseModel):
     name: str
     key: str
-    meta: Dict
-    command: List[str]
+    meta: dict[str, Any]  # pyright: ignore[reportExplicitAny]
+    command: list[str]
 
 
 class ChansResponse(JSONResponse):
-    chans: List[Chans]
+    chans: list[Chans]
 
 
 class PingResponse(JSONResponse):
@@ -344,7 +340,7 @@ class InfoFollower(Info):
 class InfoLeader(Info):
     # to allow for additional slaves
     # slave0, slave1..
-    model_config = ConfigDict(extra="allow")
+    model_config: ClassVar[ConfigDict] = ConfigDict(extra="allow")
 
 
 class InfoFollowerResponse(JSONResponse):

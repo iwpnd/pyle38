@@ -1,11 +1,12 @@
+from collections.abc import Callable, Sequence
 from enum import Enum
-from typing import Callable, Dict, List, Sequence, Union
+from typing import Any
 
 from redis.asyncio import Connection, Redis
 from redis.asyncio.connection import parse_url
 
 from .client_options import ClientOptions
-from .parse_response import parse_response
+from .parse_response import parse_response  # pyright: ignore[reportUnknownVariableType]
 
 TILE38_DEFAULT_HOST = "localhost"
 TILE38_DEFAULT_PORT = 9851
@@ -99,9 +100,8 @@ class Format(str, Enum):
     RESP = "RESP"
 
 
-CommandArgs = Union[
-    Sequence[Union[str, float, int]], Sequence[Sequence[Union[str, float, int]]]
-]
+CommandArg = str | float | int
+CommandArgs = Sequence[CommandArg] | Sequence[Sequence[CommandArg]]
 
 NO_RESPONSE_CALLBACKS_FOR = [
     Command.SET,
@@ -129,11 +129,11 @@ class Client:
     """
 
     __redis = None
-    __client_options: ClientOptions = {}
+    __client_options: ClientOptions
     __url = ""
 
     def __init__(
-        self, url: str, options: List[Callable[..., ClientOptions]] = []
+        self, url: str, options: list[Callable[..., ClientOptions]] | None = None
     ) -> None:
         """Initialize the Client.
 
@@ -146,9 +146,11 @@ class Client:
         """
         self.__url = url
         self.__redis = None
+        self.__client_options = {}
 
-        default_options: List = []
-        default_options.extend(options)
+        default_options: list[Callable[..., ClientOptions]] = []
+        if options:
+            default_options.extend(options)
 
         for option in default_options:
             self.__client_options = option(self.__client_options)
@@ -170,7 +172,7 @@ class Client:
         """
         return self.__client_options
 
-    async def __on_connect(self, connection: Connection):
+    async def __on_connect(self, connection: Connection) -> None:
         """Callback executed upon connection to Redis.
 
         Sets the OUTPUT format to JSON.
@@ -183,9 +185,9 @@ class Client:
         """
         await connection.on_connect()
         await connection.send_command(Command.OUTPUT, Format.JSON)
-        await connection.read_response()
+        await connection.read_response()  # pyright: ignore[reportUnusedCallResult]
 
-    async def __delete_response_callbacks(self):
+    async def __delete_response_callbacks(self) -> None:
         """Delete unnecessary response callbacks in redis-py.
 
         This removes default callbacks for certain commands that cause issues with Tile38.
@@ -232,9 +234,9 @@ class Client:
 
         return self.__redis
 
-    async def __execute_and_read_response(
-        self, command: str, command_args: CommandArgs = []
-    ):
+    async def __execute_and_read_response(  # pyright: ignore[reportUnknownParameterType]
+        self, command: str, command_args: CommandArgs | None
+    ) -> Any:
         """Execute a command and read its response from Redis.
 
         Args:
@@ -244,10 +246,13 @@ class Client:
         Returns:
             Any: The response from the Redis server.
         """
+        command_args = command_args if command_args else []
         r = await self.__get_redis()
         return await r.execute_command(command, *command_args)
 
-    async def command(self, command: str, command_args: CommandArgs = []) -> Dict:
+    async def command(
+        self, command: str, command_args: CommandArgs | None = None
+    ) -> dict:
         """Send a command to Tile38 and parse the response.
 
         Args:
@@ -257,6 +262,9 @@ class Client:
         Returns:
             Dict: The parsed response from the server.
         """
+        if not command_args:
+            command_args = []
+
         response = await self.__execute_and_read_response(command, command_args)
         return parse_response(response)
 
@@ -274,7 +282,7 @@ class Client:
         c = await self.__get_redis()
 
         # TODO: remove ignore once types have been updated
-        await c.aclose()  # type: ignore
+        await c.aclose()  # type: ignore[attr-defined]
         await c.connection_pool.disconnect()
 
         self.__redis = None

@@ -1,4 +1,5 @@
-from typing import Callable, List, Literal, Optional, Union
+from collections.abc import Callable
+from typing import Literal
 
 from .client import Client, Command, SubCommand
 from .client_options import ClientOptions
@@ -8,7 +9,7 @@ from .commands.nearby import Nearby
 from .commands.scan import Scan
 from .commands.search import Search
 from .commands.within import Within
-from .errors import Tile38Error
+from .errors import Pyle38NoFollowerSetError
 from .responses import (
     BoundsResponse,
     ChansResponse,
@@ -37,7 +38,7 @@ class Follower:
 
     client: Client
 
-    def __init__(self, url: str, opts: List[Callable[..., ClientOptions]] = []) -> None:
+    def __init__(self, url: str, opts: list[Callable[..., ClientOptions]] = []) -> None:
         """Initialize the Follower client.
 
         Args:
@@ -48,7 +49,7 @@ class Follower:
             Tile38Error: If the follower URL is not provided.
         """
         if not url:
-            raise Tile38Error("No Tile38 follower URI set")
+            raise Pyle38NoFollowerSetError
 
         self.client = Client(url, opts)
 
@@ -56,7 +57,7 @@ class Follower:
         """Shrink the append only file on"""
         return JSONResponse(**(await self.client.command(Command.AOFSHRINK)))
 
-    async def exists(self, key: str, id: str) -> ExistsResponse:
+    async def exists(self, key: str, oid: str) -> ExistsResponse:
         """Check if an object exists in a collection.
 
         Tile38 Command:
@@ -69,9 +70,9 @@ class Follower:
         Returns:
             ExistsResponse: Response indicating if the object exists.
         """
-        return ExistsResponse(**(await self.client.command(Command.EXISTS, [key, id])))
+        return ExistsResponse(**(await self.client.command(Command.EXISTS, [key, oid])))
 
-    async def fexists(self, key: str, id: str, field: str) -> ExistsResponse:
+    async def fexists(self, key: str, oid: str, field: str) -> ExistsResponse:
         """Check if a field exists within an object.
 
         Tile38 Command:
@@ -86,7 +87,7 @@ class Follower:
             ExistsResponse: Response indicating if the field exists.
         """
         return ExistsResponse(
-            **(await self.client.command(Command.FEXISTS, [key, id, field]))
+            **(await self.client.command(Command.FEXISTS, [key, oid, field]))
         )
 
     async def bounds(self, key: str) -> BoundsResponse:
@@ -134,7 +135,7 @@ class Follower:
         )
 
     async def config_set(
-        self, name: ConfigKeys, value: Union[str, int, float]
+        self, name: ConfigKeys, value: str | int | float
     ) -> JSONResponse:
         """Set a configuration value.
 
@@ -176,7 +177,7 @@ class Follower:
         """
         return JSONResponse(**(await self.client.command(Command.GC)))
 
-    def get(self, key: str, id: str) -> Get:
+    def get(self, key: str, oid: str) -> Get:
         """Get a specific object.
 
         Tile38 Command:
@@ -189,7 +190,7 @@ class Follower:
         Returns:
             Get: An object that allows retrieving data from Tile38.
         """
-        return Get(self.client, key, id)
+        return Get(self.client, key, oid)
 
     async def hooks(self, pattern: str = "*") -> HooksResponse:
         """List active hooks.
@@ -258,9 +259,9 @@ class Follower:
     async def jget(
         self,
         key: str,
-        id: str,
-        path: Optional[str] = None,
-        mode: Optional[Literal["RAW"]] = None,
+        oid: str,
+        path: str | None = None,
+        mode: Literal["RAW"] | None = None,
     ) -> JSONGetResponse:
         """Get a JSON field.
 
@@ -280,7 +281,7 @@ class Follower:
             **(
                 await self.client.command(
                     Command.JGET,
-                    [key, id, *([path] if path else []), *([mode] if mode else [])],
+                    [key, oid, *([path] if path else []), *([mode] if mode else [])],
                 )
             )
         )
@@ -364,7 +365,7 @@ class Follower:
             **(await self.client.command(Command.SERVER, [SubCommand.EXT]))
         )
 
-    async def stats(self, keys: List[str]) -> StatsResponse:
+    async def stats(self, keys: list[str]) -> StatsResponse:
         """Get statistics for specified keys.
 
         Tile38 Command:

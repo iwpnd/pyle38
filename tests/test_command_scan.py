@@ -6,18 +6,18 @@ from pyle38.commands.scan import Scan
 from .helper.random_data import random_string
 
 key = random_string()
-id = random_string()
+oid = random_string()
 feature = {
     "type": "Feature",
     "geometry": {"type": "Point", "coordinates": [13.37, 52.25]},
-    "properties": {"id": id},
+    "properties": {"id": oid},
 }
 
-expected = {"id": id, "object": feature}
+expected = {"id": oid, "object": feature}
 
 
 @pytest.mark.asyncio
-async def test_command_scan_compile(tile38: Tile38):
+async def test_command_scan_compile(tile38: Tile38) -> None:
     query = (
         Scan(tile38.client, key)
         .match("*")
@@ -103,8 +103,8 @@ async def test_command_scan_compile(tile38: Tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_scan(tile38: Tile38):
-    response = await tile38.set(key, id).object(feature).exec()
+async def test_command_scan(tile38: Tile38) -> None:
+    response = await tile38.set(key, oid).object(feature).exec()
     assert response.ok
 
     response = await tile38.scan(key).asObjects()
@@ -113,9 +113,9 @@ async def test_command_scan(tile38: Tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_scan_wherein(tile38: Tile38):
+async def test_command_scan_wherein(tile38: Tile38) -> None:
     await (
-        tile38.set(key, id)
+        tile38.set(key, oid)
         .fields({"maxspeed": 120, "maxweight": 1000})
         .object(feature)
         .exec()
@@ -143,9 +143,9 @@ async def test_command_scan_wherein(tile38: Tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_scan_where(tile38: Tile38):
+async def test_command_scan_where(tile38: Tile38) -> None:
     await (
-        tile38.set(key, id)
+        tile38.set(key, oid)
         .fields({"maxspeed": 120, "maxweight": 1000})
         .object(feature)
         .exec()
@@ -173,31 +173,31 @@ async def test_command_scan_where(tile38: Tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_scan_return_points(tile38: Tile38):
-    response = await tile38.set(key, id).object(feature).exec()
+async def test_command_scan_return_points(tile38: Tile38) -> None:
+    response = await tile38.set(key, oid).object(feature).exec()
     assert response.ok
 
     response = await tile38.scan(key).asPoints()
     assert response.ok
     assert response.points[0].dict() == {
-        "id": id,
+        "id": oid,
         "point": {"lat": 52.25, "lon": 13.37},
     }
 
 
 @pytest.mark.asyncio
-async def test_command_scan_return_ids(tile38: Tile38):
-    response = await tile38.set(key, id).object(feature).exec()
+async def test_command_scan_return_ids(tile38: Tile38) -> None:
+    response = await tile38.set(key, oid).object(feature).exec()
     assert response.ok
 
     response = await tile38.scan(key).asIds()
     assert response.ok
-    assert response.ids == [id]
+    assert response.ids == [oid]
 
 
 @pytest.mark.asyncio
-async def test_command_scan_return_count(tile38: Tile38):
-    response = await tile38.set(key, id).object(feature).exec()
+async def test_command_scan_return_count(tile38: Tile38) -> None:
+    response = await tile38.set(key, oid).object(feature).exec()
     assert response.ok
 
     response = await tile38.scan(key).asCount()
@@ -206,24 +206,24 @@ async def test_command_scan_return_count(tile38: Tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_scan_return_hashes(tile38: Tile38):
-    response = await tile38.set(key, id).object(feature).exec()
+async def test_command_scan_return_hashes(tile38: Tile38) -> None:
+    response = await tile38.set(key, oid).object(feature).exec()
     assert response.ok
 
     response = await tile38.scan(key).asHashes(5)
     assert response.ok
-    assert response.hashes[0].dict() == {"id": id, "hash": "u3390"}
+    assert response.hashes[0].dict() == {"id": oid, "hash": "u3390"}
 
 
 @pytest.mark.asyncio
-async def test_command_scan_return_bounds(tile38: Tile38):
-    response = await tile38.set(key, id).object(feature).exec()
+async def test_command_scan_return_bounds(tile38: Tile38) -> None:
+    response = await tile38.set(key, oid).object(feature).exec()
     assert response.ok
 
     response = await tile38.scan(key).asBounds()
     assert response.ok
     assert response.bounds[0].dict() == {
-        "id": id,
+        "id": oid,
         "bounds": {
             "ne": {"lat": 52.25, "lon": 13.37},
             "sw": {"lat": 52.25, "lon": 13.37},

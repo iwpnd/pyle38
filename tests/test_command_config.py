@@ -4,7 +4,7 @@ from pyle38 import Tile38
 
 
 @pytest.mark.asyncio
-async def test_command_config(tile38_with_follower: Tile38):
+async def test_command_config(tile38_with_follower: Tile38) -> None:
     tile38 = tile38_with_follower
 
     response = await tile38.config_set("keepalive", 500)

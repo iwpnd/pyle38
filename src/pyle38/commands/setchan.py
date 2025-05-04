@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Literal, Optional
+from typing import Any, Literal
 
 from ..client import Client, Command, SubCommand
 from ..commands.intersects import Intersects
@@ -12,16 +12,17 @@ from .executable import Compiled, Executable
 
 class SetChan(Executable):
     _command: Literal["SETCHAN"] = "SETCHAN"
-    _meta: Optional[Meta] = {}
-    _ex: Optional[int] = None
+    _meta: Meta | None
+    _ex: int | None
 
     def __init__(self, client: Client, name: str) -> None:
         super().__init__(client)
 
         self.name(name)
         self._meta = {}
+        self._ex = None
 
-    def name(self, name) -> SetChan:
+    def name(self, name: str) -> SetChan:
         self._name = name
 
         return self
@@ -46,7 +47,7 @@ class SetChan(Executable):
         return Intersects(self.client, key, self).fence()
 
     @staticmethod
-    def __unpack_meta(meta: Meta):
+    def __unpack_meta(meta: Meta) -> list[Any]:
         command = []
         for k, v in meta.items():
             command.extend([SubCommand.META.value, k, v])
@@ -61,4 +62,4 @@ class SetChan(Executable):
                 *(SetChan.__unpack_meta(self._meta) if self._meta else []),
                 *([SubCommand.EX.value, self._ex] if self._ex else []),
             ],
-        ]
+        ]  # type: ignore

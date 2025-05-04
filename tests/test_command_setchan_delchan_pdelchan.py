@@ -1,13 +1,14 @@
 import pytest
 
+from pyle38 import Tile38
 from pyle38.commands.setchan import SetChan
-from pyle38.errors import Tile38Error
+from pyle38.errors import Pyle38NoHookToActivateError
 
 from .helper.random_data import random_string
 
 
 @pytest.mark.asyncio
-async def test_command_setchan_compile_within(tile38):
+async def test_command_setchan_compile_within(tile38: Tile38) -> None:
     key = random_string()
     name = random_string()
     meta_key = random_string()
@@ -43,7 +44,7 @@ async def test_command_setchan_compile_within(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_Sethook_compile_nearby(tile38):
+async def test_command_Sethook_compile_nearby(tile38: Tile38) -> None:
     key = random_string()
     name = random_string()
 
@@ -58,7 +59,7 @@ async def test_command_Sethook_compile_nearby(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_setchan_compile_nearby(tile38):
+async def test_command_setchan_compile_nearby(tile38: Tile38) -> None:
     key = random_string()
     name = random_string()
 
@@ -73,7 +74,7 @@ async def test_command_setchan_compile_nearby(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_setchan(tile38):
+async def test_command_setchan(tile38: Tile38) -> None:
     key = random_string()
     name = random_string()
 
@@ -94,21 +95,21 @@ async def test_command_setchan(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_setchan_raises(tile38):
+async def test_command_setchan_raises(tile38: Tile38) -> None:
     key = random_string()
 
-    with pytest.raises(Tile38Error):
+    with pytest.raises(Pyle38NoHookToActivateError):
         await tile38.within(key).circle(52.25, 13.37, 100).activate()
 
-    with pytest.raises(Tile38Error):
+    with pytest.raises(Pyle38NoHookToActivateError):
         await tile38.intersects(key).circle(52.25, 13.37, 100).activate()
 
-    with pytest.raises(Tile38Error):
+    with pytest.raises(Pyle38NoHookToActivateError):
         await tile38.nearby(key).point(52.25, 13.37, 100).activate()
 
 
 @pytest.mark.asyncio
-async def test_command_pdelhook(tile38):
+async def test_command_pdelhook(tile38: Tile38) -> None:
     key = random_string()
     name = random_string()
 
@@ -130,7 +131,7 @@ async def test_command_pdelhook(tile38):
 
 
 @pytest.mark.asyncio
-async def test_command_delhook(tile38):
+async def test_command_delhook(tile38: Tile38) -> None:
     key = random_string()
     name = random_string()
 

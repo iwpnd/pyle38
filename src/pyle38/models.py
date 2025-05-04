@@ -1,20 +1,21 @@
 import json
-from typing import Any, Dict, List, Literal, Optional, Sequence, Tuple, TypedDict, Union
+from collections.abc import Sequence
+from typing import Any, Literal, TypedDict
 
 from pydantic import BaseModel
 
 
 class Options(TypedDict, total=False):
-    cursor: Optional[int]
-    limit: Optional[int]
-    nofields: Optional[int]
-    match: Optional[str]
-    sparse: Optional[int]
-    clip: Optional[bool]
-    distance: Optional[bool]
-    asc: Optional[bool]
-    desc: Optional[bool]
-    buffer: Optional[int]
+    cursor: int | None
+    limit: int | None
+    nofields: int | None
+    match: str | None
+    sparse: int | None
+    clip: bool | None
+    distance: bool | None
+    asc: bool | None
+    desc: bool | None
+    buffer: int | None
 
 
 class CircleQuery(BaseModel):
@@ -23,7 +24,7 @@ class CircleQuery(BaseModel):
     lon: float
     radius: float
 
-    def get(self) -> Sequence[Union[str, int, float]]:
+    def get(self) -> Sequence[str | int | float]:
         return [self.command, self.lat, self.lon, self.radius]
 
 
@@ -31,9 +32,9 @@ class PointQuery(BaseModel):
     command: Literal["POINT"] = "POINT"
     lat: float
     lon: float
-    radius: Optional[Union[float, int]] = None
+    radius: float | int | None = None
 
-    def get(self) -> Sequence[Union[str, int, float]]:
+    def get(self) -> Sequence[str | int | float]:
         if self.radius:
             return [self.command, self.lat, self.lon, self.radius]
 
@@ -47,7 +48,7 @@ class BoundsQuery(BaseModel):
     maxlat: float
     maxlon: float
 
-    def get(self) -> Sequence[Union[str, int, float]]:
+    def get(self) -> Sequence[str | int | float]:
         return [self.command, self.minlat, self.minlon, self.maxlat, self.maxlon]
 
 
@@ -73,7 +74,7 @@ class TileQuery(BaseModel):
     y: int
     z: int
 
-    def get(self) -> Sequence[Union[str, int]]:
+    def get(self) -> Sequence[str | int]:
         return [self.command, self.x, self.y, self.z]
 
 
@@ -85,7 +86,7 @@ class SectorQuery(BaseModel):
     bearing1: float
     bearing2: float
 
-    def get(self) -> Sequence[Union[str, float]]:
+    def get(self) -> Sequence[str | float]:
         return [
             self.command,
             self.lat,
@@ -96,23 +97,23 @@ class SectorQuery(BaseModel):
         ]
 
 
-Coordinate = Tuple[float, float]
+Coordinate = tuple[float, float]
 
 
 class Polygon(BaseModel):
     type: Literal["Polygon"] = "Polygon"
-    coordinates: List[List[Coordinate]]
+    coordinates: list[list[Coordinate]]
 
 
 class Feature(BaseModel):
     type: Literal["Feature"] = "Feature"
     geometry: Polygon
-    properties: Dict[Any, Any]
+    properties: dict[Any, Any]
 
 
 class ObjectQuery(BaseModel):
     command: Literal["OBJECT"] = "OBJECT"
-    object: Union[Polygon, Feature]
+    object: Polygon | Feature
 
     def get(self) -> Sequence[str]:
         return [self.command, json.dumps(self.object.model_dump())]

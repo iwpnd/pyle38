@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from typing import List, Literal, Optional, Sequence, Union
+from collections.abc import Sequence
+from typing import Literal
 
 from ..client import Client, Command, CommandArgs, SubCommand
-from ..errors import Pyle38BadObjectInputException, Tile38Error
+from ..errors import Pyle38BadObjectInputError, Pyle38NoHookToActivateError
 from ..models import (
     BoundsQuery,
     CircleQuery,
@@ -33,34 +34,35 @@ from .executable import Compiled, Executable
 from .whereable import Whereable
 
 Format = Literal["BOUNDS", "COUNT", "HASHES", "IDS", "OBJECTS", "POINTS"]
-Output = Sequence[Union[Format, int]]
+Output = Sequence[Format | int]
 
 
-class Within(Executable, Whereable):
-    """WITHIN searches a key for objects that are fully contained
-    within a given bounding area."""
+class Intersects(Executable, Whereable):
+    """INTERSECTS searches a key for objects that are crossing given bounding area."""
 
     _key: str
-    _command: Literal["WITHIN"]
+    _command: Literal["INTERSECTS"]
     _hook = None
-    _options: Options = {}
-    _query: Union[
-        CircleQuery,
-        BoundsQuery,
-        HashQuery,
-        QuadkeyQuery,
-        TileQuery,
-        ObjectQuery,
-        GetQuery,
-        SectorQuery,
-    ]
-    _output: Optional[Output] = None
+    _options: Options
+    _query: (
+        CircleQuery
+        | BoundsQuery
+        | HashQuery
+        | QuadkeyQuery
+        | TileQuery
+        | ObjectQuery
+        | GetQuery
+        | SectorQuery
+    )
+    _output: Output | None = None
     _all: bool = False
     _fence: bool = False
-    _detect: Optional[List[FenceDetect]] = []
-    _commands: Optional[List[FenceCommand]] = []
+    _detect: list[FenceDetect] | None
+    _commands: list[FenceCommand] | None
 
-    def __init__(self, client: Client, key: str, hook=None) -> None:
+    def __init__(
+        self, client: Client, key: str, hook: Executable | None = None
+    ) -> None:
         """__init__.
 
         Args:
@@ -76,24 +78,26 @@ class Within(Executable, Whereable):
 
         self.key(key)
         self._options = {}
+        self._detect = []
+        self._commands = []
         self._hook = hook
         self._where = []
         self._wherein = []
 
-    def key(self, key: str) -> Within:
+    def key(self, key: str) -> Intersects:
         """Set key to search in
 
         Args:
             key (str): key of a collection to search in
 
         Returns:
-            Within
+            Intersects
         """
         self._key = key
 
         return self
 
-    def circle(self, lat: float, lon: float, radius: float) -> Within:
+    def circle(self, lat: float, lon: float, radius: float) -> Intersects:
         """Define a circle as input bounding area for the within search.
 
         Args:
@@ -102,13 +106,13 @@ class Within(Executable, Whereable):
             radius (float): radius of circle
 
         Returns:
-            Within
+            Intersects
         """
         self._query = CircleQuery(lat=lat, lon=lon, radius=radius)
 
         return self
 
-    def cursor(self, value: int) -> Within:
+    def cursor(self, value: int) -> Intersects:
         """Cursor used to iterate though objects of the search results.
 
         Used for pagination through search results.
@@ -117,26 +121,70 @@ class Within(Executable, Whereable):
             value (int): cursor value to start at, default: 0 if not set
 
         Returns:
-            Within
+            Intersects
         """
         self._options["cursor"] = value
 
         return self
 
-    def buffer(self, value: int) -> Within:
+    def buffer(self, value: int) -> Intersects:
         """Apply a buffer around area formats to increase the search area by x meters.
 
         Args:
             value (int): buffer size in meters
 
         Returns:
-            Within
+            Intersects
         """
         self._options["buffer"] = value
 
         return self
 
-    def limit(self, value: int) -> Within:
+    def fence(self, flag: bool = True) -> Intersects:
+        """Flag to indicate that the Intersects Query is used for a geo fence.
+
+        Args:
+            flag (bool): defaults to True if not set
+
+        Returns:
+            Intersects
+        """
+        self._fence = flag
+
+        return self
+
+    def detect(self, what: list[FenceDetect]) -> Intersects:
+        """Option to filter the type of events in a geo fence.
+
+        Args:
+            what (List[FenceDetect]): what to detect in geo fence events.
+                defaults to 'enter,exit,outside,inside,crosses' if not set
+
+        Returns:
+            Intersects
+        """
+        self._detect = what if len(what) > 0 else []
+
+        return self
+
+    def commands(self, which: list[FenceCommand] | None = []) -> Intersects:
+        """Option to filter what commands should be triggering a geo fence event.
+
+        Args:
+            which (Optional[List[FenceCommand]]): which commands
+            trigger a geo fence event
+            defaults to 'SET,DEL,JSET,JDEL' if not set
+
+        Returns:
+            Intersects
+        """
+
+        if which and len(which) > 0:
+            self._commands = which
+
+        return self
+
+    def limit(self, value: int) -> Intersects:
         """Limit the number of returned objects in a search.
 
         Also used for pagination through search results.
@@ -145,83 +193,40 @@ class Within(Executable, Whereable):
             value (int): limit value, defaults to 100 if not set
 
         Returns:
-            Within
+            Intersects
         """
         self._options["limit"] = value
 
         return self
 
-    def fence(self, flag: bool = True) -> Within:
-        """Flag to indicate that the Within Query is used for a geo fence.
-
-        Args:
-            flag (bool): defaults to True if not set
-
-        Returns:
-            Within
-        """
-        self._fence = flag
-
-        return self
-
-    def detect(self, what: List[FenceDetect]) -> Within:
-        """Option to filter the type of events in a geo fence.
-
-        Args:
-            what (List[FenceDetect]): what to detect in geo fence events.
-                defaults to 'enter,exit,outside,inside,crosses' if not set
-
-        Returns:
-            Within
-        """
-        self._detect = what if len(what) > 0 else []
-
-        return self
-
-    def commands(self, which: Optional[List[FenceCommand]] = []) -> Within:
-        """Option to filter what commands should be triggering a geo fence event.
-
-        Args:
-            which (Optional[List[FenceCommand]]): which commands trigger a geo fence
-            event defaults to 'SET,DEL,JSET,JDEL' if not set
-
-        Returns:
-            Within
-        """
-
-        if which and len(which) > 0:
-            self._commands = which
-
-        return self
-
-    def nofields(self, flag: bool = True) -> Within:
+    def nofields(self, flag: bool = True) -> Intersects:
         """Option to explicitly not return fields in search results.
 
         Args:
             flag (bool): flag
 
         Returns:
-            Within
+            Intersects
         """
         self._options["nofields"] = flag
 
         return self
 
-    def match(self, value: str) -> Within:
-        """Match can be used to filtered objects considered in the search
-        with a glob pattern.
+    def match(self, value: str) -> Intersects:
+        """Match can be used to filtered objects considered in the
+        search with a glob pattern.
 
         Args:
             value (str): value
 
         Returns:
-            Within
+            Intersects
         """
         self._options["match"] = value
 
         return self
 
-    def sparse(self, value: int) -> Within:
+    def sparse(self, value: int) -> Intersects:
         """Instead of returning all results of a search.
         Return a sparse result evenly distributed
         in the given search area. EXPERIMENTAL
@@ -230,16 +235,21 @@ class Within(Executable, Whereable):
             value (int): values between 1 and 8
 
         Returns:
-            Within
+            Intersects
         """
         self._options["sparse"] = value
 
         return self
 
+    def clip(self, flag: bool = True) -> Intersects:
+        self._options["clip"] = flag
+
+        return self
+
     def bounds(
         self, minlat: float, minlon: float, maxlat: float, maxlon: float
-    ) -> Within:
-        """Define a bounding as input bounding area for the within search.
+    ) -> Intersects:
+        """Define a bounding as input bounding area for the intersects search.
 
         A bounding box is build from its most south-western and its most
         north-eastern point.
@@ -251,7 +261,7 @@ class Within(Executable, Whereable):
             maxlon (float): maximum longitude / north-east longitude
 
         Returns:
-            Within
+            Intersects
         """
         self._query = BoundsQuery(
             minlat=minlat, minlon=minlon, maxlat=maxlat, maxlon=maxlon
@@ -259,27 +269,27 @@ class Within(Executable, Whereable):
 
         return self
 
-    def hash(self, geohash: str) -> Within:
-        """Define a geohash as input bounding area for the within search.
+    def hash(self, geohash: str) -> Intersects:
+        """Define a geohash as input bounding area for the intersect search.
 
         Args:
             geohash (str): geohash, eg. 'gcpvp'
 
         Returns:
-            Within
+            Intersects
         """
         self._query = HashQuery(geohash=geohash)
 
         return self
 
-    def quadkey(self, quadkey: str) -> Within:
-        """Define a quadkey as input bounding area for the within search.
+    def quadkey(self, quadkey: str) -> Intersects:
+        """Define a quadkey as input bounding area for the intersect search.
 
         Args:
             quadkey (str): quadkey, eg. '120'
 
         Returns:
-            Within
+            Intersects
         """
         self._query = QuadkeyQuery(quadkey=quadkey)
 
@@ -287,7 +297,7 @@ class Within(Executable, Whereable):
 
     def sector(
         self, lat: float, lon: float, radius: float, bearing1: float, bearing2: float
-    ) -> Within:
+    ) -> Intersects:
         """Define a sector as inbound area type for the within search
 
         Args:
@@ -306,8 +316,8 @@ class Within(Executable, Whereable):
 
         return self
 
-    def tile(self, x: int, y: int, z: int) -> Within:
-        """Define a tile as input bounding area for the within search.
+    def tile(self, x: int, y: int, z: int) -> Intersects:
+        """Define a tile as input bounding area for the intersect search.
 
         Args:
             x (int): x coordinate of the tile
@@ -315,13 +325,13 @@ class Within(Executable, Whereable):
             z (int): z zoom level for the tile
 
         Returns:
-            Within
+            Intersects
         """
         self._query = TileQuery(x=x, y=y, z=z)
 
         return self
 
-    def object(self, object: Union[Polygon, Feature, dict]) -> Within:
+    def object(self, obj: Polygon | Feature | dict) -> Intersects:
         """Define an object as input bounding area for the intersects search.
 
         Args:
@@ -330,37 +340,37 @@ class Within(Executable, Whereable):
         Returns:
             Intersects
         """
-        if isinstance(object, dict) and object.get("type") == "Polygon":
-            object = Polygon(**object)
-            self._query = ObjectQuery(object=object)
+        if isinstance(obj, dict) and obj.get("type") == "Polygon":
+            obj = Polygon(**obj)
+            self._query = ObjectQuery(object=obj)
             return self
 
-        if isinstance(object, dict) and object.get("type") == "Feature":
-            object = Feature(**object)
-            self._query = ObjectQuery(object=object)
+        if isinstance(obj, dict) and obj.get("type") == "Feature":
+            obj = Feature(**obj)
+            self._query = ObjectQuery(object=obj)
             return self
 
-        if isinstance(object, Polygon) or isinstance(object, Feature):
-            self._query = ObjectQuery(object=object)
+        if isinstance(obj, Polygon | Feature):
+            self._query = ObjectQuery(object=obj)
             return self
 
-        raise Pyle38BadObjectInputException()
+        raise Pyle38BadObjectInputError()
 
-    def get(self, key: str, id: str) -> Within:
-        """Define an object in a collection as bounding area for the within search.
+    def get(self, key: str, oid: str) -> Intersects:
+        """Define an object in a collection as bounding area for the intersects search.
 
         Args:
             key (str): key of the collection
             id (str): id of the object in the collection
 
         Returns:
-            Within
+            Intersects
         """
-        self._query = GetQuery(key=key, id=id)
+        self._query = GetQuery(key=key, id=oid)
 
         return self
 
-    def output(self, format: Format, precision: Optional[int] = None) -> Within:
+    def output(self, fmt: Format, precision: int | None = None) -> Intersects:
         """Define an output format for query results.
 
         Args:
@@ -369,20 +379,14 @@ class Within(Executable, Whereable):
             precision (Optional[int]): precision
 
         Returns:
-            Within
+            Intersects
         """
-        if format == "OBJECTS":
+        if fmt == "OBJECTS":
             self._output = None
-        elif format == "HASHES" and precision:
-            self._output = [format, precision]
-        elif format == "BOUNDS":
-            self._output = [format]
-        elif format == "COUNT":
-            self._output = [format]
-        elif format == "IDS":
-            self._output = [format]
-        elif format == "POINTS":
-            self._output = [format]
+        elif fmt == "HASHES" and precision:
+            self._output = [fmt, precision]
+        elif fmt == "BOUNDS" or fmt == "COUNT" or fmt == "IDS" or fmt == "POINTS":
+            self._output = [fmt]
 
         return self
 
@@ -471,12 +475,10 @@ class Within(Executable, Whereable):
 
         # raises mypy: TypedDict key must be string literal
         # open PR: https://github.com/python/mypy/issues/7867
-        for k in self._options.keys():
+        for k in self._options:
             if isinstance(self._options[k], bool):  # type: ignore
                 commands.append(k.upper())
-            elif self._options[k]:  # type: ignore
-                commands.extend([k.upper(), self._options[k]])  # type: ignore
-            elif self._options[k] == 0:  # type: ignore
+            elif self._options[k] or self._options[k] == 0:  # type: ignore
                 commands.extend([k.upper(), self._options[k]])  # type: ignore
 
         return commands
@@ -516,7 +518,7 @@ class Within(Executable, Whereable):
             Compiled
         """
         compiled = [
-            Command.WITHIN.value,
+            Command.INTERSECTS.value,
             [
                 self._key,
                 *(self.__compile_options()),
@@ -530,12 +532,11 @@ class Within(Executable, Whereable):
 
         if self._hook:
             command, args = self._hook.compile()
-            response = [command, [*(args), *(flatten(compiled))]]
-            return response
+            return [command, [*(args), *(flatten(compiled))]]  # type: ignore
 
-        return compiled
+        return compiled  # type: ignore
 
-    async def activate(self) -> JSONResponse:  # type: ignore
+    async def activate(self) -> JSONResponse:
         """Activate is used in SetHook to activate a geo-fenced search.
 
         Args:
@@ -546,4 +547,4 @@ class Within(Executable, Whereable):
         if self._hook:
             return JSONResponse(**(await self.client.command(*self.compile())))
         else:
-            raise Tile38Error("No hook to activate")
+            raise Pyle38NoHookToActivateError

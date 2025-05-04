@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Literal, Optional, Sequence, Union
+from collections.abc import Sequence
+from typing import Literal
 
 from ..client import Client, Command, CommandArgs
 from ..models import Options
@@ -9,14 +10,14 @@ from .executable import Compiled, Executable
 from .whereable import Whereable
 
 Format = Literal["OBJECTS", "COUNT", "IDS"]
-Output = Sequence[Union[Format, int]]
+Output = Sequence[Format | int]
 
 
 class Search(Executable, Whereable):
     _key: str
     _command: Literal["SEARCH"]
-    _options: Options = {}
-    _output: Optional[Output] = None
+    _options: Options
+    _output: Output | None = None
     _all: bool = False
 
     def __init__(self, client: Client, key: str) -> None:
@@ -63,13 +64,11 @@ class Search(Executable, Whereable):
 
         return self
 
-    def output(self, format: Format) -> Search:
-        if format == "OBJECTS":
+    def output(self, fmt: Format) -> Search:
+        if fmt == "OBJECTS":
             self._output = None
-        elif format == "COUNT":
-            self._output = [format]
-        elif format == "IDS":
-            self._output = [format]
+        elif fmt == "COUNT" or fmt == "IDS":
+            self._output = [fmt]
         return self
 
     async def asCount(self) -> CountResponse:
@@ -92,13 +91,11 @@ class Search(Executable, Whereable):
 
         # raises mypy: TypedDict key must be string literal
         # open PR: https://github.com/python/mypy/issues/7867
-        for k in self._options.keys():
+        for k in self._options:
             if isinstance(self._options[k], bool):  # type: ignore
                 if self._options[k]:  # type: ignore
-                    commands.append(k.upper())  # type: ignore
-            elif self._options[k]:  # type: ignore
-                commands.extend([k.upper(), self._options[k]])  # type: ignore
-            elif self._options[k] == 0:  # type: ignore
+                    commands.append(k.upper())
+            elif self._options[k] or self._options[k] == 0:  # type: ignore
                 commands.extend([k.upper(), self._options[k]])  # type: ignore
 
         return commands
@@ -113,4 +110,4 @@ class Search(Executable, Whereable):
                 *(self.compile_wherein()),
                 *(self._output if self._output else []),
             ],
-        ]
+        ]  # type: ignore

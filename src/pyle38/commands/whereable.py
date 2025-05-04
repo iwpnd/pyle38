@@ -1,11 +1,11 @@
-from typing import List, TypeVar, Union
+from typing import TypeVar
 
 from ..client import CommandArgs, SubCommand
 
 TWhereable = TypeVar("TWhereable", bound="Whereable")
 
-Where = List[List[Union[str, int]]]
-Wherein = List[List[Union[str, int, float]]]
+Where = list[list[str | int]]
+Wherein = list[list[str | int | float]]
 
 
 class Whereable:
@@ -26,7 +26,8 @@ class Whereable:
             for i in self._where:
                 w.extend(i)
             return w
-        return []
+
+        return w
 
     def compile_wherein(self) -> CommandArgs:
         """__compile_wherein.
@@ -45,7 +46,7 @@ class Whereable:
         return []
 
     def wherein(
-        self: TWhereable, field: str, values: List[Union[int, str, float]]
+        self: TWhereable, field: str, values: list[int | str | float]
     ) -> TWhereable:
         """Filter the search by fields values containing input values
 
@@ -60,19 +61,19 @@ class Whereable:
 
         return self
 
-    def where(self: TWhereable, field: str, min: int, max: int) -> TWhereable:
+    def where(self: TWhereable, field: str, minimum: int, maximum: int) -> TWhereable:
         """Filter the search by field
 
         Args:
             field (str): field name
-            min (int): minimum value of field
-            max (int): maximum value of field
+            minimum (int): minimum value of field
+            maximum (int): maximum value of field
 
         Returns:
             TWhereable
         """
 
-        self._where.append([SubCommand.WHERE, field, min, max])
+        self._where.append([SubCommand.WHERE, field, minimum, maximum])
 
         return self
 

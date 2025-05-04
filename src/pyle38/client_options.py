@@ -1,4 +1,5 @@
-from typing import Callable, List
+from collections.abc import Callable
+from typing import TypeAlias
 
 from redis.asyncio.retry import Retry
 from redis.backoff import ExponentialBackoff
@@ -6,16 +7,13 @@ from typing_extensions import NotRequired, TypedDict
 
 from .errors import Pyle38Error
 
-Pyle38Retry = Retry
-Pyle38ExponentialBackoff = ExponentialBackoff
+Pyle38Retry: TypeAlias = Retry
+Pyle38ExponentialBackoff: TypeAlias = ExponentialBackoff
 
-ClientOptions = TypedDict(
-    "ClientOptions",
-    {
-        "retry": NotRequired[Pyle38Retry],
-        "retry_on_error": NotRequired[List[type[Pyle38Error]]],
-    },
-)
+
+class ClientOptions(TypedDict):
+    retry: NotRequired[Pyle38Retry]
+    retry_on_error: NotRequired[list[type[Pyle38Error]]]
 
 
 def WithRetryExponentialBackoff(retries: int) -> Callable[..., ClientOptions]:
@@ -36,11 +34,11 @@ def WithRetryExponentialBackoff(retries: int) -> Callable[..., ClientOptions]:
     """
     try:
         t = int(retries)
-    except ValueError:
-        raise ValueError("Retries must be a positive integer")
+    except ValueError as e:
+        raise ValueError("Retries must be a positive integer") from e  # noqa: TRY003
 
     if t < 0:
-        raise ValueError("Retries must be a positive integer")
+        raise ValueError("Retries must be a positive integer")  # noqa: TRY003
 
     def _with_retry_exponential_backoff(opts: ClientOptions) -> ClientOptions:
         """Helper function to update options with retry strategy.
