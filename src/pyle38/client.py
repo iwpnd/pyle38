@@ -6,7 +6,7 @@ from redis.asyncio import Connection, Redis
 from redis.asyncio.connection import parse_url
 
 from .client_options import ClientOptions
-from .parse_response import parse_response  # pyright: ignore[reportUnknownVariableType]
+from .parse_response import parse_response
 
 TILE38_DEFAULT_HOST = "localhost"
 TILE38_DEFAULT_PORT = 9851

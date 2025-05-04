@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Literal
 
-from ..client import Client, Command, CommandArgs, SubCommand
+from ..client import Client, Command, CommandArg, CommandArgs, SubCommand
 from ..errors import Pyle38NoHookToActivateError
 from ..models import Options, PointQuery
 from ..responses import (
@@ -318,7 +318,7 @@ class Nearby(Executable, Whereable):
         Returns:
             CommandArgs
         """
-        commands = []
+        commands: list[CommandArg] = []
 
         # raises mypy: TypedDict key must be string literal
         # open PR: https://github.com/python/mypy/issues/7867
