@@ -1,6 +1,6 @@
 [project]
 name = "pyle38"
-version = "1.0.0"
+version = "0.15.0"
 description = "python client for Tile38"
 authors = [{ name = "Benjamin Ramser", email = "iwpnd@posteo.de" }]
 readme = "README.md"
@@ -152,6 +152,7 @@ commit_message = "release: 🚀 v{version}"
 branch = "main"
 upload_to_release = true
 build_command = "pip install uv && uv build"
+allow_zero_version = true
 
 [tool.semantic_release.commit_parser_options]
 allowed_tags = [
