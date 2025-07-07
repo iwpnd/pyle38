@@ -4,6 +4,8 @@ import json
 from collections.abc import Sequence
 from typing import Any, Literal
 
+from typing_extensions import override
+
 from ..client import Client, Command, SubCommand
 from ..responses import Fields, JSONResponse
 from .executable import Compiled, Executable
@@ -128,5 +130,6 @@ class Set(Executable):
             ],
         ]  # type: ignore
 
-    async def exec(self) -> JSONResponse:  # type: ignore
+    @override
+    async def exec(self) -> JSONResponse:  # type: ignore[override]
         return JSONResponse(**(await self.client.command(*self.compile())))

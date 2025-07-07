@@ -131,7 +131,7 @@ class Leader(Follower):
         return Fset(self.client, key, oid, fields)
 
     # TODO: how can I override supertype Follower here correctly?
-    async def info(self) -> InfoLeaderResponse:  # type: ignore
+    async def info(self) -> InfoLeaderResponse:  # type: ignore[override]
         """Get detailed server information specific to the leader.
 
         Tile38 Command:
@@ -299,7 +299,7 @@ class Leader(Follower):
         return Set(self.client, key, oid)
 
     # TODO: how can I override supertype Follower here correctly?
-    async def server(self) -> ServerStatsResponseLeader:  # type: ignore
+    async def server(self) -> ServerStatsResponseLeader:  # type: ignore[override]
         """Get server stats specific to the leader.
 
         Tile38 Command:

@@ -109,5 +109,5 @@ class Fset(Executable):
             ],
         ]  # type: ignore
 
-    async def exec(self) -> JSONResponse:  # type: ignore
+    async def exec(self) -> JSONResponse:  # type: ignore[override]
         return JSONResponse(**(await self.client.command(*self.compile())))
