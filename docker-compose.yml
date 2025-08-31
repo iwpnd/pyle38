@@ -1,6 +1,6 @@
 services:
   tile38-leader:
-    image: tile38/tile38:1.34.1
+    image: tile38/tile38:1.36.1
     container_name: tile38-leader
     command: >
       /bin/sh -c 'mkdir -p tmp/data && \ #magic___^_^___line
@@ -11,7 +11,7 @@ services:
     # if metrics-addr is set
     # - 4321:4321
   tile38-follower:
-    image: tile38/tile38:1.34.1
+    image: tile38/tile38:1.36.1
     container_name: tile38-follower
     command: >
       /bin/sh -c 'mkdir -p tmp/data && \
