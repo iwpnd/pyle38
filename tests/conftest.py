@@ -1,10 +1,8 @@
 import os
-from asyncio import AbstractEventLoop
 from collections.abc import AsyncGenerator, Awaitable, Callable
 from typing import Any
 
 import pytest
-from _pytest.fixtures import SubRequest
 
 from pyle38 import Tile38
 
@@ -15,41 +13,39 @@ default_tile38_follower_url = (
 
 
 @pytest.fixture()
-def create_tile38(
-    request: SubRequest, event_loop: AbstractEventLoop
-) -> Callable[..., Awaitable[Tile38]]:
-    async def f(url: str = default_tile38_leader_url) -> Tile38:
+async def create_tile38():  # type: ignore[no-untyped-def]
+    teardown_clients = []
+
+    async def client_factory(url: str = default_tile38_leader_url) -> Tile38:
         tile38 = Tile38(url)
         # make sure to reset readonly
         await tile38.readonly(False)
 
-        def teardown() -> None:
-            async def ateardown() -> None:
-                try:
-                    await tile38.flushdb()
-                    await tile38.readonly(False)
-                # TODO: find explicit exception
-                except Exception:
-                    await tile38.flushdb()
+        async def teardown() -> None:
+            try:
+                await tile38.flushdb()
+                await tile38.readonly(False)
+            # TODO: find explicit exception
+            except Exception as e:
+                print(e)
+                await tile38.flushdb()
 
-                await tile38.quit()
+            await tile38.quit()
 
-            if event_loop.is_running():
-                event_loop.create_task(ateardown())
-            else:
-                event_loop.run_until_complete(ateardown())
-
-        request.addfinalizer(teardown)
+        teardown_clients.append(teardown)
         return tile38
 
-    return f
+    yield client_factory
+
+    for teardown in teardown_clients:
+        await teardown()
 
 
 @pytest.fixture()
-def create_tile38_with_follower(
-    request: SubRequest, event_loop: AbstractEventLoop
-) -> Callable[..., Awaitable[Tile38]]:
-    async def f(
+async def create_tile38_with_follower():  # type: ignore[no-untyped-def]
+    teardown_clients = []
+
+    async def client_factory(
         url: str = default_tile38_leader_url,
         follower_url: str = default_tile38_follower_url,
     ) -> Tile38:
@@ -57,25 +53,23 @@ def create_tile38_with_follower(
         # make sure to reset readonly
         await tile38.readonly(False)
 
-        def teardown() -> None:
-            async def ateardown() -> None:
-                try:
-                    await tile38.flushdb()
-                # TODO: find explicit exception
-                except Exception:
-                    await tile38.flushdb()
+        async def teardown() -> None:
+            try:
+                await tile38.flushdb()
+            # TODO: find explicit exception
+            except Exception as e:
+                print(e)
+                await tile38.flushdb()
 
-                await tile38.quit()
+            await tile38.quit()
 
-            if event_loop.is_running():
-                event_loop.create_task(ateardown())
-            else:
-                event_loop.run_until_complete(ateardown())
-
-        request.addfinalizer(teardown)
+        teardown_clients.append(teardown)
         return tile38
 
-    return f
+    yield client_factory
+
+    for teardown in teardown_clients:
+        await teardown()
 
 
 @pytest.fixture()
