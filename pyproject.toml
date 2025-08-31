@@ -29,7 +29,6 @@ dependencies = [
 [dependency-groups]
 dev = [
   "types-redis>=4.6.0.20241004",
-  "pytest-asyncio>=0.25.2",
   "pytest>=7.2.0",
   "pre-commit>=2.20.0",
   "tox-uv>=1.11.3",
@@ -39,6 +38,7 @@ dev = [
   "ruff>=0.9.2",
   "gitlint>=0.19.1",
   "python-semantic-release>=9.21.0",
+  "pytest-asyncio==0.25.2",
 ]
 
 [project.urls]
