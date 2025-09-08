@@ -998,7 +998,7 @@ wheels = [
 
 [[package]]
 name = "python-semantic-release"
-version = "10.3.1"
+version = "10.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -1015,9 +1015,9 @@ dependencies = [
     { name = "shellingham" },
     { name = "tomlkit" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/af/75/fb578d1805dc482f619c82431b398ab3c0489817a1cdbe2fa1be48d3d7d3/python_semantic_release-10.3.1.tar.gz", hash = "sha256:16003292315ee29b6ad424fad9745946422cf965e19649269c4e2fb8271cb267", size = 323536, upload-time = "2025-08-06T04:41:10.135Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/dd/fd/da8e66fc4254c3337c7e2a9843af4a046e29176bd7efe49c7a903e423f49/python_semantic_release-10.4.0.tar.gz", hash = "sha256:1528e939af2d3128be471d94bb39a675f35adb4ea17e9c4bf4f86289cc20e006", size = 605272, upload-time = "2025-09-08T06:57:31.465Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/78/49/0a74aafd0da45a7ee2c38b82112d576ee48a6795d813c8025cdf9cbaf159/python_semantic_release-10.3.1-py3-none-any.whl", hash = "sha256:b2677018e761dfbfdf5758eeee6b09963e136d67c43059f12f9bc6c441fcbf13", size = 142065, upload-time = "2025-08-06T04:41:08.056Z" },
+    { url = "https://files.pythonhosted.org/packages/a2/dc/cbc1f20e40dc23bc0c76e347b20b411ae989f5beff21d2d30fc5c91d01a4/python_semantic_release-10.4.0-py3-none-any.whl", hash = "sha256:e962a0da286e09ce798f681bcd7bc534d347f2e142818ac781bc50e35bab571b", size = 149619, upload-time = "2025-09-08T06:57:29.893Z" },
 ]
 
 [[package]]
