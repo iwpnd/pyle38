@@ -38,7 +38,7 @@ dev = [
   "ruff>=0.9.2",
   "gitlint>=0.19.1",
   "python-semantic-release>=9.21.0",
-  "pytest-asyncio==1.1.0",
+  "pytest-asyncio==1.2.0",
 ]
 
 [project.urls]
