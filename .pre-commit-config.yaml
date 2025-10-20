@@ -23,13 +23,13 @@ repos:
 #     args: [--ignore-missing-imports, --config-file=pyproject.toml]
 #     additional_dependencies: [types-redis]
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: "v0.12.12"
+  rev: "v0.14.1"
   hooks:
   - id: ruff
     args: [--exit-non-zero-on-fix]
   - id: ruff-format
 - repo: https://github.com/astral-sh/uv-pre-commit
-  rev: 0.8.15
+  rev: 0.9.4
   hooks:
   - id: uv-lock
 - repo: local
