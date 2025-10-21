@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 2
 requires-python = ">=3.10, <4.0"
 
 [[package]]
@@ -1041,7 +1041,7 @@ dev = [
     { name = "mypy", specifier = ">=0.991" },
     { name = "pre-commit", specifier = ">=2.20.0" },
     { name = "pytest", specifier = ">=7.2.0" },
-    { name = "pytest-asyncio", specifier = "==1.2.0" },
+    { name = "pytest-asyncio", specifier = ">=1.1.0" },
     { name = "pytest-cov", specifier = ">=4.0.0" },
     { name = "python-semantic-release", specifier = ">=9.21.0" },
     { name = "ruff", specifier = ">=0.9.2" },
