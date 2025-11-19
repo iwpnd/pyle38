@@ -1,8 +1,11 @@
 .PHONY: install
 install:
-	@echo "creating venv"
+	@echo "installing"
 	@uv sync
 	@uv run pre-commit install
+	@uv run pre-commit install --hook-type commit-msg
+	@uv run pre-commit install --hook-type prepare-commit-msg
+	@echo "install complete"
 
 .PHONY: check
 check:
