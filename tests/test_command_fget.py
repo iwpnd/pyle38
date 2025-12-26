@@ -70,8 +70,8 @@ async def test_command_fget_nonexistent_field(tile38: Tile38) -> None:
     # Try to get a field that doesn't exist
     response = await tile38.fget(key, oid, fkey).exec()
     assert response.ok
-    # According to Tile38 docs, it should return 0 for non-existent fields
-    assert response.value == 0
+    # FEXISTS returns False, so we return None
+    assert response.value is None
 
 
 @pytest.mark.asyncio
@@ -95,4 +95,22 @@ async def test_command_fget_after_fset(tile38: Tile38) -> None:
     response = await tile38.fget(key, oid, fkey).exec()
     assert response.ok
     assert response.value == fvalue
+
+
+@pytest.mark.asyncio
+async def test_command_fget_field_set_to_zero(tile38: Tile38) -> None:
+    key = random_string()
+    oid = random_string()
+    fkey = random_string()
+    obj = random_point_feature()
+
+    # Set an object with field explicitly set to 0
+    response = await tile38.set(key, oid).fields({fkey: 0}).object(obj).exec()
+    assert response.ok
+
+    # Get the field - Tile38 FEXISTS returns False for fields set to 0
+    response = await tile38.fget(key, oid, fkey).exec()
+    assert response.ok
+    # Since FEXISTS returns False for 0-valued fields, we return None
+    assert response.value is None
 

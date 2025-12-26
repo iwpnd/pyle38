@@ -8,6 +8,9 @@ from .executable import Compiled, Executable
 class Fget(Executable):
     """Get the value of a specific field of an id.
 
+    Returns None if the field doesn't exist (checked via FEXISTS).
+    Returns the actual value (including 0) if the field exists.
+
     Example::
 
         key = fleet
@@ -16,6 +19,7 @@ class Fget(Executable):
         await tile38.set(key, id).point(52.25, 13.37).exec()
         await tile38.fset(key, id, {"speed": 90}).exec()
         response = await tile38.fget(key, id, field).exec()
+        # response.value will be 90 or None if field doesn't exist
     """
 
     _key: str
@@ -77,5 +81,17 @@ class Fget(Executable):
         ]  # type: ignore
 
     async def exec(self) -> FgetResponse:  # type: ignore[override]
-        return FgetResponse(**(await self.client.command(*self.compile())))
+        # First check if the field exists using FEXISTS
+        fexists_response = await self.client.command(
+            Command.FEXISTS.value, [self._key, self._id, self._field]
+        )
+        
+        # Get the field value
+        fget_response = await self.client.command(*self.compile())
+        
+        # If field doesn't exist, set value to None
+        if not fexists_response.get("exists", False):
+            fget_response["value"] = None
+        
+        return FgetResponse(**fget_response)
 
