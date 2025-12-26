@@ -25,6 +25,7 @@ class Command(str, Enum):
     EXISTS = "EXISTS"
     EXPIRE = "EXPIRE"
     FEXISTS = "FEXISTS"
+    FGET = "FGET"
     FLUSHDB = "FLUSHDB"
     FSET = "FSET"
     GC = "GC"

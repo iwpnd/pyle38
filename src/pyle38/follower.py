@@ -3,6 +3,7 @@ from typing import Literal
 
 from .client import Client, Command, SubCommand
 from .client_options import ClientOptions
+from .commands.fget import Fget
 from .commands.get import Get
 from .commands.intersects import Intersects
 from .commands.nearby import Nearby
@@ -89,6 +90,22 @@ class Follower:
         return ExistsResponse(
             **(await self.client.command(Command.FEXISTS, [key, oid, field]))
         )
+
+    def fget(self, key: str, oid: str, field: str) -> Fget:
+        """Get the value of a specific field within an object.
+
+        Tile38 Command:
+            FGET key id field
+
+        Args:
+            key (str): The collection key.
+            id (str): The object ID.
+            field (str): The field name.
+
+        Returns:
+            Fget: An object to retrieve a field value from Tile38.
+        """
+        return Fget(self.client, key, oid, field)
 
     async def bounds(self, key: str) -> BoundsResponse:
         """Get the bounds of a collection.

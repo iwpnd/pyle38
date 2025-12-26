@@ -267,6 +267,10 @@ class JSONGetResponse(JSONResponse):
     value: int | float | str | None = "{}"
 
 
+class FgetResponse(JSONResponse):
+    value: int | float | str | None = None
+
+
 class Hooks(BaseModel):
     name: str
     endpoints: list[str]
