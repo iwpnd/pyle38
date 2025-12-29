@@ -320,7 +320,7 @@ await tile38.set('fleet', 'truck1:driver').string('John Denton').exec()
 Set the value for one or more fields of an object.
 
 ```python
-await tile38.fset('fleet', 'truck1', { "maxSpeed": 90, "milage": 90000 })
+await tile38.fset('fleet', 'truck1', { "maxSpeed": 90, "milage": 90000 }).exec()
 ```
 
 **Options**
@@ -328,6 +328,26 @@ await tile38.fset('fleet', 'truck1', { "maxSpeed": 90, "milage": 90000 })
 | command | description                                                                                                                                                                                      |
 | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `.xx()` | `FSET` returns error if fields are set on non-existing ids. `xx()` options changes this behaviour and instead returns `0` if id does not exist. If key does not exist `FSET` still returns error |
+
+#### FGET
+
+Get the value the field of an object.
+
+```python
+await tile38.fset('fleet', 'truck1', { "maxSpeed": 90, "milage": 90000 }).exec()
+response = await tile38.fget('fleet', 'truck1', 'maxSpeed').exec()
+
+print(response.ok)
+> True
+
+print(response.dict())
+> {
+    'ok': True,
+    'elapsed': '29.3µs',
+    'value': 90
+```
+
+If field does not exist on the requested object it raises `Tile38FieldNotFoundError`.
 
 #### FEXISTS
 
