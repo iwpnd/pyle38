@@ -115,13 +115,15 @@ async def test_command_scan(tile38: Tile38) -> None:
 @pytest.mark.asyncio
 async def test_command_scan_wherein(tile38: Tile38) -> None:
     await (
-        tile38.set(key, oid)
+        tile38
+        .set(key, oid)
         .fields({"maxspeed": 120, "maxweight": 1000})
         .object(feature)
         .exec()
     )
     await (
-        tile38.set(key, "truck1")
+        tile38
+        .set(key, "truck1")
         .fields({"maxspeed": 100, "maxweight": 1000})
         .object(feature)
         .exec()
@@ -133,7 +135,8 @@ async def test_command_scan_wherein(tile38: Tile38) -> None:
     assert response.objects[0].dict() == dict(expected, **{"fields": [120, 1000]})
 
     response = (
-        await tile38.scan(key)
+        await tile38
+        .scan(key)
         .wherein("maxspeed", [100, 120])
         .wherein("maxweight", [1000])
         .asObjects()
@@ -145,13 +148,15 @@ async def test_command_scan_wherein(tile38: Tile38) -> None:
 @pytest.mark.asyncio
 async def test_command_scan_where(tile38: Tile38) -> None:
     await (
-        tile38.set(key, oid)
+        tile38
+        .set(key, oid)
         .fields({"maxspeed": 120, "maxweight": 1000})
         .object(feature)
         .exec()
     )
     await (
-        tile38.set(key, "truck1")
+        tile38
+        .set(key, "truck1")
         .fields({"maxspeed": 100, "maxweight": 1000})
         .object(feature)
         .exec()
@@ -163,7 +168,8 @@ async def test_command_scan_where(tile38: Tile38) -> None:
     assert response.objects[0].dict() == dict(expected, **{"fields": [120, 1000]})
 
     response = (
-        await tile38.scan(key)
+        await tile38
+        .scan(key)
         .where("maxspeed", 100, 120)
         .where("maxweight", 1000, 1000)
         .asObjects()

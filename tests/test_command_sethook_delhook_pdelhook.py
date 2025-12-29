@@ -88,7 +88,8 @@ async def test_command_sethook(tile38: Tile38) -> None:
     name = random_string()
 
     response = (
-        await tile38.sethook(name, endpoint)
+        await tile38
+        .sethook(name, endpoint)
         .within(key)
         .circle(52.25, 13.37, 100)
         .activate()
@@ -96,7 +97,8 @@ async def test_command_sethook(tile38: Tile38) -> None:
     assert response.ok
 
     response = (
-        await tile38.sethook(name, endpoint)
+        await tile38
+        .sethook(name, endpoint)
         .intersects(key)
         .circle(52.25, 13.37, 100)
         .activate()
@@ -104,7 +106,8 @@ async def test_command_sethook(tile38: Tile38) -> None:
     assert response.ok
 
     response = (
-        await tile38.sethook(name, endpoint)
+        await tile38
+        .sethook(name, endpoint)
         .nearby(key)
         .point(52.25, 13.37, 100)
         .activate()
@@ -132,7 +135,8 @@ async def test_command_pdelhook(tile38: Tile38) -> None:
     name = random_string()
 
     response = (
-        await tile38.sethook(name, endpoint)
+        await tile38
+        .sethook(name, endpoint)
         .within(key)
         .circle(52.25, 13.37, 100)
         .activate()
@@ -157,7 +161,8 @@ async def test_command_delhook(tile38: Tile38) -> None:
     name = random_string()
 
     response = (
-        await tile38.sethook(name, endpoint)
+        await tile38
+        .sethook(name, endpoint)
         .within(key)
         .circle(52.25, 13.37, 100)
         .activate()

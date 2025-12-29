@@ -115,7 +115,8 @@ async def test_command_intersects_with_fields(tile38: Tile38) -> None:
     info = {"height": height, "weight": weight, "name": name}
 
     response = (
-        await tile38.set(key, oid)
+        await tile38
+        .set(key, oid)
         .fields({"info": info, "height": height, "weight": weight, "name": name})
         .object(feature)
         .exec()
@@ -146,20 +147,23 @@ async def test_command_intersects_circle(tile38: Tile38) -> None:
 @pytest.mark.asyncio
 async def test_command_intersects_where_circle(tile38: Tile38) -> None:
     await (
-        tile38.set(key, oid)
+        tile38
+        .set(key, oid)
         .fields({"maxspeed": 120, "maxweight": 1000})
         .object(feature)
         .exec()
     )
     await (
-        tile38.set(key, "truck1")
+        tile38
+        .set(key, "truck1")
         .fields({"maxspeed": 100, "maxweight": 1000})
         .object(feature)
         .exec()
     )
 
     response = (
-        await tile38.intersects(key)
+        await tile38
+        .intersects(key)
         .where("maxspeed", 120, 120)
         .circle(52.25, 13.37, 100)
         .asObjects()
@@ -169,7 +173,8 @@ async def test_command_intersects_where_circle(tile38: Tile38) -> None:
     assert response.objects[0].dict() == dict(expected, **{"fields": [120, 1000]})
 
     response = (
-        await tile38.intersects(key)
+        await tile38
+        .intersects(key)
         .where("maxspeed", 100, 120)
         .where("maxweight", 1000, 1000)
         .circle(52.25, 13.37, 100)
@@ -182,20 +187,23 @@ async def test_command_intersects_where_circle(tile38: Tile38) -> None:
 @pytest.mark.asyncio
 async def test_command_intersects_wherein_circle(tile38: Tile38) -> None:
     await (
-        tile38.set(key, oid)
+        tile38
+        .set(key, oid)
         .fields({"maxspeed": 120, "maxweight": 1000})
         .object(feature)
         .exec()
     )
     await (
-        tile38.set(key, "truck1")
+        tile38
+        .set(key, "truck1")
         .fields({"maxspeed": 100, "maxweight": 1000})
         .object(feature)
         .exec()
     )
 
     response = (
-        await tile38.intersects(key)
+        await tile38
+        .intersects(key)
         .wherein("maxspeed", [120])
         .circle(52.25, 13.37, 100)
         .asObjects()
@@ -205,7 +213,8 @@ async def test_command_intersects_wherein_circle(tile38: Tile38) -> None:
     assert response.objects[0].dict() == dict(expected, **{"fields": [120, 1000]})
 
     response = (
-        await tile38.intersects(key)
+        await tile38
+        .intersects(key)
         .wherein("maxspeed", [100, 120])
         .wherein("maxweight", [1000])
         .circle(52.25, 13.37, 100)
@@ -218,20 +227,23 @@ async def test_command_intersects_wherein_circle(tile38: Tile38) -> None:
 @pytest.mark.asyncio
 async def test_command_intersects_where_expr_circle(tile38: Tile38) -> None:
     await (
-        tile38.set(key, oid)
+        tile38
+        .set(key, oid)
         .fields({"maxspeed": 120, "maxweight": 1000})
         .object(feature)
         .exec()
     )
     await (
-        tile38.set(key, "truck1")
+        tile38
+        .set(key, "truck1")
         .fields({"maxspeed": 100, "maxweight": 1000})
         .object(feature)
         .exec()
     )
 
     response = (
-        await tile38.intersects(key)
+        await tile38
+        .intersects(key)
         .where_expr("maxspeed >= 100 && maxspeed <= 120 && maxweight == 1000")
         .circle(52.25, 13.37, 100)
         .asObjects()
@@ -287,7 +299,8 @@ async def test_command_intersects_object(tile38: Tile38) -> None:
 
     with pytest.raises(Pyle38BadObjectInputError):
         response = (
-            await tile38.intersects(key)
+            await tile38
+            .intersects(key)
             .object({
                 "type": "Point",
                 "coordinates": [1, 1],
@@ -332,7 +345,8 @@ async def test_command_intersects_sector(tile38: Tile38) -> None:
     assert response.ok
 
     response = (
-        await tile38.intersects(key)
+        await tile38
+        .intersects(key)
         .sector(52.25191, 13.37230, 1000, 180, 270)
         .asObjects()
     )

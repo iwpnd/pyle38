@@ -126,7 +126,8 @@ async def test_command_within_where_circle(tile38: Tile38) -> None:
     await tile38.set(key, "truck2").fields({"maxspeed": 100}).object(feature).exec()
 
     response = (
-        await tile38.within(key)
+        await tile38
+        .within(key)
         .where("maxspeed", 120, 120)
         .circle(52.25, 13.37, 100)
         .asObjects()
@@ -136,7 +137,8 @@ async def test_command_within_where_circle(tile38: Tile38) -> None:
     assert response.objects[0].dict() == dict(expected, **{"fields": [120]})
 
     response = (
-        await tile38.within(key)
+        await tile38
+        .within(key)
         .where("maxspeed", 100, 120)
         .circle(52.25, 13.37, 100)
         .asObjects()
@@ -151,7 +153,8 @@ async def test_command_within_wherein_circle(tile38: Tile38) -> None:
     await tile38.set(key, "truck2").fields({"maxspeed": 100}).object(feature).exec()
 
     response = (
-        await tile38.within(key)
+        await tile38
+        .within(key)
         .wherein("maxspeed", [120])
         .circle(52.25, 13.37, 100)
         .asObjects()
@@ -161,7 +164,8 @@ async def test_command_within_wherein_circle(tile38: Tile38) -> None:
     assert response.objects[0].dict() == dict(expected, **{"fields": [120]})
 
     response = (
-        await tile38.within(key)
+        await tile38
+        .within(key)
         .wherein("maxspeed", [100, 120])
         .circle(52.25, 13.37, 100)
         .asObjects()

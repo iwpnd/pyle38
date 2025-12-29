@@ -81,20 +81,23 @@ async def test_command_search_returns_where_stringobjects(tile38: Tile38) -> Non
     pattern = string[:1] + "*"
 
     await (
-        tile38.set(key, oid)
+        tile38
+        .set(key, oid)
         .fields({"maxspeed": 120, "maxweight": 1000})
         .string(string)
         .exec()
     )
     await (
-        tile38.set(key, random_string())
+        tile38
+        .set(key, random_string())
         .fields({"maxspeed": 100, "maxweight": 1000})
         .string(random_string())
         .exec()
     )
 
     response = (
-        await tile38.search(key)
+        await tile38
+        .search(key)
         .where("maxspeed", 120, 120)
         .match(pattern)
         .asStringObjects()
@@ -106,7 +109,8 @@ async def test_command_search_returns_where_stringobjects(tile38: Tile38) -> Non
     )
 
     response = (
-        await tile38.search(key)
+        await tile38
+        .search(key)
         .where("maxspeed", 100, 120)
         .where("maxweight", 1000, 1000)
         .match(pattern)
@@ -127,20 +131,23 @@ async def test_command_search_returns_wherein_stringobjects(tile38: Tile38) -> N
     pattern = string[:1] + "*"
 
     await (
-        tile38.set(key, oid)
+        tile38
+        .set(key, oid)
         .fields({"maxspeed": 120, "maxweight": 1000})
         .string(string)
         .exec()
     )
     await (
-        tile38.set(key, random_string())
+        tile38
+        .set(key, random_string())
         .fields({"maxspeed": 100, "maxweight": 1000})
         .string(random_string())
         .exec()
     )
 
     response = (
-        await tile38.search(key)
+        await tile38
+        .search(key)
         .wherein("maxspeed", [120])
         .match(pattern)
         .asStringObjects()
@@ -152,7 +159,8 @@ async def test_command_search_returns_wherein_stringobjects(tile38: Tile38) -> N
     )
 
     response = (
-        await tile38.search(key)
+        await tile38
+        .search(key)
         .wherein("maxspeed", [100, 120])
         .wherein("maxweight", [1000])
         .match(pattern)
