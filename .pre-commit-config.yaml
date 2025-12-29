@@ -20,23 +20,23 @@ repos:
       - id: check-merge-conflict
       - id: check-yaml
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.18.2
+    rev: v1.19.1
     hooks:
       - id: mypy
         args: [--ignore-missing-imports]
         additional_dependencies: [types-redis]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.14.5"
+    rev: "v0.14.10"
     hooks:
       - id: ruff
         args: [--exit-non-zero-on-fix]
       - id: ruff-format
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.10
+    rev: 0.9.18
     hooks:
       - id: uv-lock
   - repo: https://github.com/iwpnd/pre-commit-devmoji
-    rev: v0.0.5
+    rev: v0.0.6
     hooks:
       - id: devmoji
         stages: [prepare-commit-msg]
