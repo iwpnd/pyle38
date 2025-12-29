@@ -8,7 +8,7 @@ from ..responses import Fields, JSONResponse
 from .executable import Compiled, Executable
 
 
-class Fset(Executable):
+class FSet(Executable):
     """Set the value for one or more fields of an id.
 
     Example::
@@ -31,7 +31,7 @@ class Fset(Executable):
         self._fields = {}
         self.key(key).id(oid).fields(fields)
 
-    def key(self, key: str) -> Fset:
+    def key(self, key: str) -> FSet:
         """Set key of id to add fields to
 
         Args:
@@ -44,7 +44,7 @@ class Fset(Executable):
 
         return self
 
-    def id(self, oid: str) -> Fset:
+    def id(self, oid: str) -> FSet:
         """Set id to add fields to
 
         Args:
@@ -57,7 +57,7 @@ class Fset(Executable):
 
         return self
 
-    def fields(self, fields: Fields) -> Fset:
+    def fields(self, fields: Fields) -> FSet:
         """Set fields to add to object in collection
 
         Args:
@@ -70,7 +70,7 @@ class Fset(Executable):
 
         return self
 
-    def xx(self, flag: bool = True) -> Fset:
+    def xx(self, flag: bool = True) -> FSet:
         """Alter behaviour if key/id does not exists
 
         If set, command will return 0 if key/id was not foundotherwise errors
@@ -105,7 +105,7 @@ class Fset(Executable):
                 self._key,
                 self._id,
                 *([self._xx] if self._xx else []),
-                *(Fset.__unpack_fields(self._fields) if self._fields else []),
+                *(FSet.__unpack_fields(self._fields) if self._fields else []),
             ],
         ]  # type: ignore
 

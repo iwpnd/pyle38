@@ -3,6 +3,7 @@ from typing import Literal
 
 from .client import Client, Command, SubCommand
 from .client_options import ClientOptions
+from .commands.fget import FGet
 from .commands.get import Get
 from .commands.intersects import Intersects
 from .commands.nearby import Nearby
@@ -191,6 +192,22 @@ class Follower:
             Get: An object that allows retrieving data from Tile38.
         """
         return Get(self.client, key, oid)
+
+    def fget(self, key: str, oid: str, field: str) -> FGet:
+        """Get a specific field on an object.
+
+        Tile38 Command:
+            FGET key id field
+
+        Args:
+            key (str): The collection key.
+            id (str): The object ID.
+            field (str): The field to look up.
+
+        Returns:
+            FGet: An object that allows retrieving field data from Tile38.
+        """
+        return FGet(self.client, key, oid, field)
 
     async def hooks(self, pattern: str = "*") -> HooksResponse:
         """List active hooks.

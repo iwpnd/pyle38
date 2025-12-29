@@ -1,7 +1,7 @@
 from typing import Literal
 
 from .client import Command, CommandArg
-from .commands.fset import Fset
+from .commands.fset import FSet
 from .commands.set import Set
 from .commands.setchan import SetChan
 from .commands.sethook import SetHook
@@ -114,7 +114,7 @@ class Leader(Follower):
         """
         return JSONResponse(**(await self.client.command(Command.FLUSHDB)))
 
-    def fset(self, key: str, oid: str, fields: Fields) -> Fset:
+    def fset(self, key: str, oid: str, fields: Fields) -> FSet:
         """Set fields on an existing object.
 
         Tile38 Command:
@@ -128,7 +128,7 @@ class Leader(Follower):
         Returns:
             Fset: An object to perform field set operations.
         """
-        return Fset(self.client, key, oid, fields)
+        return FSet(self.client, key, oid, fields)
 
     # TODO: how can I override supertype Follower here correctly?
     async def info(self) -> InfoLeaderResponse:  # type: ignore[override]

@@ -17,6 +17,10 @@ class Tile38KeyNotFoundError(Exception):
     pass
 
 
+class Tile38FieldNotFoundError(Exception):
+    pass
+
+
 class Tile38NotCaughtUpError(Exception):
     pass
 
