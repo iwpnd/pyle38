@@ -78,7 +78,7 @@ async def test_command_search_returns_where_stringobjects(tile38: Tile38) -> Non
     key = random_string()
     oid = random_string()
     string = random_string()
-    pattern = string[:1] + "*"
+    pattern = string[:3] + "*"
 
     await (
         tile38
@@ -128,7 +128,7 @@ async def test_command_search_returns_wherein_stringobjects(tile38: Tile38) -> N
     key = random_string()
     oid = random_string()
     string = random_string()
-    pattern = string[:1] + "*"
+    pattern = string[:3] + "*"
 
     await (
         tile38
