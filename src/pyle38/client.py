@@ -11,7 +11,7 @@ from .parse_response import parse_response
 
 TILE38_DEFAULT_HOST = "localhost"
 TILE38_DEFAULT_PORT = 9851
-PYLE38_USE_CONNECTION_POOL = os.getenv("PYLE38_USE_CONNECTION_POOL") or False
+PYLE38_USE_CONNECTION_POOL = os.getenv("PYLE38_USE_CONNECTION_POOL")
 
 
 class Command(str, Enum):
@@ -219,7 +219,7 @@ class Client:
             url_components = parse_url(self.__url)
             host: str = url_components.get("host") or TILE38_DEFAULT_HOST
             port: int = url_components.get("port") or TILE38_DEFAULT_PORT
-            single_connection_client = bool(PYLE38_USE_CONNECTION_POOL)
+            single_connection_client = PYLE38_USE_CONNECTION_POOL == "True"
 
             r: Redis = Redis(
                 host=host,
