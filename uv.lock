@@ -1084,7 +1084,7 @@ wheels = [
 
 [[package]]
 name = "pyle38"
-version = "0.16.0"
+version = "0.16.1"
 source = { editable = "." }
 dependencies = [
     { name = "pydantic" },
