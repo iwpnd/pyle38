@@ -1,3 +1,4 @@
+import os
 from collections.abc import Callable, Sequence
 from enum import Enum
 from typing import Any
@@ -10,6 +11,7 @@ from .parse_response import parse_response
 
 TILE38_DEFAULT_HOST = "localhost"
 TILE38_DEFAULT_PORT = 9851
+PYLE38_USE_CONNECTION_POOL = os.getenv("PYLE38_USE_CONNECTION_POOL") or False
 
 
 class Command(str, Enum):
@@ -217,12 +219,13 @@ class Client:
             url_components = parse_url(self.__url)
             host: str = url_components.get("host") or TILE38_DEFAULT_HOST
             port: int = url_components.get("port") or TILE38_DEFAULT_PORT
+            single_connection_client = bool(PYLE38_USE_CONNECTION_POOL)
 
             r: Redis = Redis(
                 host=host,
                 port=port,
                 encoding="utf-8",
-                single_connection_client=True,
+                single_connection_client=single_connection_client,
                 decode_responses=True,
                 redis_connect_func=self.__on_connect,
                 **self.__client_options,
