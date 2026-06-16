@@ -23,12 +23,11 @@ classifiers = [
 
 dependencies = [
   "pydantic>=2.10.5",
-  "redis>=5.2.1",
+  "redis==8.0.0",
 ]
 
 [dependency-groups]
 dev = [
-  "types-redis>=4.6.0.20241004",
   "pytest>=7.2.0",
   "pre-commit>=2.20.0",
   "tox-uv>=1.11.3",

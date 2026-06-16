@@ -228,6 +228,7 @@ class Client:
                 single_connection_client=single_connection_client,
                 decode_responses=True,
                 redis_connect_func=self.__on_connect,
+                protocol=2,
                 **self.__client_options,
             )
 
