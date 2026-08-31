@@ -11,8 +11,8 @@ install:
 check:
 	@echo "check lockfile consistency"
 	@uv lock --locked
-	@echo "run pre-commit hooks"
-	@uv run pre-commit run -a
+	@echo "run ty checks"
+	@uv run ty check --exit-zero-on-warning
 	@echo "check for obsolete dependencies"
 	@uv run deptry src
 
