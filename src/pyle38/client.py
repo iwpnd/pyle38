@@ -6,7 +6,7 @@ from typing import Any
 from redis.asyncio import Connection, Redis
 from redis.asyncio.connection import parse_url
 
-from .client_options import ClientOptions
+from .client_options import ClientOptions, WithConnectionPool
 from .parse_response import parse_response
 
 TILE38_DEFAULT_HOST = "localhost"
@@ -151,7 +151,9 @@ class Client:
         self.__redis = None
         self.__client_options = {}
 
-        default_options: list[Callable[..., ClientOptions]] = []
+        default_options: list[Callable[..., ClientOptions]] = [
+            WithConnectionPool(use_pool=False)
+        ]
         if options:
             default_options.extend(options)
 
@@ -219,18 +221,19 @@ class Client:
             url_components = parse_url(self.__url)
             host: str = url_components.get("host") or TILE38_DEFAULT_HOST
             port: int = url_components.get("port") or TILE38_DEFAULT_PORT
-            single_connection_client = PYLE38_USE_CONNECTION_POOL == "True"
 
             r: Redis = Redis(
                 host=host,
                 port=port,
                 encoding="utf-8",
-                single_connection_client=single_connection_client,
                 decode_responses=True,
                 redis_connect_func=self.__on_connect,
                 protocol=2,
                 **self.__client_options,
             )
+
+            if not self.__client_options.get("single_connection_client"):
+                r.auto_close_connection_pool = True
 
             self.__redis = r
 

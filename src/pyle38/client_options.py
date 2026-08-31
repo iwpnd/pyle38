@@ -10,10 +10,49 @@ from .errors import Pyle38Error
 type Pyle38Retry = Retry
 type Pyle38ExponentialBackoff = ExponentialBackoff
 
+default_max_connections = 20
+
 
 class ClientOptions(TypedDict):
     retry: NotRequired[Pyle38Retry]
     retry_on_error: NotRequired[list[type[Pyle38Error]]]
+    single_connection_client: NotRequired[bool]
+    max_connections: NotRequired[int | None]
+
+
+def WithConnectionPool(
+    use_pool: bool = False, max_connections: int | None = default_max_connections
+) -> Callable[..., ClientOptions]:
+    """Return a callable that configures whether or not to use a connection pool.
+
+    This function creates and returns a callable that, when invoked, will configure
+    to use a pool instead of a single connection client.
+
+    Args:
+        pool (boolean): use a pool
+
+    Returns:
+        Callable[..., ClientOptions]: A function that accepts `ClientOptions` and
+        configures exponential backoff retry with the specified number of retries.
+    """
+
+    def _with_connection_pool(opts: ClientOptions) -> ClientOptions:
+        """Helper function to update options with retry strategy.
+
+        This function modifies the `ClientOptions` by setting the `retry` field
+        to the configured exponential backoff retry strategy.
+
+        Args:
+            opts (ClientOptions): The current client options to update.
+
+        Returns:
+            ClientOptions: The updated client options with retry configuration.
+        """
+        opts["single_connection_client"] = not use_pool
+        opts["max_connections"] = max_connections if use_pool else None
+        return opts
+
+    return _with_connection_pool
 
 
 def WithRetryExponentialBackoff(retries: int) -> Callable[..., ClientOptions]:

@@ -6,7 +6,12 @@ from pyle38 import Tile38
 from pyle38.client import (
     Client,
 )
-from pyle38.client_options import WithRetryExponentialBackoff, WithRetryOnError
+from pyle38.client_options import (
+    WithConnectionPool,
+    WithRetryExponentialBackoff,
+    WithRetryOnError,
+    default_max_connections,
+)
 from pyle38.errors import (
     Pyle38ConnectionError,
     Pyle38NoFollowerSetError,
@@ -24,17 +29,20 @@ async def test_client_options() -> None:
     client_options = [
         WithRetryExponentialBackoff(10),
         WithRetryOnError(Pyle38TimeoutError, Pyle38ConnectionError),
+        WithConnectionPool(use_pool=True),
     ]
     client = Client(url, client_options)
 
     assert client.url == url
 
     opts = client.client_options()
-    assert opts["retry"]  # pyright: ignore[reportTypedDictNotRequiredAccess]
-    assert type(opts["retry_on_error"]) is list  # pyright: ignore[reportTypedDictNotRequiredAccess]
-    assert opts["retry_on_error"] == [Pyle38TimeoutError, Pyle38ConnectionError]  # pyright: ignore[reportTypedDictNotRequiredAccess]
+    assert opts["retry"]
+    assert type(opts["retry_on_error"]) is list
+    assert opts["retry_on_error"] == [Pyle38TimeoutError, Pyle38ConnectionError]
+    assert not opts["single_connection_client"]
+    assert opts["max_connections"] == default_max_connections
 
-    response = await client.command("SET", ["fleet", "truck", "POINT", 1, 1])  # type: ignore[arg-type]
+    response = await client.command("SET", ["fleet", "truck", "POINT", 1, 1])
     assert response["ok"]
 
     response = await client.command("GET", ["fleet", "truck"])
@@ -46,7 +54,7 @@ async def test_client_options() -> None:
 @pytest.mark.asyncio
 async def test_client() -> None:
     client = Client(os.getenv("TILE38_LEADER_URI") or "redis://localhost:9851")
-    response = await client.command("SET", ["fleet", "truck", "POINT", 1, 1])  # type: ignore[arg-type]
+    response = await client.command("SET", ["fleet", "truck", "POINT", 1, 1])
     assert response["ok"]
 
     response = await client.command("GET", ["fleet", "truck"])
