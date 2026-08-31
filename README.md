@@ -295,6 +295,12 @@ await tile38.set('fleet', 'truck2')
   .exec()
 
 await tile38.set('fleet', 'truck1:driver').string('John Denton').exec()
+
+await tile38.set('fleet', 'truck1')
+  .fields({ "maxSpeed": 90, "milage": 90000 })
+  .point(33.5123, -112.2693)
+  .returns()
+  .asObject()
 ```
 
 **Options**
@@ -305,6 +311,8 @@ await tile38.set('fleet', 'truck1:driver').string('John Denton').exec()
 | `.ex(value)` | Set the specified expire time, in seconds.        |
 | `.nx()`      | Only set the object if it does not already exist. |
 | `.xx()`      | Only set the object if it already exist.          |
+| `.returns()` | Return the object that was set, added with Tile38 v1.38.0 |
+
 
 **Input**
 
@@ -316,6 +324,19 @@ await tile38.set('fleet', 'truck1:driver').string('John Denton').exec()
 | `.object(feature)`                        | Set as feature                                                                         |
 | `.hash(geohash)`                          | Set as geohash                                                                         |
 | `.string(value)`                          | Set as string. To retrieve string values you can use `.get()`, `scan()` or `.search()` |
+
+**Output**
+
+if `.returns()` is set the output of the returned object can be defined.
+
+| command              | description                       |
+| -------------------- | --------------------------------- |
+| `.asObject()`        | get as object                     |
+| `.asBounds()`        | get as minimum bounding rectangle |
+| `.asHash(precision)` | get as hash                       |
+| `.asPoint()`         | get as point                      |
+| `.asString()`        | get as string                     |
+
 
 #### FSET
 

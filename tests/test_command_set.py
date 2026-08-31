@@ -51,6 +51,10 @@ fields = {"speed": 100, "state": 1}
             Set(client, key, oid).string(oid).compile(),
         ),
         (
+            ["SET", [key, oid, "HASH", "u33d", "RETURN"]],
+            Set(client, key, oid).hash("u33d").returns().compile(),
+        ),
+        (
             [
                 "SET",
                 [key, oid, "FIELD", "speed", 100, "FIELD", "state", 1, "POINT", 1, 1],
@@ -58,7 +62,16 @@ fields = {"speed": 100, "state": 1}
             Set(client, key, oid).fields(fields).point(1, 1).compile(),
         ),
     ],
-    ids=["point", "point_z", "bounds", "object", "hash", "string", "with fields"],
+    ids=[
+        "point",
+        "point_z",
+        "bounds",
+        "object",
+        "hash",
+        "string",
+        "with_returns",
+        "with fields",
+    ],
 )
 @pytest.mark.asyncio
 async def test_command_set_compile(expected: Compiled, received: Compiled) -> None:
@@ -79,6 +92,21 @@ async def test_command_set_get(tile38: Tile38) -> None:
 
     assert received.ok
     assert expected == received.object
+
+
+@pytest.mark.asyncio
+async def test_command_set_returns(tile38: Tile38) -> None:
+    key = random_string()
+    oid = random_string()
+    obj = random_polygon_feature()
+
+    response = await tile38.set(key, oid).object(obj).returns().asObject()
+    assert response.ok
+    assert response.object == obj
+
+    response = await tile38.set(key, oid).point(1, 1).returns().asPoint()
+    assert response.ok
+    assert response.point.dict() == {"lat": 1, "lon": 1}
 
 
 @pytest.mark.asyncio

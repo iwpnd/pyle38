@@ -4,12 +4,16 @@ import json
 from collections.abc import Sequence
 from typing import Any, Literal, override
 
+from pyle38.commands.returnable import Returnable
+
 from ..client import Client, Command, SubCommand
 from ..responses import Fields, JSONResponse
-from .executable import Compiled, Executable
+from .executable import Compiled
+
+Output = list[Literal["POINT", "OBJECT", "BOUNDS", "HASH", "STRING"]]
 
 
-class Set(Executable):
+class Set(Returnable):
     _key: str
     _id: str
     _ex: int | None = None
@@ -21,6 +25,9 @@ class Set(Executable):
         ]
         | None
     )
+
+    _returns: bool = False
+    _output: Output = []  # noqa: RUF012
 
     def __init__(self, client: Client, key: str, oid: str) -> None:
         super().__init__(client)
@@ -115,6 +122,10 @@ class Set(Executable):
 
         return command
 
+    def returns(self) -> Set:
+        self._returns = True
+        return self
+
     def compile(self) -> Compiled:
         return [
             Command.SET.value,
@@ -125,6 +136,8 @@ class Set(Executable):
                 *([SubCommand.EX.value, self._ex] if self._ex else []),
                 *([self._nx_or_xx] if self._nx_or_xx else []),
                 *(self._input if self._input else []),
+                *([SubCommand.RETURNS.value] if self._returns else []),
+                *(self._output if self._returns and len(self._output) else []),
             ],
         ]  # type: ignore
 

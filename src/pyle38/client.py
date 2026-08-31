@@ -96,6 +96,7 @@ class SubCommand(StrEnum):
     WHERE = "WHERE"
     WHEREIN = "WHEREIN"
     SECTOR = "SECTOR"
+    RETURNS = "RETURN"
 
 
 class Format(StrEnum):
