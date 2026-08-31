@@ -1,4 +1,4 @@
-from typing import Any, ClassVar, Generic, Literal, TypeVar
+from typing import Any, ClassVar, Literal, TypeVar
 
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic import ConfigDict
@@ -8,8 +8,9 @@ S = TypeVar("S", bound=str)
 
 
 class BaseModel(PydanticBaseModel):
+    # ty: ignore[invalid-type-form]
     def dict(self, exclude_unset: bool = True, **kwargs: Any) -> dict[str, Any]:
-        return super().model_dump(exclude_unset=exclude_unset, **kwargs)  # type: ignore[no-any-return,unused-ignore]
+        return super().model_dump(exclude_unset=exclude_unset, **kwargs)
 
 
 class LatLon(BaseModel):
@@ -41,18 +42,18 @@ class ExistsResponse(JSONResponse, BaseModel):
     exists: bool
 
 
-class Object(BaseModel, WithFieldsArray, Generic[T]):
+class Object[T](BaseModel, WithFieldsArray):
     object: T
     id: str | int
     distance: float | None = None
 
 
-class ObjectResponse(JSONResponse, BaseModel, Generic[T]):
+class ObjectResponse[T](JSONResponse, BaseModel):
     object: T
     fields: Fields | None = None
 
 
-class ObjectsResponse(JSONResponse, BaseModel, WithFieldsArray, Generic[T]):
+class ObjectsResponse[T](JSONResponse, BaseModel, WithFieldsArray):
     objects: list[Object[T]] = []
     count: int
     cursor: int
@@ -298,7 +299,7 @@ FenceDetect = Literal["enter", "exit", "inside", "outside", "crosses"]
 FenceCommand = Literal["set", "del"]
 
 
-class GeoFence(BaseModel, Generic[T]):
+class GeoFence[T](BaseModel):
     command: FenceCommand
     group: str
     detect: FenceDetect

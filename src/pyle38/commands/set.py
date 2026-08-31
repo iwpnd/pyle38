@@ -2,9 +2,7 @@ from __future__ import annotations
 
 import json
 from collections.abc import Sequence
-from typing import Any, Literal
-
-from typing_extensions import override
+from typing import Any, Literal, override
 
 from ..client import Client, Command, SubCommand
 from ..responses import Fields, JSONResponse
@@ -131,5 +129,5 @@ class Set(Executable):
         ]  # type: ignore
 
     @override
-    async def exec(self) -> JSONResponse:  # type: ignore[override]
+    async def exec(self) -> JSONResponse:  # type: ignore[invalid-method-override]
         return JSONResponse(**(await self.client.command(*self.compile())))

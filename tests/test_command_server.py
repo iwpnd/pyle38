@@ -15,7 +15,7 @@ async def test_command_server(tile38_with_follower: Tile38) -> None:
 
     with pytest.raises(AttributeError):
         # NOTE: we know that type is wrong here, we just wanna test it not being here
-        assert leaderResponse.stats.caught_up  # type: ignore[attr-defined,unused-ignore]
+        assert leaderResponse.stats.caught_up  # ty: ignore[unresolved-attribute]
 
     time.sleep(0.2)
 

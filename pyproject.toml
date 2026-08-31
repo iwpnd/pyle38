@@ -5,7 +5,7 @@ description = "python client for Tile38"
 authors = [{ name = "Benjamin Ramser", email = "iwpnd@posteo.de" }]
 readme = "README.md"
 license = "MIT"
-requires-python = ">=3.10,<4.0"
+requires-python = ">=3.12,<4.0"
 keywords = ["tile38", "async", "client"]
 classifiers = [
     "Intended Audience :: Developers",
@@ -32,12 +32,12 @@ dev = [
   "pre-commit>=2.20.0",
   "tox-uv>=1.11.3",
   "deptry>=0.22.0",
-  "mypy>=0.991",
   "pytest-cov>=4.0.0",
   "ruff>=0.9.2",
   "gitlint>=0.19.1",
   "python-semantic-release>=9.21.0",
   "pytest-asyncio>=1.1.0",
+  "ty>=0.0.75",
 ]
 
 [project.urls]
@@ -49,20 +49,12 @@ Documentation = "https://iwpnd.github.io/pyle38"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.ty.rules]
+unresolved-import = "ignore"
+unused-ignore-comment = "warn"
+
 [tool.deptry]
 ignore = ["DEP003", "DEP004"]
-
-[tool.mypy]
-python_version = "3.10"
-ignore_missing_imports = true
-files = ["src", "tests"]
-disallow_untyped_defs = true
-disallow_any_unimported = false
-no_implicit_optional = true
-check_untyped_defs = true
-warn_return_any = true
-warn_unused_ignores = false
-show_error_codes = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -70,7 +62,7 @@ asyncio_mode="auto"
 asyncio_default_fixture_loop_scope = "function"
 
 [tool.ruff]
-target-version = "py310"
+target-version = "py312"
 line-length = 88
 fix = true
 

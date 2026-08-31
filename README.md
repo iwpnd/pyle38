@@ -36,7 +36,7 @@ async def main():
 
     assert response.ok
 
-    print(response.dict())
+    print(response.to_dict()())
     await tile38.quit()
 
 asyncio.run(main())
@@ -76,7 +76,7 @@ In [5]: response = await tile38.within("fleet")
    ...:         .circle(52.25, 13.37, 1000)
    ...:         .asObjects()
 
-In [6]: print(response.dict())
+In [6]: print(response.to_dict()())
 
   {
     "ok": True,
@@ -247,7 +247,7 @@ response = await tile38.set('fleet','truck1')
                     .point(52.25,13.37)
                     .exec()
 
-print(response.dict())
+print(response.to_dict()())
 > {'ok': True, 'elapsed': '40.7µs'}
 
 response = await tile38.get('fleet', 'truck1').asObject()
@@ -261,7 +261,7 @@ print(response.object)
     'coordinates': [13.37, 52.25]
     }
 
-print(response.dict())
+print(response.to_dict()())
 > {
     'ok': True,
     'elapsed': '29.3µs',
@@ -340,7 +340,7 @@ response = await tile38.fget('fleet', 'truck1', 'maxSpeed').exec()
 print(response.ok)
 > True
 
-print(response.dict())
+print(response.to_dict()())
 > {
     'ok': True,
     'elapsed': '29.3µs',

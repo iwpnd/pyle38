@@ -1,14 +1,14 @@
 from collections.abc import Callable
-from typing import TypeAlias
+from typing import NotRequired
 
 from redis.asyncio.retry import Retry
 from redis.backoff import ExponentialBackoff
-from typing_extensions import NotRequired, TypedDict
+from typing_extensions import TypedDict
 
 from .errors import Pyle38Error
 
-Pyle38Retry: TypeAlias = Retry
-Pyle38ExponentialBackoff: TypeAlias = ExponentialBackoff
+type Pyle38Retry = Retry
+type Pyle38ExponentialBackoff = ExponentialBackoff
 
 
 class ClientOptions(TypedDict):
@@ -52,7 +52,7 @@ def WithRetryExponentialBackoff(retries: int) -> Callable[..., ClientOptions]:
         Returns:
             ClientOptions: The updated client options with retry configuration.
         """
-        opts["retry"] = Pyle38Retry(Pyle38ExponentialBackoff(), retries=retries)
+        opts["retry"] = Retry(ExponentialBackoff(), retries=retries)
         return opts
 
     return _with_retry_exponential_backoff

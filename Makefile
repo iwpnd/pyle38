@@ -13,8 +13,6 @@ check:
 	@uv lock --locked
 	@echo "run pre-commit hooks"
 	@uv run pre-commit run -a
-	@echo "run mypy checks"
-	@uv run mypy --ignore-missing-imports --config-file pyproject.toml
 	@echo "check for obsolete dependencies"
 	@uv run deptry src
 

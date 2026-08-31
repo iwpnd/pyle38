@@ -19,12 +19,10 @@ repos:
       - id: check-case-conflict
       - id: check-merge-conflict
       - id: check-yaml
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v2.1.0
+  - repo: https://github.com/astral-sh/ty-pre-commit
+    rev: v0.0.75
     hooks:
-      - id: mypy
-        args: [--ignore-missing-imports]
-        additional_dependencies: [redis]
+      - id: ty
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: "v0.15.17"
     hooks:

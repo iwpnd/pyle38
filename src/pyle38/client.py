@@ -1,6 +1,6 @@
 import os
 from collections.abc import Callable, Sequence
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from redis.asyncio import Connection, Redis
@@ -14,7 +14,7 @@ TILE38_DEFAULT_PORT = 9851
 PYLE38_USE_CONNECTION_POOL = os.getenv("PYLE38_USE_CONNECTION_POOL")
 
 
-class Command(str, Enum):
+class Command(StrEnum):
     AOFSHRINK = "AOFSHRINK"
     AUTH = "AUTH"
     BOUNDS = "BOUNDS"
@@ -61,7 +61,7 @@ class Command(str, Enum):
     WITHIN = "WITHIN"
 
 
-class SubCommand(str, Enum):
+class SubCommand(StrEnum):
     FIELD = "FIELD"
     EX = "EX"
     NX = "NX"
@@ -98,7 +98,7 @@ class SubCommand(str, Enum):
     SECTOR = "SECTOR"
 
 
-class Format(str, Enum):
+class Format(StrEnum):
     JSON = "JSON"
     RESP = "RESP"
 

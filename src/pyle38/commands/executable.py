@@ -35,7 +35,7 @@ class Executable(abc.ABC):
         """
         raise NotImplementedError("Not implemented")
 
-    async def exec(self) -> dict[Any, Any]:
+    async def exec(self) -> Any:
         """exec.
 
         Executes the compiled command asynchronously using the associated client.

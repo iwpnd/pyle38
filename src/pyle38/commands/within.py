@@ -471,10 +471,10 @@ class Within(Executable, Whereable):
         # raises mypy: TypedDict key must be string literal
         # open PR: https://github.com/python/mypy/issues/7867
         for k in self._options:
-            if isinstance(self._options[k], bool):  # type: ignore[literal-required]
+            if isinstance(self._options[k], bool):  # ty: ignore[invalid-key]
                 commands.append(k.upper())
-            elif self._options[k] or self._options[k] == 0:  # type: ignore[literal-required]
-                commands.extend([k.upper(), self._options[k]])  # type: ignore[literal-required]
+            elif self._options[k] or self._options[k] == 0:  # ty: ignore[invalid-key]
+                commands.extend([k.upper(), self._options[k]])  # ty: ignore[invalid-key]
 
         return commands
 
