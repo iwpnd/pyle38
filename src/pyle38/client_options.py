@@ -21,7 +21,7 @@ class ClientOptions(TypedDict):
 
 
 def WithConnectionPool(
-    use_pool: bool = False, max_connections: int | None = default_max_connections
+    use_pool: bool = True, max_connections: int | None = default_max_connections
 ) -> Callable[..., ClientOptions]:
     """Return a callable that configures whether or not to use a connection pool.
 
