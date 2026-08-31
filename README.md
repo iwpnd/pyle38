@@ -189,7 +189,7 @@ tile38 = Tile38(
         WithRetryExponentialBackoff(10),
         # retries the following errors
         WithRetryOnError(Pyle38ConnectionError, Pyle38TimeoutError),
-        # enable the use of a connecion pool
+        # enable the use of a connecion pool, defaults to use a single connection
         WithConnectionPool(max_connections=20),
     ]
 )
