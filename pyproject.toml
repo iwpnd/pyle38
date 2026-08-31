@@ -53,6 +53,9 @@ build-backend = "hatchling.build"
 unresolved-import = "ignore"
 unused-ignore-comment = "warn"
 
+[tool.ty.terminal]
+error-on-warning = false
+
 [tool.deptry]
 ignore = ["DEP003", "DEP004"]
 

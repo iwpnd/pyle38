@@ -12,7 +12,7 @@ check:
 	@echo "check lockfile consistency"
 	@uv lock --locked
 	@echo "run ty checks"
-	@uv run ty check --exit-zero-on-warning
+	@uv run ty check
 	@echo "check for obsolete dependencies"
 	@uv run deptry src
 
