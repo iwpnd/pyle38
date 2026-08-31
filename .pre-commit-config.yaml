@@ -25,13 +25,13 @@ repos:
       - id: ty
         args: [--isolated]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.15.17"
+    rev: "v0.16.5"
     hooks:
       - id: ruff
         args: [--exit-non-zero-on-fix]
       - id: ruff-format
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.11.21
+    rev: 0.12.7
     hooks:
       - id: uv-lock
   - repo: https://github.com/iwpnd/pre-commit-devmoji
