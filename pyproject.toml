@@ -1,6 +1,6 @@
 [project]
 name = "pyle38"
-version = "0.16.2"
+version = "0.17.0"
 description = "python client for Tile38"
 authors = [{ name = "Benjamin Ramser", email = "iwpnd@posteo.de" }]
 readme = "README.md"
